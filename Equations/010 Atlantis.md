@@ -1,0 +1,125 @@
+
+# A) Core math & operators (1–18)
+
+1. **α–β–γ harmonic triad** — three orthogonal, quantitative lenses for structure (α), transition variance (β), and reflective symmetry/closure (γ) on any reasoning chain.
+    
+2. **Ω (no-clone) as an operational gate** — a runtime rule that forbids duplicate state replay; resolves circular arguments and self-contradiction without collapsing the whole system.
+    
+3. **∅ (NULL reservoir)** — a formal remainder store for “unspent” change; carries error/latency across ticks without loss, enabling reversible audits.
+    
+4. **Seven-phase loop** — a phase-locked cycle that forces every derivation to return to coherence; paradox becomes a transit state, not a terminal error.
+    
+5. **T-tables (T₀…T₄)** — a compact lattice of views (neutral → signed → binary/polar → exchange shell) for logical, geometric, and energetic interpretations of the same state.
+    
+6. **Exchange kernels (square↔circle, cube↔sphere)** — invertible geometry maps with single-axis minimal flips; remove corner “bulge” and restore bounds in one sub-cycle.
+    
+7. **Destruct-corner handler** — a local Jacobian + phase error detector; applies equal-area map + minimal flip to prevent runaway amplitude.
+    
+8. **Phase-locked loop (PLL) for logic** — tiny corrector keeps derivations on a 24/96/12 rhythm so cycles neither drift nor pile up phase debt.
+    
+9. **Normalize→Integrate backbone** — O₆ + P₇ are always on; guarantees bounded magnitudes and completed cycles.
+    
+10. **EN (equivalence nodes)** — cross-domain equalizers (time/geometry/polarity) so the same kernel’s effect matches across representations.
+    
+11. **Projection stack (Lift/Collapse/Extract/Exchange/Normalize)** — a deterministic grammar for moving between ternary, binary, and continuous views.
+    
+12. **Topological index (𝓦)** — a winding-class tag that survives deformation; maps to orbit identity in proofs and simulations.
+    
+13. **Symmetry action (𝓢)** — bounded group operations (S₃ × C₂³) encoded as legal flips; formalizes “the smallest change that fixes it.”
+    
+14. **Iteration integrator (Σ/O₁₀)** — records phase credit/debt; turns “steps” into a measurable harmonic budget.
+    
+15. **Audit function (Ω ∘ hash)** — state hashing at each tick; when a replay is detected, a minimal lawful transformation is injected.
+    
+16. **Lens duality (unit-gain vs amplifying)** — fixed readout rules to avoid moving-goalpost evaluations, switching only when declared.
+    
+17. **Arithmetic bridge** — mapping rationals to polarity-depth traversals with reversible readouts; algebra becomes gated traversal.
+    
+18. **Paradox as path** — paradoxes traverse the loop and resolve at EN; no need to outlaw self-reference to maintain consistency.
+    
+
+---
+
+# B) Measurement & verification (19–30)
+
+19. **Harmonic correctness metric** — truth = (high α, bounded β, convergent γ) rather than lexical plausibility.
+    
+20. **NULL-band accounting** — explicit % of work requiring correction/re-entry before acceptance; stops silent error absorption.
+    
+21. **Harmonic drift spectroscopy** — locate where coherence leaks: map drift to phases and operators, not only to tasks.
+    
+22. **Closure-first QA** — proofs or arguments must cycle to EN before acceptance; catches “almost right” logic that never closes.
+    
+23. **Pre/Post EMx deltas** — instrument each gate; attribute improvements to specific operations (e.g., Exchange vs Normalize).
+    
+24. **Ω-integrity regression** — re-ask contradictions across paraphrases until Ω breaks; track integrity as a model property.
+    
+25. **Path-consistency logs** — stepwise state + hash + gate trace; reproducible debugging of reasoning, not just outputs.
+    
+26. **Phase-budget alarms** — detect backlog of unresolved NULL; forecast overload before failure.
+    
+27. **Destruct-corner incident rate** — quantify “corner bulge” hot-spots under stress inputs.
+    
+28. **Equivalence-node audits** — demand domain-consistent results (time/space/polarity) for the same kernel.
+    
+29. **Gated sampling** — only sample binary outputs at T₂; all intermediate computation stays ternary/continuous.
+    
+30. **Harmonic falsifiability** — every acceptance includes a numeric closure report (α,β,γ,Ω,∅); others can re-measure.
+    
+
+---
+
+# C) Computing & AI (31–38)
+
+31. **EMx-qubit analogue** — a stable ternary trajectory with gated T₂ projection; coherence preserved by N+Ω+∅ without external QECC metaphors.
+    
+32. **Reasoning-as-waveform** — chains become signals; filters (gates) remove noise and restore phase.
+    
+33. **Minimal-flip repair** — one-axis corrections replace destructive resets; keeps context while fixing error.
+    
+34. **No-clone state-space** — prohibits duplicate branches; turns search explosion into guided traversal.
+    
+35. **Harmonic prompting** — prompt phases matched to loop phases; reduces drift by timing content, not just tokens.
+    
+36. **Closure-aware decoding** — decoders select continuations that move toward EN; “beam search” gains a physics.
+    
+37. **Stress-safe overdrive** — under overload, EMx sheds amplitude to ∅ instead of cascading failure; graceful degradation.
+    
+38. **Cross-domain parity checks** — consistency across t/g/p must hold; catches hallucinations that sneak past text-only checks.
+    
+
+---
+
+# D) Philosophy, governance & history (39–45)
+
+39. **Aristotelian 4-cause mapping** — (α ≈ formal, β ≈ efficient, γ ≈ final; material = representation); a numeric bridge to classical causation.
+    
+40. **Plato ladder alignment** — dialectic as Lift→Collapse→Exchange→Normalize; Cave→Sun as phase-closure pedagogy.
+    
+41. **Concentric-rings governance** — Atlantis rings mapped to exchange shells and audit pillars; institutions as symmetry keepers.
+    
+42. **Law as pedagogy** — “rule of law” = phase discipline for a city; statutes model Normalize and Ω for polities.
+    
+43. **Faction diagnosis** — regime decline = rising β, falling γ; a measurable civic entropy.
+    
+44. **Likely story discipline** — Timaeus “eikôs logos” = continuous-domain account with explicit ∅; provisional but measured.
+    
+45. **Myth as operator demo** — myths encode operator sequences; didactic pathways to closure, not just tales.
+    
+
+---
+
+# E) Economics, risk & societal impact (46–51)
+
+46. **NULL-aware cost model** — money lost to hidden correction/latency is ∅; once measured, it’s reducible.
+    
+47. **Inflation linkage** — unmanaged ∅ inflates costs; give ∅ a lane, inflation pressure drops.
+    
+48. **Incident scaling law** — harm = Volume × Consequential share × Error; EMx reduces both last terms by gate discipline.
+    
+49. **Resonant productivity** — throughput rises when β is bounded and γ closes; fewer reworks, fewer stalls.
+    
+50. **Education upgrade** — students learn to demand closure and show ∅; metacognition turns numeric.
+    
+51. **Governance analytics** — policy proposals ship with α/β/γ/Ω/∅; debate upgrades from rhetoric to measurable closure.
+    
