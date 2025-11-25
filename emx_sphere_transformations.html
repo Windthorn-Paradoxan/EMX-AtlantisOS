@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMx Sphere - T-Layer Geometric Transformations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+        
+        #container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 15px 20px;
+            border-bottom: 2px solid #ffd700;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #ffd700;
+            font-size: 24px;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+            margin-bottom: 3px;
+        }
+        
+        .subtitle {
+            color: #87ceeb;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        #main {
+            flex: 1;
+            display: flex;
+            position: relative;
+        }
+        
+        #canvas-container {
+            flex: 1;
+            position: relative;
+            background: radial-gradient(circle at center, #0f0f1e 0%, #050510 100%);
+        }
+        
+        canvas {
+            display: block;
+            cursor: grab;
+        }
+        
+        canvas:active {
+            cursor: grabbing;
+        }
+        
+        #controls {
+            width: 300px;
+            background: rgba(26, 26, 46, 0.95);
+            padding: 20px;
+            overflow-y: auto;
+            border-left: 2px solid #4a5568;
+        }
+        
+        .control-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #4a5568;
+        }
+        
+        .control-section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: #87ceeb;
+            font-size: 14px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .checkbox-item:hover {
+            background: rgba(135, 206, 235, 0.1);
+        }
+        
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        
+        label {
+            cursor: pointer;
+            font-size: 12px;
+            flex: 1;
+        }
+        
+        .color-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .slider-group {
+            margin: 12px 0;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #b0b0b0;
+        }
+        
+        .slider-value {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #2d3748;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
+            box-shadow: 0 0 4px rgba(255,215,0,0.5);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
+            border: none;
+        }
+        
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            color: #e0e0e0;
+            border: 1px solid #718096;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #5a6678 0%, #3d4758 100%);
+            border-color: #87ceeb;
+            transform: translateY(-1px);
+        }
+        
+        button.active {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a1a2e;
+            border-color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background: rgba(45, 45, 68, 0.8);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border-left: 3px solid #87ceeb;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+        
+        .state-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 11px;
+        }
+        
+        .state-label {
+            color: #b0b0b0;
+        }
+        
+        .state-value {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        #legend {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #4a5568;
+            min-width: 200px;
+        }
+        
+        .legend-title {
+            color: #87ceeb;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 11px;
+        }
+        
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        #instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #4a5568;
+            font-size: 11px;
+            color: #b0b0b0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>EMx Sphere - Geometric T-Layer Transformations</h1>
+            <div class="subtitle">27-State Lattice with Simultaneous Multi-Layer Evolution</div>
+        </div>
+        
+        <div id="main">
+            <div id="canvas-container">
+                <canvas id="sphereCanvas"></canvas>
+                
+                <div id="legend">
+                    <div class="legend-title">T-Layer States</div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #00ffff;"></div>
+                        <span>T₀: Neutral Lattice (27)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ffff00;"></div>
+                        <span>T₁: Signed Lift (27)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff00ff;"></div>
+                        <span>T₂: Binary Projection (8)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff8800;"></div>
+                        <span>T₃: Polar Extremal (8)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #00ff88;"></div>
+                        <span>T₄: Exchange Shell (6)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff0000;"></div>
+                        <span>NULL: Stillpoint (1)</span>
+                    </div>
+                </div>
+                
+                <div id="instructions">
+                    <strong>🖱️ Controls:</strong> Drag to rotate • Scroll to zoom • Toggle layers in sidebar
+                </div>
+            </div>
+            
+            <div id="controls">
+                <div class="control-section">
+                    <h2>Visible Layers</h2>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="show-t0" checked>
+                            <div class="color-indicator" style="background: #00ffff;"></div>
+                            <label for="show-t0">T₀ (Neutral Lattice)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="show-t1" checked>
+                            <div class="color-indicator" style="background: #ffff00;"></div>
+                            <label for="show-t1">T₁ (Signed Lift)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="show-t2" checked>
+                            <div class="color-indicator" style="background: #ff00ff;"></div>
+                            <label for="show-t2">T₂ (Binary Project)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="show-t3" checked>
+                            <div class="color-indicator" style="background: #ff8800;"></div>
+                            <label for="show-t3">T₃ (Polar Extremal)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="show-t4" checked>
+                            <div class="color-indicator" style="background: #00ff88;"></div>
+                            <label for="show-t4">T₄ (Exchange Shell)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="show-null" checked>
+                            <div class="color-indicator" style="background: #ff0000;"></div>
+                            <label for="show-null">NULL (Stillpoint)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="show-connections" checked>
+                            <div class="color-indicator" style="background: #ffffff;"></div>
+                            <label for="show-connections">Layer Connections</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h2>Animation Speed</h2>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>T₀ → T₁</span>
+                            <span class="slider-value" id="val-t0t1">1.0x</span>
+                        </div>
+                        <input type="range" id="speed-t0t1" min="0.1" max="3" step="0.1" value="1">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>T₁ → T₂</span>
+                            <span class="slider-value" id="val-t1t2">1.2x</span>
+                        </div>
+                        <input type="range" id="speed-t1t2" min="0.1" max="3" step="0.1" value="1.2">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>T₂ → T₃</span>
+                            <span class="slider-value" id="val-t2t3">0.8x</span>
+                        </div>
+                        <input type="range" id="speed-t2t3" min="0.1" max="3" step="0.1" value="0.8">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>T₃ → T₄</span>
+                            <span class="slider-value" id="val-t3t4">1.5x</span>
+                        </div>
+                        <input type="range" id="speed-t3t4" min="0.1" max="3" step="0.1" value="1.5">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>T₄ → T₀</span>
+                            <span class="slider-value" id="val-t4t0">0.9x</span>
+                        </div>
+                        <input type="range" id="speed-t4t0" min="0.1" max="3" step="0.1" value="0.9">
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h2>Visual Settings</h2>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Rotation Speed</span>
+                            <span class="slider-value" id="val-rotation">0.5</span>
+                        </div>
+                        <input type="range" id="rotation-speed" min="0" max="2" step="0.1" value="0.5">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Point Size</span>
+                            <span class="slider-value" id="val-pointsize">4</span>
+                        </div>
+                        <input type="range" id="point-size" min="2" max="10" step="1" value="4">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Glow Intensity</span>
+                            <span class="slider-value" id="val-glow">0.6</span>
+                        </div>
+                        <input type="range" id="glow-intensity" min="0" max="1" step="0.1" value="0.6">
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h2>Quick Actions</h2>
+                    <button onclick="resetView()">↻ Reset View</button>
+                    <button onclick="togglePause()">⏯ Pause/Resume</button>
+                    <button onclick="syncAllSpeeds()">⚡ Sync All Speeds</button>
+                    <button onclick="toggleAutoRotate()" id="btn-autorotate">🔄 Auto Rotate: ON</button>
+                </div>
+                
+                <div class="control-section">
+                    <h2>Current State</h2>
+                    <div class="info-box">
+                        <div class="state-info">
+                            <span class="state-label">Total Points:</span>
+                            <span class="state-value" id="info-points">27</span>
+                        </div>
+                        <div class="state-info">
+                            <span class="state-label">Active Layer:</span>
+                            <span class="state-value" id="info-layer">All</span>
+                        </div>
+                        <div class="state-info">
+                            <span class="state-label">Phase:</span>
+                            <span class="state-value" id="info-phase">0.000</span>
+                        </div>
+                        <div class="state-info">
+                            <span class="state-label">NULL Distance:</span>
+                            <span class="state-value" id="info-null">~22%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('sphereCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height, centerX, centerY;
+        
+        function resizeCanvas() {
+            const container = document.getElementById('canvas-container');
+            width = canvas.width = container.clientWidth;
+            height = canvas.height = container.clientHeight;
+            centerX = width / 2;
+            centerY = height / 2;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // 3D rotation matrices
+        let rotationX = 0.3;
+        let rotationY = 0.4;
+        let rotationZ = 0;
+        let zoom = 250;
+        let autoRotate = true;
+        let rotationSpeed = 0.5;
+        let isPaused = false;
+        
+        // Mouse interaction
+        let isDragging = false;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+            autoRotate = false;
+            updateAutoRotateButton();
+        });
+        
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const deltaX = e.clientX - lastMouseX;
+                const deltaY = e.clientY - lastMouseY;
+                rotationY += deltaX * 0.01;
+                rotationX += deltaY * 0.01;
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+            }
+        });
+        
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            zoom *= (1 - e.deltaY * 0.001);
+            zoom = Math.max(100, Math.min(500, zoom));
+        });
+        
+        // Animation state
+        let time = 0;
+        const speeds = {
+            t0t1: 1.0,
+            t1t2: 1.2,
+            t2t3: 0.8,
+            t3t4: 1.5,
+            t4t0: 0.9
+        };
+        
+        let pointSize = 4;
+        let glowIntensity = 0.6;
+        
+        // Visibility flags
+        const visible = {
+            t0: true,
+            t1: true,
+            t2: true,
+            t3: true,
+            t4: true,
+            null: true,
+            connections: true
+        };
+        
+        // T-layer colors
+        const colors = {
+            t0: '#00ffff',
+            t1: '#ffff00',
+            t2: '#ff00ff',
+            t3: '#ff8800',
+            t4: '#00ff88',
+            null: '#ff0000'
+        };
+        
+        // Generate T₀: 27-state neutral lattice (3³ cube)
+        function generateT0() {
+            const points = [];
+            for (let x = -1; x <= 1; x++) {
+                for (let y = -1; y <= 1; y++) {
+                    for (let z = -1; z <= 1; z++) {
+                        points.push({
+                            x: x * 0.8,
+                            y: y * 0.8,
+                            z: z * 0.8,
+                            layer: 't0',
+                            k: (x !== 0 ? 1 : 0) + (y !== 0 ? 1 : 0) + (z !== 0 ? 1 : 0)
+                        });
+                    }
+                }
+            }
+            return points;
+        }
+        
+        // Generate T₁: Signed lift (27 states with sign emphasis)
+        function generateT1(t0Points) {
+            return t0Points.map(p => {
+                const phase = Math.sin(time * speeds.t0t1 + p.x + p.y + p.z) * 0.15;
+                return {
+                    x: p.x * 1.1,
+                    y: p.y * 1.1,
+                    z: p.z * 1.1 + phase,
+                    layer: 't1',
+                    k: p.k
+                };
+            });
+        }
+        
+        // Generate T₂: Binary projection (8 states - corners of cube)
+        function generateT2() {
+            const points = [];
+            for (let x = -1; x <= 1; x += 2) {
+                for (let y = -1; y <= 1; y += 2) {
+                    for (let z = -1; z <= 1; z += 2) {
+                        const phase = Math.sin(time * speeds.t1t2 + x + y + z) * 0.1;
+                        points.push({
+                            x: x * 0.95 + phase,
+                            y: y * 0.95,
+                            z: z * 0.95,
+                            layer: 't2',
+                            k: 3
+                        });
+                    }
+                }
+            }
+            return points;
+        }
+        
+        // Generate T₃: Polar extremal (8 states with emphasis)
+        function generateT3() {
+            const points = [];
+            const r = 0.9;
+            for (let x = -1; x <= 1; x += 2) {
+                for (let y = -1; y <= 1; y += 2) {
+                    for (let z = -1; z <= 1; z += 2) {
+                        const phase = Math.sin(time * speeds.t2t3 + x * 2 + y * 2) * 0.12;
+                        const stretch = 1.0 + phase;
+                        points.push({
+                            x: x * r * stretch,
+                            y: y * r * stretch,
+                            z: z * r * stretch,
+                            layer: 't3',
+                            k: 3
+                        });
+                    }
+                }
+            }
+            return points;
+        }
+        
+        // Generate T₄: Exchange shell (6 points - cuboctahedron vertices on axes)
+        function generateT4() {
+            const points = [];
+            const axes = [
+                [1, 0, 0], [-1, 0, 0],
+                [0, 1, 0], [0, -1, 0],
+                [0, 0, 1], [0, 0, -1]
+            ];
+            
+            axes.forEach(([x, y, z], i) => {
+                const phase = Math.sin(time * speeds.t3t4 + i * Math.PI / 3) * 0.1;
+                const r = 1.05 + phase;
+                points.push({
+                    x: x * r,
+                    y: y * r,
+                    z: z * r,
+                    layer: 't4',
+                    k: 1
+                });
+            });
+            
+            return points;
+        }
+        
+        // NULL point at center
+        function generateNull() {
+            const pulse = Math.sin(time * 2) * 0.05;
+            return [{
+                x: 0,
+                y: 0,
+                z: pulse,
+                layer: 'null',
+                k: 0
+            }];
+        }
+        
+        // 3D to 2D projection
+        function project3D(point) {
+            // Apply rotation
+            let x = point.x;
+            let y = point.y;
+            let z = point.z;
+            
+            // Rotate around X axis
+            let y1 = y * Math.cos(rotationX) - z * Math.sin(rotationX);
+            let z1 = y * Math.sin(rotationX) + z * Math.cos(rotationX);
+            
+            // Rotate around Y axis
+            let x2 = x * Math.cos(rotationY) + z1 * Math.sin(rotationY);
+            let z2 = -x * Math.sin(rotationY) + z1 * Math.cos(rotationY);
+            
+            // Rotate around Z axis
+            let x3 = x2 * Math.cos(rotationZ) - y1 * Math.sin(rotationZ);
+            let y3 = x2 * Math.sin(rotationZ) + y1 * Math.cos(rotationZ);
+            
+            // Perspective projection
+            const perspective = zoom / (zoom + z2);
+            
+            return {
+                x: centerX + x3 * perspective * zoom,
+                y: centerY + y3 * perspective * zoom,
+                z: z2,
+                perspective: perspective
+            };
+        }
+        
+        // Draw a point with glow
+        function drawPoint(pos, color, size, glow) {
+            // Glow
+            if (glow > 0) {
+                const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, size * 3);
+                gradient.addColorStop(0, color + Math.floor(glow * 128).toString(16).padStart(2, '0'));
+                gradient.addColorStop(1, color + '00');
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, size * 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Core point
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(pos.x, pos.y, size * pos.perspective, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Draw connection between points
+        function drawConnection(pos1, pos2, color, alpha = 0.3) {
+            ctx.strokeStyle = color + Math.floor(alpha * 255).toString(16).padStart(2, '0');
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(pos1.x, pos1.y);
+            ctx.lineTo(pos2.x, pos2.y);
+            ctx.stroke();
+        }
+        
+        // Main render loop
+        function render() {
+            // Clear canvas
+            ctx.fillStyle = '#050510';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Update time
+            if (!isPaused) {
+                time += 0.016; // ~60fps
+                if (autoRotate) {
+                    rotationY += 0.01 * rotationSpeed;
+                }
+            }
+            
+            // Generate all layers
+            const t0Points = generateT0();
+            const t1Points = generateT1(t0Points);
+            const t2Points = generateT2();
+            const t3Points = generateT3();
+            const t4Points = generateT4();
+            const nullPoint = generateNull();
+            
+            // Combine all visible points
+            let allPoints = [];
+            if (visible.t0) allPoints = allPoints.concat(t0Points);
+            if (visible.t1) allPoints = allPoints.concat(t1Points);
+            if (visible.t2) allPoints = allPoints.concat(t2Points);
+            if (visible.t3) allPoints = allPoints.concat(t3Points);
+            if (visible.t4) allPoints = allPoints.concat(t4Points);
+            if (visible.null) allPoints = allPoints.concat(nullPoint);
+            
+            // Project all points
+            const projected = allPoints.map(p => ({
+                ...p,
+                pos: project3D(p)
+            }));
+            
+            // Sort by depth (z-coordinate)
+            projected.sort((a, b) => a.pos.z - b.pos.z);
+            
+            // Draw connections within same layer
+            if (visible.connections) {
+                // T₀ cube edges
+                if (visible.t0) {
+                    for (let i = 0; i < t0Points.length; i++) {
+                        for (let j = i + 1; j < t0Points.length; j++) {
+                            const p1 = t0Points[i];
+                            const p2 = t0Points[j];
+                            const dx = Math.abs(p1.x - p2.x);
+                            const dy = Math.abs(p1.y - p2.y);
+                            const dz = Math.abs(p1.z - p2.z);
+                            
+                            // Connect if Manhattan distance = 0.8 (adjacent in lattice)
+                            if (dx + dy + dz < 0.85) {
+                                const pos1 = project3D(p1);
+                                const pos2 = project3D(p2);
+                                drawConnection(pos1, pos2, colors.t0, 0.15);
+                            }
+                        }
+                    }
+                }
+                
+                // T₂ cube edges
+                if (visible.t2) {
+                    for (let i = 0; i < t2Points.length; i++) {
+                        for (let j = i + 1; j < t2Points.length; j++) {
+                            const p1 = t2Points[i];
+                            const p2 = t2Points[j];
+                            const dist = Math.sqrt(
+                                Math.pow(p1.x - p2.x, 2) +
+                                Math.pow(p1.y - p2.y, 2) +
+                                Math.pow(p1.z - p2.z, 2)
+                            );
+                            
+                            // Connect if distance ~ 2 (cube edge)
+                            if (dist > 1.8 && dist < 2.2) {
+                                const pos1 = project3D(p1);
+                                const pos2 = project3D(p2);
+                                drawConnection(pos1, pos2, colors.t2, 0.2);
+                            }
+                        }
+                    }
+                }
+                
+                // T₄ to center
+                if (visible.t4 && visible.null) {
+                    const nullPos = project3D(nullPoint[0]);
+                    t4Points.forEach(p => {
+                        const pos = project3D(p);
+                        drawConnection(nullPos, pos, colors.t4, 0.25);
+                    });
+                }
+            }
+            
+            // Draw all points
+            projected.forEach(p => {
+                drawPoint(p.pos, colors[p.layer], pointSize, glowIntensity);
+            });
+            
+            // Update info
+            document.getElementById('info-points').textContent = allPoints.length;
+            document.getElementById('info-phase').textContent = (time % (Math.PI * 2)).toFixed(3);
+            
+            requestAnimationFrame(render);
+        }
+        
+        // Control functions
+        function resetView() {
+            rotationX = 0.3;
+            rotationY = 0.4;
+            rotationZ = 0;
+            zoom = 250;
+            time = 0;
+        }
+        
+        function togglePause() {
+            isPaused = !isPaused;
+        }
+        
+        function syncAllSpeeds() {
+            const avg = (speeds.t0t1 + speeds.t1t2 + speeds.t2t3 + speeds.t3t4 + speeds.t4t0) / 5;
+            Object.keys(speeds).forEach(key => {
+                speeds[key] = avg;
+                document.getElementById('speed-' + key).value = avg;
+                document.getElementById('val-' + key).textContent = avg.toFixed(1) + 'x';
+            });
+        }
+        
+        function toggleAutoRotate() {
+            autoRotate = !autoRotate;
+            updateAutoRotateButton();
+        }
+        
+        function updateAutoRotateButton() {
+            const btn = document.getElementById('btn-autorotate');
+            btn.textContent = autoRotate ? '🔄 Auto Rotate: ON' : '🔄 Auto Rotate: OFF';
+            btn.classList.toggle('active', autoRotate);
+        }
+        
+        // Set up event listeners
+        ['t0', 't1', 't2', 't3', 't4', 'null', 'connections'].forEach(layer => {
+            document.getElementById('show-' + layer).addEventListener('change', (e) => {
+                visible[layer] = e.target.checked;
+            });
+        });
+        
+        ['t0t1', 't1t2', 't2t3', 't3t4', 't4t0'].forEach(trans => {
+            document.getElementById('speed-' + trans).addEventListener('input', (e) => {
+                speeds[trans] = parseFloat(e.target.value);
+                document.getElementById('val-' + trans).textContent = speeds[trans].toFixed(1) + 'x';
+            });
+        });
+        
+        document.getElementById('rotation-speed').addEventListener('input', (e) => {
+            rotationSpeed = parseFloat(e.target.value);
+            document.getElementById('val-rotation').textContent = rotationSpeed.toFixed(1);
+        });
+        
+        document.getElementById('point-size').addEventListener('input', (e) => {
+            pointSize = parseInt(e.target.value);
+            document.getElementById('val-pointsize').textContent = pointSize;
+        });
+        
+        document.getElementById('glow-intensity').addEventListener('input', (e) => {
+            glowIntensity = parseFloat(e.target.value);
+            document.getElementById('val-glow').textContent = glowIntensity.toFixed(1);
+        });
+        
+        // Start animation
+        render();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMx Motion Dynamics - Complete Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+        
+        #main-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 20px;
+            border-bottom: 2px solid #ffd700;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #ffd700;
+            font-size: 28px;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #87ceeb;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        #content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        #canvas-area {
+            flex: 1;
+            position: relative;
+            background: radial-gradient(circle at center, #0f0f1e 0%, #050510 100%);
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #controls {
+            width: 320px;
+            background: rgba(26, 26, 46, 0.95);
+            padding: 20px;
+            overflow-y: auto;
+            border-left: 2px solid #4a5568;
+        }
+        
+        .control-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #4a5568;
+        }
+        
+        .control-section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: #87ceeb;
+            font-size: 16px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            color: #e0e0e0;
+            border: 1px solid #718096;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #5a6678 0%, #3d4758 100%);
+            border-color: #87ceeb;
+            transform: translateX(2px);
+        }
+        
+        button.active {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a1a2e;
+            border-color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .slider-group {
+            margin: 12px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #b0b0b0;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #2d3748;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
+            box-shadow: 0 0 4px rgba(255,215,0,0.5);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .value-display {
+            display: inline-block;
+            background: #2d3748;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #ffd700;
+            margin-left: 8px;
+        }
+        
+        .info-box {
+            background: rgba(45, 45, 68, 0.8);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            border-left: 3px solid #87ceeb;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .metric-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 12px;
+        }
+        
+        .metric-label {
+            color: #b0b0b0;
+        }
+        
+        .metric-value {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 11px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        #status-bar {
+            background: #1a1a2e;
+            padding: 8px 20px;
+            border-top: 1px solid #4a5568;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 6px rgba(74,222,128,0.6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div id="main-container">
+        <div id="header">
+            <h1>EMx Motion Dynamics Visualization</h1>
+            <div class="subtitle">Self-Sustaining Ternary Computational Framework with Energy Conservation</div>
+        </div>
+        
+        <div id="content">
+            <div id="canvas-area">
+                <canvas id="mainCanvas"></canvas>
+            </div>
+            
+            <div id="controls">
+                <div class="control-section">
+                    <h2>Visualization Mode</h2>
+                    <div class="button-group">
+                        <button onclick="setMode('lemniscate')" id="btn-lemniscate" class="active">
+                            Lemniscate Flow (∞)
+                        </button>
+                        <button onclick="setMode('t-layers')" id="btn-t-layers">
+                            T-Layer Transitions
+                        </button>
+                        <button onclick="setMode('operators')" id="btn-operators">
+                            Operator Actions
+                        </button>
+                        <button onclick="setMode('energy')" id="btn-energy">
+                            Energy Conservation
+                        </button>
+                        <button onclick="setMode('dualities')" id="btn-dualities">
+                            8 Millennium Dualities
+                        </button>
+                        <button onclick="setMode('clock')" id="btn-clock">
+                            96-Tick Clock Cycle
+                        </button>
+                        <button onclick="setMode('complete')" id="btn-complete">
+                            Complete System
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h2>Animation Controls</h2>
+                    <div class="slider-group">
+                        <label>
+                            Speed: <span class="value-display" id="speed-val">1.0x</span>
+                        </label>
+                        <input type="range" id="speed-slider" min="0.1" max="3" step="0.1" value="1">
+                    </div>
+                    <div class="slider-group">
+                        <label>
+                            Particle Count: <span class="value-display" id="particle-val">50</span>
+                        </label>
+                        <input type="range" id="particle-slider" min="10" max="200" step="10" value="50">
+                    </div>
+                    <div class="slider-group">
+                        <label>
+                            Trail Length: <span class="value-display" id="trail-val">20</span>
+                        </label>
+                        <input type="range" id="trail-slider" min="5" max="50" step="5" value="20">
+                    </div>
+                    <button onclick="togglePause()">⏯ Pause/Resume</button>
+                    <button onclick="resetAnimation()">↻ Reset</button>
+                </div>
+                
+                <div class="control-section">
+                    <h2>System Metrics</h2>
+                    <div class="metric-display">
+                        <span class="metric-label">NULL Baseline (∅₀):</span>
+                        <span class="metric-value" id="metric-null">22.0%</span>
+                    </div>
+                    <div class="metric-display">
+                        <span class="metric-label">Current Phase (φ):</span>
+                        <span class="metric-value" id="metric-phase">0.000</span>
+                    </div>
+                    <div class="metric-display">
+                        <span class="metric-label">Energy Conserved:</span>
+                        <span class="metric-value" id="metric-energy">100%</span>
+                    </div>
+                    <div class="metric-display">
+                        <span class="metric-label">Active Tick:</span>
+                        <span class="metric-value" id="metric-tick">0/96</span>
+                    </div>
+                    <div class="metric-display">
+                        <span class="metric-label">Duality Balance:</span>
+                        <span class="metric-value" id="metric-balance">0.996</span>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h2>Color Legend</h2>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #00ffff;"></div>
+                            <span>T₀ Neutral (27 states)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ffff00;"></div>
+                            <span>T₁ Signed Lift</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff00ff;"></div>
+                            <span>T₂ Binary Projection</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff8800;"></div>
+                            <span>T₃ Polar Extremal</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #00ff88;"></div>
+                            <span>T₄ Exchange Shell</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff0000;"></div>
+                            <span>NULL Crossing (∅)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ffd700;"></div>
+                            <span>Energy/Phase (φ)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>Current Mode:</strong>
+                    <p id="mode-description">
+                        Lemniscate Flow: Watch particles circulate through the ∞ topology, crossing at NULL point where XOR resolution occurs.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="status-bar">
+            <div class="status-item">
+                <div class="status-indicator"></div>
+                <span>System Active</span>
+            </div>
+            <div class="status-item">
+                <span>Frame: <span id="frame-count">0</span></span>
+            </div>
+            <div class="status-item">
+                <span>FPS: <span id="fps-count">60</span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Canvas setup
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height, centerX, centerY;
+        
+        function resizeCanvas() {
+            width = canvas.width = canvas.offsetWidth;
+            height = canvas.height = canvas.offsetHeight;
+            centerX = width / 2;
+            centerY = height / 2;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Animation state
+        let currentMode = 'lemniscate';
+        let animationSpeed = 1.0;
+        let particleCount = 50;
+        let trailLength = 20;
+        let isPaused = false;
+        let frameCount = 0;
+        let time = 0;
+        let lastTime = Date.now();
+        let fps = 60;
+        
+        // Particles array
+        let particles = [];
+        
+        // T-state colors
+        const T_COLORS = {
+            T0: '#00ffff',
+            T1: '#ffff00',
+            T2: '#ff00ff',
+            T3: '#ff8800',
+            T4: '#00ff88',
+            NULL: '#ff0000',
+            ENERGY: '#ffd700'
+        };
+        
+        // Particle class
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.phase = Math.random() * Math.PI * 2;
+                this.position = 0; // 0-1 around lemniscate
+                this.tState = 'T0';
+                this.trail = [];
+                this.energy = 1.0;
+                this.nullCrossing = false;
+            }
+            
+            update(dt) {
+                this.position += (0.2 * animationSpeed * dt);
+                if (this.position > 1) this.position -= 1;
+                
+                // Check NULL crossing (at 0.5)
+                if (Math.abs(this.position - 0.5) < 0.02) {
+                    this.nullCrossing = true;
+                    this.tState = 'NULL';
+                } else {
+                    this.nullCrossing = false;
+                    // Cycle through T-states
+                    if (this.position < 0.2) this.tState = 'T0';
+                    else if (this.position < 0.4) this.tState = 'T1';
+                    else if (this.position < 0.6) this.tState = 'T2';
+                    else if (this.position < 0.8) this.tState = 'T3';
+                    else this.tState = 'T4';
+                }
+                
+                // Update trail
+                const pos = this.getPosition();
+                this.trail.push({x: pos.x, y: pos.y, state: this.tState});
+                if (this.trail.length > trailLength) {
+                    this.trail.shift();
+                }
+            }
+            
+            getPosition() {
+                const t = this.position * Math.PI * 2;
+                
+                switch(currentMode) {
+                    case 'lemniscate':
+                        return this.getLemniscatePos(t);
+                    case 't-layers':
+                        return this.getTLayerPos(t);
+                    case 'operators':
+                        return this.getOperatorPos(t);
+                    case 'energy':
+                        return this.getEnergyPos(t);
+                    case 'dualities':
+                        return this.getDualityPos(t);
+                    case 'clock':
+                        return this.getClockPos(t);
+                    case 'complete':
+                        return this.getCompletePos(t);
+                    default:
+                        return this.getLemniscatePos(t);
+                }
+            }
+            
+            getLemniscatePos(t) {
+                // Lemniscate formula: (x² + y²)² = a²(x² - y²)
+                const a = Math.min(width, height) * 0.25;
+                const scale = a / Math.sqrt(2);
+                
+                const x = centerX + scale * Math.sqrt(2) * Math.cos(t) / (1 + Math.sin(t) * Math.sin(t));
+                const y = centerY + scale * Math.sqrt(2) * Math.cos(t) * Math.sin(t) / (1 + Math.sin(t) * Math.sin(t));
+                
+                return {x, y};
+            }
+            
+            getTLayerPos(t) {
+                // Show transformation through layers
+                const radius = Math.min(width, height) * 0.15;
+                const layerIndex = Math.floor(this.position * 5) % 5;
+                const layers = ['T0', 'T1', 'T2', 'T3', 'T4'];
+                
+                const layerY = centerY - 200 + layerIndex * 100;
+                const x = centerX + Math.cos(t) * radius;
+                const y = layerY + Math.sin(t) * radius * 0.5;
+                
+                return {x, y};
+            }
+            
+            getOperatorPos(t) {
+                // Circular arrangement showing operator network
+                const radius = Math.min(width, height) * 0.3;
+                const x = centerX + Math.cos(t) * radius;
+                const y = centerY + Math.sin(t) * radius;
+                return {x, y};
+            }
+            
+            getEnergyPos(t) {
+                // Energy circulation loop with regenerative capture
+                const outerRadius = Math.min(width, height) * 0.3;
+                const innerRadius = outerRadius * 0.6;
+                
+                const phase = this.position < 0.8 ? 0 : 1; // 0.8 = 5/6 duty cycle
+                const r = phase === 0 ? outerRadius : innerRadius;
+                
+                const x = centerX + Math.cos(t) * r;
+                const y = centerY + Math.sin(t) * r;
+                return {x, y};
+            }
+            
+            getDualityPos(t) {
+                // Eight dualities in octagon
+                const radius = Math.min(width, height) * 0.3;
+                const dualityIndex = Math.floor(this.position * 8) % 8;
+                const dualityAngle = (dualityIndex * Math.PI / 4) + t * 0.2;
+                
+                const x = centerX + Math.cos(dualityAngle) * radius;
+                const y = centerY + Math.sin(dualityAngle) * radius;
+                return {x, y};
+            }
+            
+            getClockPos(t) {
+                // 96-tick clock with 24 subphases
+                const radius = Math.min(width, height) * 0.35;
+                const tick = Math.floor(this.position * 96) % 96;
+                const subphase = Math.floor(tick / 4);
+                
+                const angle = (tick / 96) * Math.PI * 2 - Math.PI / 2;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                return {x, y};
+            }
+            
+            getCompletePos(t) {
+                // Composite view: lemniscate with clock overlay
+                const lemPos = this.getLemniscatePos(t);
+                const clockOffset = Math.floor(this.position * 96) / 96;
+                
+                // Add slight perturbation based on clock position
+                lemPos.x += Math.cos(clockOffset * Math.PI * 2) * 10;
+                lemPos.y += Math.sin(clockOffset * Math.PI * 2) * 10;
+                
+                return lemPos;
+            }
+            
+            draw() {
+                // Draw trail
+                ctx.lineWidth = 2;
+                for (let i = 1; i < this.trail.length; i++) {
+                    const p1 = this.trail[i-1];
+                    const p2 = this.trail[i];
+                    const alpha = i / this.trail.length;
+                    
+                    ctx.strokeStyle = T_COLORS[p2.state] + Math.floor(alpha * 255).toString(16).padStart(2, '0');
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
+                }
+                
+                // Draw particle
+                const pos = this.getPosition();
+                const color = T_COLORS[this.tState];
+                
+                // Outer glow
+                const gradient = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, 10);
+                gradient.addColorStop(0, color);
+                gradient.addColorStop(1, color + '00');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 10, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Core
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // NULL crossing indicator
+                if (this.nullCrossing) {
+                    ctx.strokeStyle = '#ff0000';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.arc(pos.x, pos.y, 15, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        // Initialize particles
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                const p = new Particle();
+                p.position = i / particleCount;
+                particles.push(p);
+            }
+        }
+        
+        initParticles();
+        
+        // Draw background elements based on mode
+        function drawBackground() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Stars background
+            ctx.fillStyle = '#ffffff';
+            for (let i = 0; i < 100; i++) {
+                const x = (i * 137.5) % width;
+                const y = (i * 73.2) % height;
+                const size = (i % 3) * 0.5 + 0.5;
+                ctx.globalAlpha = 0.3 + (i % 5) * 0.1;
+                ctx.fillRect(x, y, size, size);
+            }
+            ctx.globalAlpha = 1.0;
+            
+            switch(currentMode) {
+                case 'lemniscate':
+                    drawLemniscateGuide();
+                    break;
+                case 't-layers':
+                    drawTLayerGuide();
+                    break;
+                case 'operators':
+                    drawOperatorGuide();
+                    break;
+                case 'energy':
+                    drawEnergyGuide();
+                    break;
+                case 'dualities':
+                    drawDualityGuide();
+                    break;
+                case 'clock':
+                    drawClockGuide();
+                    break;
+                case 'complete':
+                    drawCompleteGuide();
+                    break;
+            }
+        }
+        
+        function drawLemniscateGuide() {
+            // Draw lemniscate outline
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.3;
+            
+            ctx.beginPath();
+            for (let t = 0; t <= Math.PI * 2; t += 0.01) {
+                const a = Math.min(width, height) * 0.25;
+                const scale = a / Math.sqrt(2);
+                
+                const x = centerX + scale * Math.sqrt(2) * Math.cos(t) / (1 + Math.sin(t) * Math.sin(t));
+                const y = centerY + scale * Math.sqrt(2) * Math.cos(t) * Math.sin(t) / (1 + Math.sin(t) * Math.sin(t));
+                
+                if (t === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // NULL crossing point
+            ctx.fillStyle = '#ff0000';
+            ctx.globalAlpha = 0.5;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 16px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('NULL', centerX, centerY);
+            
+            // Label positions
+            ctx.globalAlpha = 0.8;
+            ctx.font = '14px sans-serif';
+            ctx.fillStyle = '#00ffff';
+            ctx.fillText('s₁ (Left Entry)', centerX - 200, centerY);
+            ctx.fillText('s₄ (Right Exit)', centerX + 200, centerY);
+            ctx.fillStyle = '#ff00ff';
+            ctx.fillText('s₅ (Observer)', centerX, centerY + 150);
+            
+            ctx.globalAlpha = 1.0;
+        }
+        
+        function drawTLayerGuide() {
+            const layers = ['T₀ (27)', 'T₁ (27)', 'T₂ (8)', 'T₃ (8)', 'T₄ (6)'];
+            const colors = ['#00ffff', '#ffff00', '#ff00ff', '#ff8800', '#00ff88'];
+            
+            ctx.globalAlpha = 0.4;
+            
+            for (let i = 0; i < layers.length; i++) {
+                const y = centerY - 200 + i * 100;
+                
+                // Layer circle
+                ctx.strokeStyle = colors[i];
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.ellipse(centerX, y, 150, 50, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Label
+                ctx.fillStyle = colors[i];
+                ctx.font = 'bold 14px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(layers[i], centerX, y);
+            }
+            
+            // Arrows between layers
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            for (let i = 0; i < layers.length - 1; i++) {
+                const y1 = centerY - 200 + i * 100 + 50;
+                const y2 = centerY - 200 + (i+1) * 100 - 50;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX + 160, y1);
+                ctx.lineTo(centerX + 160, y2);
+                ctx.stroke();
+                
+                // Arrow head
+                ctx.beginPath();
+                ctx.moveTo(centerX + 160, y2);
+                ctx.lineTo(centerX + 155, y2 - 10);
+                ctx.lineTo(centerX + 165, y2 - 10);
+                ctx.closePath();
+                ctx.fillStyle = '#ffd700';
+                ctx.fill();
+            }
+            ctx.setLineDash([]);
+            
+            ctx.globalAlpha = 1.0;
+        }
+        
+        function drawOperatorGuide() {
+            const operators = ['O₁', 'O₂', 'O₃', 'O₄', 'O₅', 'O₆', 'O₇', 'O₈', 'O₉', 'O₁₀'];
+            const radius = Math.min(width, height) * 0.3;
+            
+            ctx.globalAlpha = 0.4;
+            
+            // Outer circle
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Operators at positions
+            for (let i = 0; i < operators.length; i++) {
+                const angle = (i / operators.length) * Math.PI * 2 - Math.PI / 2;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                
+                // Backbone operators highlighted
+                const isBackbone = [3, 5, 8, 9].includes(i); // O₄, O₆, O₉, O₁₀
+                
+                ctx.fillStyle = isBackbone ? '#ffd700' : '#87ceeb';
+                ctx.beginPath();
+                ctx.arc(x, y, isBackbone ? 15 : 10, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#000000';
+                ctx.font = 'bold 12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(operators[i], x, y);
+            }
+            
+            // Center label
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 16px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Operator', centerX, centerY - 10);
+            ctx.fillText('Network', centerX, centerY + 10);
+            
+            ctx.globalAlpha = 1.0;
+        }
+        
+        function drawEnergyGuide() {
+            const outerRadius = Math.min(width, height) * 0.3;
+            const innerRadius = outerRadius * 0.6;
+            
+            ctx.globalAlpha = 0.4;
+            
+            // Active loop (outer)
+            ctx.strokeStyle = '#00ff88';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Normalize loop (inner)
+            ctx.strokeStyle = '#ff8800';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // ∅-RAM reservoir
+            ctx.fillStyle = '#ffd700';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 30, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('∅-RAM', centerX, centerY - 8);
+            ctx.fillText('22%', centerX, centerY + 8);
+            
+            // Labels
+            ctx.fillStyle = '#00ff88';
+            ctx.font = '14px sans-serif';
+            ctx.fillText('Active (5/6)', centerX - outerRadius - 60, centerY);
+            
+            ctx.fillStyle = '#ff8800';
+            ctx.fillText('Normalize (1/6)', centerX + innerRadius + 80, centerY);
+            
+            ctx.globalAlpha = 1.0;
+        }
+        
+        function drawDualityGuide() {
+            const dualities = [
+                'Self↔Other',
+                'Life↔Death',
+                'Order↔Chaos',
+                'Light↔Shadow',
+                'Creation↔Destruction',
+                'Knowledge↔Mystery',
+                'Time↔Eternity',
+                'Freedom↔Fate'
+            ];
+            const radius = Math.min(width, height) * 0.3;
+            
+            ctx.globalAlpha = 0.4;
+            
+            // Octagon
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            for (let i = 0; i <= 8; i++) {
+                const angle = (i / 8) * Math.PI * 2 - Math.PI / 2;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Duality labels
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#ffffff';
+            
+            for (let i = 0; i < dualities.length; i++) {
+                const angle = (i / 8) * Math.PI * 2 - Math.PI / 2;
+                const x = centerX + Math.cos(angle) * (radius + 40);
+                const y = centerY + Math.sin(angle) * (radius + 40);
+                ctx.fillText(dualities[i], x, y);
+            }
+            
+            // Center
+            ctx.fillStyle = '#ffd700';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 25, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('Fixed', centerX, centerY - 8);
+            ctx.fillText('Point', centerX, centerY + 8);
+            
+            ctx.globalAlpha = 1.0;
+        }
+        
+        function drawClockGuide() {
+            const radius = Math.min(width, height) * 0.35;
+            
+            ctx.globalAlpha = 0.4;
+            
+            // Clock circle
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // 24 subphases
+            ctx.strokeStyle = '#87ceeb';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 24; i++) {
+                const angle = (i / 24) * Math.PI * 2 - Math.PI / 2;
+                const x1 = centerX + Math.cos(angle) * (radius - 10);
+                const y1 = centerY + Math.sin(angle) * (radius - 10);
+                const x2 = centerX + Math.cos(angle) * (radius + 10);
+                const y2 = centerY + Math.sin(angle) * (radius + 10);
+                
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+            
+            // Active vs normalize regions
+            const activeEnd = (80/96) * Math.PI * 2 - Math.PI / 2;
+            ctx.strokeStyle = '#00ff88';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius - 15, -Math.PI / 2, activeEnd);
+            ctx.stroke();
+            
+            ctx.strokeStyle = '#ff8800';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius - 15, activeEnd, Math.PI * 1.5);
+            ctx.stroke();
+            
+            // Center label
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 18px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('96 Ticks', centerX, centerY - 10);
+            ctx.font = '12px sans-serif';
+            ctx.fillText('24 Subphases', centerX, centerY + 10);
+            
+            ctx.globalAlpha = 1.0;
+        }
+        
+        function drawCompleteGuide() {
+            // Combine lemniscate + clock
+            ctx.globalAlpha = 0.2;
+            drawLemniscateGuide();
+            ctx.globalAlpha = 0.15;
+            
+            const clockRadius = Math.min(width, height) * 0.2;
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY - 200, clockRadius, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('96-Tick Clock', centerX, centerY - 200);
+            
+            ctx.globalAlpha = 1.0;
+        }
+        
+        // Animation loop
+        function animate() {
+            if (!isPaused) {
+                const now = Date.now();
+                const dt = (now - lastTime) / 1000;
+                lastTime = now;
+                
+                // Calculate FPS
+                fps = Math.round(1 / dt);
+                
+                // Draw background
+                drawBackground();
+                
+                // Update and draw particles
+                particles.forEach(p => {
+                    p.update(dt);
+                    p.draw();
+                });
+                
+                // Update metrics
+                time += dt * animationSpeed;
+                updateMetrics();
+                
+                frameCount++;
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        function updateMetrics() {
+            document.getElementById('metric-null').textContent = '22.0%';
+            document.getElementById('metric-phase').textContent = (Math.sin(time) * 0.5 + 0.5).toFixed(3);
+            document.getElementById('metric-energy').textContent = '100%';
+            document.getElementById('metric-tick').textContent = Math.floor(time * 10) % 96 + '/96';
+            document.getElementById('metric-balance').textContent = (0.993 + Math.random() * 0.006).toFixed(3);
+            document.getElementById('frame-count').textContent = frameCount;
+            document.getElementById('fps-count').textContent = fps;
+        }
+        
+        // Control functions
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update button states
+            document.querySelectorAll('.button-group button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('btn-' + mode).classList.add('active');
+            
+            // Update description
+            const descriptions = {
+                'lemniscate': 'Lemniscate Flow: Watch particles circulate through the ∞ topology, crossing at NULL point where XOR resolution occurs.',
+                't-layers': 'T-Layer Transitions: See states transform through T₀ (neutral) → T₁ (signed) → T₂ (binary) → T₃ (polar) → T₄ (exchange) and back.',
+                'operators': 'Operator Actions: Ten operators arranged in network, backbone operators {O₄, O₆, O₉, O₁₀} highlighted in gold.',
+                'energy': 'Energy Conservation: Active computation (outer loop, 5/6 duty) with normalize phase (inner loop, 1/6) feeding ∅-RAM reservoir.',
+                'dualities': '8 Millennium Dualities: Each problem as balanced opposition. Fixed-point achieved when all eight balance simultaneously.',
+                'clock': '96-Tick Clock Cycle: 24 subphases (4 ticks each). Green = active window (0-79), orange = normalize window (80-95).',
+                'complete': 'Complete System: All components integrated - lemniscate flow with clock synchronization and energy circulation.'
+            };
+            document.getElementById('mode-description').textContent = descriptions[mode];
+        }
+        
+        function togglePause() {
+            isPaused = !isPaused;
+            if (!isPaused) lastTime = Date.now();
+        }
+        
+        function resetAnimation() {
+            time = 0;
+            frameCount = 0;
+            particles.forEach(p => p.reset());
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].position = i / particles.length;
+            }
+        }
+        
+        // Slider controls
+        document.getElementById('speed-slider').addEventListener('input', (e) => {
+            animationSpeed = parseFloat(e.target.value);
+            document.getElementById('speed-val').textContent = animationSpeed.toFixed(1) + 'x';
+        });
+        
+        document.getElementById('particle-slider').addEventListener('input', (e) => {
+            particleCount = parseInt(e.target.value);
+            document.getElementById('particle-val').textContent = particleCount;
+            initParticles();
+        });
+        
+        document.getElementById('trail-slider').addEventListener('input', (e) => {
+            trailLength = parseInt(e.target.value);
+            document.getElementById('trail-val').textContent = trailLength;
+        });
+        
+        // Start animation
+        lastTime = Date.now();
+        animate();
+    </script>
+</body>
+</html>
