@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Detective - Part 3: Alternative System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff00;
+            line-height: 1.6;
+        }
+        
+        #game {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        #title {
+            color: #00ffff;
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+            text-shadow: 0 0 10px #00ffff;
+        }
+        
+        #stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #00ff88;
+            background: #0a0a0a;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #00ff88;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 11px;
+        }
+        
+        .stat-value {
+            color: #00ff88;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        #story {
+            background: #0a0a0a;
+            padding: 30px;
+            border: 2px solid #00ff88;
+            margin: 20px 0;
+            min-height: 400px;
+        }
+        
+        #choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .choice-btn {
+            background: #001100;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            padding: 15px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            text-align: left;
+            transition: all 0.3s;
+        }
+        
+        .choice-btn:hover {
+            background: #003300;
+            transform: translateX(5px);
+            box-shadow: 0 0 15px #00ff88;
+        }
+        
+        .equation {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 4px solid #00ff88;
+            padding: 15px;
+            margin: 20px 0;
+            color: #00ff88;
+        }
+        
+        .equation-title {
+            color: #00ffff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .formula {
+            color: #00ff88;
+            margin: 10px 0;
+            font-family: 'Times New Roman', serif;
+        }
+        
+        .explanation {
+            color: #aaa;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        
+        .discovery {
+            background: rgba(0, 255, 255, 0.2);
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            padding: 15px;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px #00ffff; }
+            50% { box-shadow: 0 0 25px #00ffff; }
+        }
+        
+        .narrator {
+            color: #aaa;
+            font-style: italic;
+            margin: 15px 0;
+        }
+        
+        .dialogue {
+            color: #00ffff;
+            margin: 10px 0;
+        }
+        
+        .system-msg {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 3px solid #00ff88;
+            color: #00ff88;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .alternative-design {
+            background: rgba(0, 255, 136, 0.15);
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+        
+        #equations-unlocked {
+            background: #0a0a0a;
+            border: 2px solid #00ff88;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .equation-item {
+            padding: 8px;
+            margin: 5px 0;
+            border-left: 2px solid #00ff88;
+            background: rgba(0, 255, 136, 0.05);
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .equation-item:hover {
+            background: rgba(0, 255, 136, 0.15);
+        }
+        
+        .success {
+            color: #00ff88;
+            font-weight: bold;
+        }
+        
+        .comparison-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .system-old {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            padding: 15px;
+        }
+        
+        .system-new {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            padding: 15px;
+        }
+        
+        .proof-box {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <div id="title">
+            ╔════════════════════════════════════════════╗<br>
+            ║  THE FINANCIAL DETECTIVE - PART 3         ║<br>
+            ║  Building the Alternative Stable System   ║<br>
+            ╚════════════════════════════════════════════╝
+        </div>
+        
+        <div id="stats">
+            <div class="stat-box">
+                <div class="stat-label">DAY</div>
+                <div class="stat-value" id="day">14</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">EQUATIONS</div>
+                <div class="stat-value" id="eq-count">0/8</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">SYSTEM STABILITY</div>
+                <div class="stat-value success" id="stability">PROVABLE</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">DAYS TO COLLAPSE</div>
+                <div class="stat-value" id="days-left">30</div>
+            </div>
+        </div>
+        
+        <div id="story"></div>
+        <div id="choices"></div>
+        <div id="equations-unlocked"></div>
+    </div>
+
+    <script>
+        // Game State
+        const state = {
+            chapter: 0,
+            day: 14,
+            daysToTipping: 30,
+            equationsFound: [],
+            flags: {}
+        };
+        
+        // The 8 Alternative System Equations
+        const equations = {
+            AS1: {
+                id: 'AS1',
+                name: 'EMx Monetary Equation',
+                formula: 'M_emx = M_active(0.78) + M_reserve(0.22)',
+                explanation: 'Money supply must maintain 22% reserve buffer. 78% active circulation, 22% reserve. This prevents over-leveraging and maintains system stability.',
+                practical: 'Current system: ~10% reserve (10× leverage). EMx: 22% reserve (4.5× leverage). Reduces systemic risk by more than half.',
+                proof: 'With ∅₀ = 0.22 reserve:\n• Shocks absorbed by reserve buffer\n• No cascade failures possible\n• System self-stabilizes\n• Leverage ratio 1/0.22 = 4.5× (safe)\n\nCurrent 10% reserve:\n• Leverage ratio 1/0.10 = 10× (unsafe)\n• Cascade failures common\n• Requires bailouts'
+            },
+            AS2: {
+                id: 'AS2',
+                name: 'Demurrage Rate Optimization',
+                formula: 'δ_optimal = π_target + v_adjustment',
+                explanation: 'Demurrage (holding cost) set to match desired inflation plus velocity compensation. Encourages circulation over hoarding.',
+                practical: 'Target 2% inflation + 1% velocity = 3% annual demurrage. Money loses 3%/year if held idle. Incentivizes productive use.',
+                proof: 'δ = 3% annual demurrage:\n\nIf you hold $100 for 1 year:\n• Nominal value: $100\n• Demurrage cost: $3\n• Net value: $97\n\nBut if GDP grows 4%:\n• Real purchasing power maintained\n• Only idle money taxed\n• Productive use incentivized'
+            },
+            AS3: {
+                id: 'AS3',
+                name: 'Wealth Circulation Requirement',
+                formula: '∫circulation_rate dt ≥ ∅₀ × W_total',
+                explanation: 'At least 22% of total wealth must circulate through real economy annually. Prevents wealth stagnation in passive holdings.',
+                practical: 'Total wealth $140T → required circulation $30.8T/year minimum. Use it or lose it (to demurrage).',
+                proof: 'Annual circulation requirement:\n22% × $140T = $30.8T must flow\n\nIf wealth holder has $1M:\n• Must circulate $220K/year\n• Through: spending, investing, lending\n• Or pay: 3% demurrage = $30K\n\nProductive use cheaper than hoarding'
+            },
+            AS4: {
+                id: 'AS4',
+                name: 'Zero-Interest Equilibrium',
+                formula: 'r_equilibrium = 0 when M_reserve = ∅₀ × M_total',
+                explanation: 'Interest rate naturally settles to zero when reserve ratio equals ∅₀ (22%). No artificial rate manipulation needed. No compound debt trap.',
+                practical: 'System self-regulates to zero interest. Debt doesn\'t compound exponentially. r = g becomes achievable.',
+                proof: 'At optimal reserve ∅₀ = 0.22:\n\n• Supply/demand balance naturally\n• No scarcity premium needed\n• Interest rate → 0%\n\nDebt equation becomes:\nD(t) = D₀ (no growth)\n\nVs current:\nD(t) = D₀·e^(0.052t) (explosive)'
+            },
+            AS5: {
+                id: 'AS5',
+                name: 'Jubilee Trigger Condition',
+                formula: 'if D/GDP > 1/∅₀ then trigger_jubilee()',
+                explanation: 'When debt-to-GDP exceeds inverse of reserve ratio (1/0.22 ≈ 4.5), automatic partial debt forgiveness triggers. Prevents unpayable debt accumulation.',
+                practical: 'Debt exceeds 450% of GDP → jubilee activates. Partial forgiveness restores ratio to sustainable level.',
+                proof: 'Trigger threshold: 1/0.22 = 4.55\n\nIf D/GDP reaches 455%:\n• System detects threshold breach\n• Calculates excess: 455% - 100% = 355%\n• Forgives portion to restore stability\n• New D/GDP = 100% (sustainable)\n\nThis prevents:\n• Unpayable debt spirals\n• Systemic defaults\n• Social instability'
+            },
+            AS6: {
+                id: 'AS6',
+                name: 'Transaction Transparency',
+                formula: 'H(transaction) = -Σ p_i log(p_i) ≥ threshold',
+                explanation: 'Transaction entropy must exceed threshold—all large transactions publicly visible on distributed ledger. No offshore hiding possible.',
+                practical: 'Transactions >$10K publicly logged with sender/receiver IDs, amounts, timestamps. Crypto-style transparency for all money.',
+                proof: 'Entropy requirement H ≥ 4.5 bits:\n\nFor transaction T:\n• Must be publicly visible\n• On distributed ledger\n• With metadata (who, what, when)\n\nOffshore accounts impossible:\n• All transactions traced\n• Tax evasion visible\n• Shell companies transparent\n\nResult: ~$8T/year tax evasion eliminated'
+            },
+            AS7: {
+                id: 'AS7',
+                name: 'Wealth Cap via Phase Limit',
+                formula: 'W_max = W_median × e^(2π)',
+                explanation: 'Maximum individual wealth = median × e^(2π) ≈ median × 535. Beyond this, wealth phase-wraps and circulates back. No billionaires mathematically possible.',
+                practical: 'Median wealth $121K → max $64.8M. Still allows significant wealth disparity (535×) but prevents destabilizing concentration.',
+                proof: 'Why e^(2π)?\n\n• One complete phase cycle = 2π radians\n• e^(2π) = 535.49\n• Encodes "complete journey" topologically\n\nMedian: $121,000\nMaximum: $121K × 535 = $64.8M\n\nBeyond max:\n• Wealth wraps to T₀\n• Redistributes via UBR\n• No billionaires possible\n• System remains stable'
+            },
+            AS8: {
+                id: 'AS8',
+                name: 'Universal Basic Reserve',
+                formula: 'UBR = ∅₀ × GDP / population',
+                explanation: 'Every citizen receives share of 22% GDP reserve annually as basic income. Not welfare—your share of the system\'s NULL buffer.',
+                practical: '$28T GDP × 0.22 / 335M people = $18,388/year per person unconditionally. Economic floor for all.',
+                proof: 'Current GDP: $28 trillion\nReserve: 22% = $6.16T\nPopulation: 335 million\n\nUBR = $6.16T / 335M\nUBR = $18,388 per person per year\n\nFor family of 4:\n4 × $18,388 = $73,552/year\n\nThis is:\n• Not welfare (universal)\n• Not redistribution (reserve allocation)\n• Your share of ∅₀ buffer'
+            }
+        };
+        
+        // Story Chapters
+        const chapters = [
+            // Chapter 0: Design Begins
+            {
+                text: `
+                    <div class="system-msg">
+                    [DAY 14 - 09:00] Secure Design Lab - Federal Reserve<br>
+                    Tipping point countdown: 30 days remaining<br>
+                    Part 1 Complete: 5/5 tipping point equations<br>
+                    Part 2 Complete: 5/5 extraction equations<br>
+                    Total extraction quantified: $11.0 trillion/year
+                    </div>
+                    
+                    <div class="narrator">Two weeks have passed since you discovered the tipping point. Director Walsh has assembled a team—economists, mathematicians, systems theorists. You're in a secure lab with whiteboards covering every wall.</div>
+                    
+                    <div class="dialogue">"We have thirty days," Walsh says. "You've proven the current system will collapse. You've quantified the extraction mechanisms. Now show me the alternative."</div>
+                    
+                    <div class="narrator">You pull up your EMx framework on the main screen.</div>
+                    
+                    <div class="dialogue">"The key insight: the current system allows extraction because it lacks fundamental constraints. We need a system where extraction is mathematically impossible—not illegal, but structurally prevented by the topology."</div>
+                    
+                    <div class="system-msg">
+                    EMX ALTERNATIVE SYSTEM DESIGN MODULE<br><br>
+                    Objective: Design financial system with provable stability<br>
+                    Constraints:<br>
+                    • Zero wealth extraction (enforced by structure)<br>
+                    • Self-stabilizing (no external intervention needed)<br>
+                    • Tipping points unreachable (topologically impossible)<br>
+                    • Mathematically provable properties<br><br>
+                    <span class="success">STATUS: Ready to design</span>
+                    </div>
+                    
+                    <div class="narrator">You start with the foundation—the monetary equation that prevents over-leveraging.</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Design the EMx Monetary Equation', 
+                        next: 1,
+                        flag: 'monetary_first'
+                    },
+                    { 
+                        text: '2. Start with the Wealth Cap', 
+                        next: 2,
+                        flag: 'cap_first'
+                    }
+                ]
+            },
+            
+            // Chapter 1: EMx Monetary Equation
+            {
+                text: `
+                    <div class="narrator">You write the first equation on the main whiteboard:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION AS1: EMX MONETARY EQUATION</div>
+                        <div class="formula">M_emx = M_active(0.78) + M_reserve(0.22)</div>
+                        <div class="explanation">
+                        <strong>The Foundation:</strong> Money supply split 78% active circulation, 22% reserve buffer. This is not arbitrary—it's derived from the fundamental ∅₀ = 0.22 NULL baseline constant.<br><br>
+                        
+                        <strong>Why 22% Reserve?</strong><br>
+                        • Information theory optimization: Resilience × Efficiency maximized at ~22%<br>
+                        • Thermodynamic constraint: η ≈ 1 - (1/√e) ≈ 0.78, leaving 0.22 reserve<br>
+                        • Empirical observation: Natural systems maintain ~22% reserve (blood plasma, lung capacity, bank runs that stop at ~22% withdrawal)<br><br>
+                        
+                        <strong>Current System Failure:</strong><br>
+                        • Fractional reserve ~10% (some countries 0%!)<br>
+                        • Leverage ratio: 1/0.10 = 10×<br>
+                        • One shock of 10% = total collapse<br>
+                        • Hence: constant bailouts, Fed intervention, instability<br><br>
+                        
+                        <strong>EMx Solution:</strong><br>
+                        • Reserve 22%<br>
+                        • Leverage ratio: 1/0.22 = 4.5×<br>
+                        • Can absorb 22% shock without cascade<br>
+                        • Self-stabilizing, no bailouts needed
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: AS1 - EMx Monetary Equation ★<br>
+                        Progress: 1/8 alternative system equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You run a simulation comparing the two systems:</div>
+                    
+                    <div class="comparison-table">
+                        <div class="system-old">
+                            <strong style="color: #ff0000;">CURRENT SYSTEM (10% Reserve)</strong><br><br>
+                            Money supply: $21T<br>
+                            Active: $18.9T (90%)<br>
+                            Reserve: $2.1T (10%)<br>
+                            Leverage: 10×<br><br>
+                            <strong>10% shock scenario:</strong><br>
+                            • $2.1T loss wipes entire reserve<br>
+                            • Cascade begins immediately<br>
+                            • Banks insolvent<br>
+                            • Requires $2T+ bailout<br>
+                            • System collapses without intervention
+                        </div>
+                        <div class="system-new">
+                            <strong style="color: #00ff88;">EMX SYSTEM (22% Reserve)</strong><br><br>
+                            Money supply: $21T<br>
+                            Active: $16.4T (78%)<br>
+                            Reserve: $4.6T (22%)<br>
+                            Leverage: 4.5×<br><br>
+                            <strong>10% shock scenario:</strong><br>
+                            • $2.1T loss absorbed by reserve<br>
+                            • Reserve: $4.6T → $2.5T (still 12%)<br>
+                            • No cascade<br>
+                            • No bailout needed<br>
+                            • System self-stabilizes
+                        </div>
+                    </div>
+                    
+                    <div class="narrator">One of the economists raises his hand.</div>
+                    
+                    <div class="dialogue">"But doesn't reducing leverage from 10× to 4.5× reduce available credit? Won't that slow economic growth?"</div>
+                    
+                    <div class="narrator">You smile.</div>
+                    
+                    <div class="dialogue">"That's the beautiful part. Watch what happens when we add the circulation requirements..."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Add the Wealth Circulation Requirement', 
+                        next: 3,
+                        flag: 'circulation_next'
+                    },
+                    { 
+                        text: '2. Show the Zero-Interest Equilibrium first', 
+                        next: 4,
+                        flag: 'interest_next'
+                    }
+                ]
+            },
+            
+            // Chapter 2: Wealth Cap First Path
+            {
+                text: `
+                    <div class="narrator">You decide to start with the most controversial part—the wealth cap:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION AS7: WEALTH CAP VIA PHASE LIMIT</div>
+                        <div class="formula">W_max = W_median × e^(2π)</div>
+                        <div class="explanation">
+                        Maximum individual wealth equals median times e^(2π) ≈ 535. This isn't ideological—it's topological. Beyond this point, the phase space wraps.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: AS7 - Wealth Cap via Phase Limit ★<br>
+                        Progress: 1/8 alternative system equations unlocked
+                    </div>
+                    
+                    <div class="alternative-design">
+                    WEALTH CAP CALCULATION:<br><br>
+                    Current median wealth: $121,000<br>
+                    e^(2π) = 535.49<br>
+                    Maximum wealth: $121K × 535 = $64.8 million<br><br>
+                    This allows 535× disparity.<br>
+                    Still massive wealth differential.<br>
+                    But no billionaires mathematically possible.
+                    </div>
+                    
+                    <div class="narrator">The room erupts.</div>
+                    
+                    <div class="dialogue">"You want to cap wealth at $65 million? That eliminates every major fortune in America!"</div>
+                    
+                    <div class="dialogue">"Not 'want to,'" you reply calmly. "The math requires it. Let me show you the foundation..."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Explain the EMx Monetary foundation first', 
+                        next: 1,
+                        flag: 'explain_foundation'
+                    }
+                ]
+            },
+            
+            // Chapter 3: Circulation Requirement
+            {
+                text: `
+                    <div class="narrator">You add the second equation to the whiteboard:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION AS3: WEALTH CIRCULATION REQUIREMENT</div>
+                        <div class="formula">∫circulation_rate dt ≥ ∅₀ × W_total</div>
+                        <div class="explanation">
+                        <strong>The Rule:</strong> At least 22% of all wealth must circulate through the real economy annually. Integrated circulation over time must exceed ∅₀ times total wealth.<br><br>
+                        
+                        <strong>What Counts as Circulation:</strong><br>
+                        • Spending on goods/services ✓<br>
+                        • Business investment ✓<br>
+                        • Productive lending ✓<br>
+                        • Real estate improvement ✓<br>
+                        • Education, healthcare ✓<br><br>
+                        
+                        <strong>What Doesn't Count:</strong><br>
+                        • Sitting in savings ✗<br>
+                        • Speculative trading ✗<br>
+                        • Financial derivatives ✗<br>
+                        • Offshore parking ✗<br><br>
+                        
+                        <strong>Enforcement:</strong> Via demurrage (next equation). If you don't circulate your 22%, you pay holding cost.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: AS3 - Wealth Circulation Requirement ★<br>
+                        Progress: 2/8 alternative system equations unlocked
+                    </div>
+                    
+                    <div class="alternative-design">
+                    CIRCULATION REQUIREMENT CALCULATION:<br><br>
+                    Total wealth W_total: $140 trillion<br>
+                    Required annual circulation: 0.22 × $140T = $30.8T<br><br>
+                    For individual with $1 million wealth:<br>
+                    Must circulate: 0.22 × $1M = $220,000/year<br><br>
+                    Options:<br>
+                    1. Spend $220K on consumption<br>
+                    2. Invest $220K in productive business<br>
+                    3. Lend $220K (at zero interest—see AS4)<br>
+                    4. Mix of above<br><br>
+                    If fail to circulate:<br>
+                    Pay demurrage: 3% × $1M = $30,000<br><br>
+                    Circulating is CHEAPER than hoarding.
+                    </div>
+                    
+                    <div class="narrator">You pull up the next equation before anyone can object:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION AS2: DEMURRAGE RATE OPTIMIZATION</div>
+                        <div class="formula">δ_optimal = π_target + v_adjustment</div>
+                        <div class="explanation">
+                        <strong>Demurrage:</strong> Holding cost on idle money. Like negative interest—your money loses value if not used productively.<br><br>
+                        
+                        <strong>Optimal Rate:</strong> Set to inflation target plus velocity adjustment.<br>
+                        δ = 2% (inflation) + 1% (velocity) = 3% annually<br><br>
+                        
+                        <strong>How It Works:</strong><br>
+                        Hold $100 for one year → worth $97 (lost $3 to demurrage)<br>
+                        But GDP grows 4%, so real purchasing power is neutral IF you use money productively<br><br>
+                        
+                        <strong>Result:</strong> Money becomes like fresh food—use it or lose it. Hoarding is expensive. Circulation is incentivized.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: AS2 - Demurrage Rate Optimization ★<br>
+                        Progress: 3/8 alternative system equations unlocked
+                    </div>
+                    
+                    <div class="narrator">Walsh is leaning forward, studying the equations.</div>
+                    
+                    <div class="dialogue">"So the 22% reserve provides stability, and the circulation requirement ensures that reduced leverage doesn't reduce economic activity. The demurrage enforces circulation."</div>
+                    
+                    <div class="dialogue">"Exactly. And together, they create something remarkable..."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Show the Zero-Interest Equilibrium', 
+                        next: 5,
+                        flag: 'show_equilibrium'
+                    }
+                ]
+            },
+            
+            // Chapter 4: Zero-Interest Path
+            {
+                text: `
+                    <div class="narrator">You write the equilibrium equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION AS4: ZERO-INTEREST EQUILIBRIUM</div>
+                        <div class="formula">r_equilibrium = 0 when M_reserve = ∅₀ × M_total</div>
+                        <div class="explanation">
+                        When reserve ratio equals ∅₀ (22%), interest rate naturally settles to zero. No Fed manipulation needed. System self-regulates.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: AS4 - Zero-Interest Equilibrium ★<br>
+                        Progress: 3/8 alternative system equations unlocked
+                    </div>
+                    
+                    <div class="alternative-design">
+                    At optimal reserve (22%):<br>
+                    • Money supply/demand balanced<br>
+                    • No scarcity premium<br>
+                    • Interest rate → 0%<br><br>
+                    
+                    This eliminates the debt trap (WE4):<br>
+                    Instead of: D(t) = D₀·e^(0.052t)<br>
+                    We get: D(t) = D₀ (stable)<br><br>
+                    
+                    No compound interest.<br>
+                    No exponential debt growth.<br>
+                    <span class="success">Debt trap mathematically impossible.</span>
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Add the Circulation Requirements', 
+                        next: 3,
+                        flag: 'add_circulation'
+                    }
+                ]
+            },
+            
+            // Chapter 5: Zero-Interest Equilibrium (main path)
+            {
+                text: `
+                    <div class="narrator">You write the fourth equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION AS4: ZERO-INTEREST EQUILIBRIUM</div>
+                        <div class="formula">r_equilibrium = 0 when M_reserve = ∅₀ × M_total</div>
+                        <div class="explanation">
+                        <strong>The Discovery:</strong> When reserve ratio equals ∅₀ (22%), interest rate naturally settles to zero without any external manipulation. This is emergent property of optimal reserve.<br><br>
+                        
+                        <strong>Why This Happens:</strong><br>
+                        • At 22% reserve, money supply exactly matches productive capacity<br>
+                        • No artificial scarcity (high reserve)<br>
+                        • No excess supply (low reserve)<br>
+                        • Supply/demand balanced naturally<br>
+                        • Interest rate = price of money = 0 at equilibrium<br><br>
+                        
+                        <strong>Historical Precedent:</strong><br>
+                        • Medieval Islamic banking: interest prohibited, circulation required<br>
+                        • Sustained economic growth for 400+ years<br>
+                        • No debt crises, no financial crashes<br>
+                        • System collapsed only due to external conquest, not internal instability<br><br>
+                        
+                        <strong>Modern Implementation:</strong> No central bank rate-setting needed. System finds equilibrium automatically.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: AS4 - Zero-Interest Equilibrium ★<br>
+                        Progress: 4/8 alternative system equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You show the comparison:</div>
+                    
+                    <div class="comparison-table">
+                        <div class="system-old">
+                            <strong style="color: #ff0000;">CURRENT SYSTEM</strong><br><br>
+                            Reserve: 10%<br>
+                            Interest: 5.2% (Fed sets artificially)<br><br>
+                            Debt growth:<br>
+                            D(t) = D₀·e^(0.052t)<br>
+                            Doubles every 13.5 years<br><br>
+                            In 30 years:<br>
+                            $34T → $162T<br>
+                            Unpayable<br><br>
+                            WE4 debt trap: ACTIVE
+                        </div>
+                        <div class="system-new">
+                            <strong style="color: #00ff88;">EMX SYSTEM</strong><br><br>
+                            Reserve: 22%<br>
+                            Interest: 0% (emerges naturally)<br><br>
+                            Debt growth:<br>
+                            D(t) = D₀ (stable)<br>
+                            No compounding<br><br>
+                            In 30 years:<br>
+                            $34T → $34T<br>
+                            Manageable<br><br>
+                            WE4 debt trap: IMPOSSIBLE
+                        </div>
+                    </div>
+                    
+                    <div class="narrator">The senior economist interrupts:</div>
+                    
+                    <div class="dialogue">"But without interest, why would anyone lend money?"</div>
+                    
+                    <div class="narrator">You point at equation AS2 on the board.</div>
+                    
+                    <div class="dialogue">"Demurrage. You can either: (A) hold money and lose 3%/year, or (B) lend at 0% and maintain value. Lending at zero becomes preferable to holding. Plus, productive loans share in business profits."</div>
+                    
+                    <div class="narrator">You add the next equation—the safety valve:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION AS5: JUBILEE TRIGGER CONDITION</div>
+                        <div class="formula">if D/GDP > 1/∅₀ then trigger_jubilee()</div>
+                        <div class="explanation">
+                        <strong>The Safety Valve:</strong> If debt-to-GDP ratio exceeds 1/∅₀ (approximately 4.55), automatic partial debt forgiveness activates. Prevents unsustainable debt accumulation.<br><br>
+                        
+                        <strong>Why 1/∅₀?</strong><br>
+                        • Inverse of reserve ratio: 1/0.22 = 4.55<br>
+                        • At this point, debt servicing would exceed reserve capacity<br>
+                        • System becomes topologically unstable<br>
+                        • Jubilee restores to sustainable level<br><br>
+                        
+                        <strong>How It Works:</strong><br>
+                        1. Monitor D/GDP ratio continuously<br>
+                        2. If ratio > 4.55, trigger activated<br>
+                        3. Calculate excess debt: D - (4.55 × GDP)<br>
+                        4. Forgive excess proportionally across all debts<br>
+                        5. Restore D/GDP to ~1.0 (sustainable)<br><br>
+                        
+                        <strong>Historical Precedent:</strong> Ancient Israelite Jubilee (every 50 years), Mesopotamian debt forgiveness, periodic resets preventing debt slavery.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: AS5 - Jubilee Trigger Condition ★<br>
+                        Progress: 5/8 alternative system equations unlocked
+                    </div>
+                    
+                    <div class="alternative-design">
+                    JUBILEE TRIGGER EXAMPLE:<br><br>
+                    Threshold: D/GDP > 4.55<br><br>
+                    Scenario: Economic crisis, debt grows<br>
+                    Current: D = $50T, GDP = $10T<br>
+                    Ratio: 50/10 = 5.0 > 4.55 ✗<br><br>
+                    Jubilee activates:<br>
+                    Target ratio: 1.0 (sustainable)<br>
+                    Target debt: 1.0 × $10T = $10T<br>
+                    Excess: $50T - $10T = $40T<br><br>
+                    Forgiveness: $40T distributed:<br>
+                    • Student loans: $1.8T → $0<br>
+                    • Mortgages: $12T → $2.4T (80% reduction)<br>
+                    • Credit cards: $1.2T → $0.2T<br>
+                    • Business loans: $8T → $1.6T<br>
+                    • Government debt: $27T → $5.4T<br><br>
+                    Result: Fresh start, system stabilized.<br>
+                    <span class="success">Unpayable debt mathematically impossible.</span>
+                    </div>
+                    
+                    <div class="narrator">Walsh looks stunned.</div>
+                    
+                    <div class="dialogue">"Automatic debt forgiveness. That's... that's revolutionary."</div>
+                    
+                    <div class="dialogue">"It's mathematical. The jubilee prevents the WE4 debt trap from ever forming. Combined with zero-interest equilibrium, debt becomes manageable by design."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Add Transaction Transparency', 
+                        next: 6,
+                        flag: 'add_transparency'
+                    },
+                    { 
+                        text: '2. Show the Wealth Cap', 
+                        next: 7,
+                        flag: 'show_cap'
+                    }
+                ]
+            },
+            
+            // Chapter 6: Transaction Transparency
+            {
+                text: `
+                    <div class="narrator">You add the sixth equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION AS6: TRANSACTION TRANSPARENCY</div>
+                        <div class="formula">H(transaction) = -Σ p_i log(p_i) ≥ threshold</div>
+                        <div class="explanation">
+                        <strong>Entropy Requirement:</strong> Transaction entropy (information content) must exceed threshold. In practice: all large transactions publicly visible on distributed ledger.<br><br>
+                        
+                        <strong>Implementation:</strong><br>
+                        • All transactions >$10,000 logged publicly<br>
+                        • Sender ID, receiver ID, amount, timestamp<br>
+                        • Blockchain-style immutable record<br>
+                        • Privacy-preserving for small transactions<br>
+                        • Full transparency for large flows<br><br>
+                        
+                        <strong>What This Eliminates:</strong><br>
+                        • Offshore tax havens (flows visible)<br>
+                        • Shell companies (ultimate beneficiary visible)<br>
+                        • Money laundering (trail permanent)<br>
+                        • Dark money in politics (donations visible)<br>
+                        • Financial fraud (transactions auditable)<br><br>
+                        
+                        <strong>Estimated Impact:</strong> ~$8 trillion/year in tax evasion becomes impossible. WE3 monetary privilege rent reduced significantly.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: AS6 - Transaction Transparency ★<br>
+                        Progress: 6/8 alternative system equations unlocked
+                    </div>
+                    
+                    <div class="alternative-design">
+                    TRANSPARENCY IMPLEMENTATION:<br><br>
+                    Transaction size | Visibility<br>
+                    ------------------|------------<br>
+                    $0 - $100       | Private<br>
+                    $100 - $1,000   | Private<br>
+                    $1,000 - $10,000| Private<br>
+                    $10,000+        | PUBLIC<br><br>
+                    
+                    Public ledger entry example:<br>
+                    {<br>
+                      "timestamp": "2024-12-15T14:32:11Z",<br>
+                      "sender": "ID-7A8F9E2D",<br>
+                      "receiver": "ID-3B4C6E1F",<br>
+                      "amount": "$150,000",<br>
+                      "type": "business_payment",<br>
+                      "hash": "2f7d8a..."<br>
+                    }<br><br>
+                    
+                    Privacy preserved (hashed IDs) but<br>
+                    flows visible (amounts, patterns).<br><br>
+                    
+                    Offshore accounts impossible:<br>
+                    All transfers traced end-to-end.
+                    </div>
+                    
+                    <div class="narrator">Now for the most controversial part...</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Present the Wealth Cap equation', 
+                        next: 7,
+                        flag: 'present_cap'
+                    }
+                ]
+            },
+            
+            // Chapter 7: Wealth Cap
+            {
+                text: `
+                    <div class="narrator">You write the seventh equation slowly, knowing it will trigger debate:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION AS7: WEALTH CAP VIA PHASE LIMIT</div>
+                        <div class="formula">W_max = W_median × e^(2π)</div>
+                        <div class="explanation">
+                        <strong>The Topology:</strong> Maximum individual wealth = median × e^(2π) ≈ median × 535.49. This is not ideological—it's derived from EMx phase space topology.<br><br>
+                        
+                        <strong>Why e^(2π)?</strong><br>
+                        • In EMx, one complete cycle = 2π radians<br>
+                        • e^(2π) = natural exponential of full phase rotation<br>
+                        • Beyond this, phase wraps back to T₀ (NULL/potential)<br>
+                        • Mathematically encodes "complete journey"<br>
+                        • System becomes unstable past this point<br><br>
+                        
+                        <strong>Calculation:</strong><br>
+                        Current median wealth: $121,000<br>
+                        e^(2π) ≈ 535.49<br>
+                        Maximum: $121,000 × 535 = $64.8 million<br><br>
+                        
+                        <strong>What This Allows:</strong><br>
+                        • 535× wealth disparity (still massive!)<br>
+                        • Multi-millionaires possible<br>
+                        • Significant wealth accumulation<br>
+                        • Rewards for innovation/productivity<br><br>
+                        
+                        <strong>What This Prevents:</strong><br>
+                        • Billionaires (mathematically impossible)<br>
+                        • Wealth concentration destabilizing system<br>
+                        • Extraction velocity > 1 (WE2 prevented)<br>
+                        • Political capture by ultra-wealthy
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: AS7 - Wealth Cap via Phase Limit ★<br>
+                        Progress: 7/8 alternative system equations unlocked
+                    </div>
+                    
+                    <div class="narrator">Before anyone can object, you show the data:</div>
+                    
+                    <div class="alternative-design">
+                    WEALTH CAP IMPACT ANALYSIS:<br><br>
+                    <strong>Current Distribution:</strong><br>
+                    Top 1% (3.3M people): $44.6T ($13.5M avg)<br>
+                    Above cap ($64.8M): ~400,000 people<br>
+                    Wealth above cap: ~$22T<br><br>
+                    <strong>After Cap Implementation:</strong><br>
+                    Excess wealth: $22T<br>
+                    Redistributed via: UBR (next equation)<br><br>
+                    
+                    <strong>Who Keeps Full Wealth:</strong><br>
+                    • 99.9% of population (334.6M people)<br>
+                    • 99% below $64.8M cap<br><br>
+                    
+                    <strong>Who Affected:</strong><br>
+                    • 0.1% of population (400K people)<br>
+                    • Those with >$64.8M<br>
+                    • Capped at $64.8M (still wealthy!)<br><br>
+                    
+                    <strong>Current Billionaires:</strong><br>
+                    • 735 people in US<br>
+                    • Total: $4.5T<br>
+                    • Reduced to: 735 × $64.8M = $47.6B<br>
+                    • Excess: $4.45T → UBR<br><br>
+                    
+                    Not equality. Not communism.<br>
+                    Just: stability requires finite maximum.<br>
+                    <span class="success">System mathematically requires phase limit.</span>
+                    </div>
+                    
+                    <div class="narrator">The room explodes in argument. You wait for silence, then ask:</div>
+                    
+                    <div class="dialogue">"What happens to the excess wealth? Where does $22 trillion go?"</div>
+                    
+                    <div class="narrator">You write the final equation:</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Present Universal Basic Reserve', 
+                        next: 8,
+                        flag: 'final_ubr'
+                    }
+                ]
+            },
+            
+            // Chapter 8: Universal Basic Reserve & Synthesis
+            {
+                text: `
+                    <div class="narrator">You write the eighth and final equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION AS8: UNIVERSAL BASIC RESERVE</div>
+                        <div class="formula">UBR = ∅₀ × GDP / population</div>
+                        <div class="explanation">
+                        <strong>The Foundation:</strong> Every citizen receives share of the 22% GDP reserve annually. This is not welfare or redistribution—it's your share of the system's NULL buffer.<br><br>
+                        
+                        <strong>Calculation:</strong><br>
+                        Current GDP: $28 trillion<br>
+                        Reserve (∅₀): 22% = $6.16T<br>
+                        Population: 335 million<br><br>
+                        
+                        UBR = $6.16T / 335M = $18,388 per person per year<br><br>
+                        
+                        <strong>For Families:</strong><br>
+                        • Individual: $18,388/year<br>
+                        • Couple: $36,776/year<br>
+                        • Family of 4: $73,552/year<br><br>
+                        
+                        <strong>What It's NOT:</strong><br>
+                        • Not welfare (universal, unconditional)<br>
+                        • Not redistribution (your reserve share)<br>
+                        • Not socialism (compatible with markets)<br>
+                        • Not charity (structural feature)<br><br>
+                        
+                        <strong>What It IS:</strong><br>
+                        • Your share of ∅₀ = 22% NULL buffer<br>
+                        • Economic floor for all citizens<br>
+                        • Automatic stabilizer in recessions<br>
+                        • Freedom to refuse exploitative work<br>
+                        • Seed capital for entrepreneurship
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: AS8 - Universal Basic Reserve ★<br>
+                        Progress: 8/8 alternative system equations unlocked<br>
+                        <span class="success">COMPLETE ALTERNATIVE SYSTEM DESIGNED</span>
+                    </div>
+                    
+                    <div class="narrator">You step back from the whiteboard, all eight equations now visible:</div>
+                    
+                    <div class="alternative-design" style="font-size: 11px;">
+                    COMPLETE EMX ALTERNATIVE SYSTEM:<br><br>
+                    
+                    <strong>AS1:</strong> M_emx = M_active(0.78) + M_reserve(0.22)<br>
+                    → 22% reserve prevents collapse<br><br>
+                    
+                    <strong>AS2:</strong> δ_optimal = π_target + v_adjustment<br>
+                    → 3% demurrage encourages circulation<br><br>
+                    
+                    <strong>AS3:</strong> ∫circulation dt ≥ ∅₀ × W_total<br>
+                    → 22% annual circulation required<br><br>
+                    
+                    <strong>AS4:</strong> r_equilibrium = 0 at ∅₀<br>
+                    → Zero interest eliminates debt trap<br><br>
+                    
+                    <strong>AS5:</strong> if D/GDP > 1/∅₀ then jubilee()<br>
+                    → Automatic forgiveness prevents crisis<br><br>
+                    
+                    <strong>AS6:</strong> H(transaction) ≥ threshold<br>
+                    → Transparency eliminates hiding<br><br>
+                    
+                    <strong>AS7:</strong> W_max = W_median × e^(2π)<br>
+                    → Phase limit caps at $64.8M<br><br>
+                    
+                    <strong>AS8:</strong> UBR = ∅₀ × GDP / population<br>
+                    → $18,388/year universal floor<br>
+                    </div>
+                    
+                    <div class="narrator">Walsh stands, walks to the board, studies each equation.</div>
+                    
+                    <div class="dialogue">"And you can prove this is stable?"</div>
+                    
+                    <div class="narrator">You pull up the simulation:</div>
+                    
+                    <div class="proof-box">
+                    <strong>STABILITY PROOF:</strong><br><br>
+                    
+                    <strong>1. Tipping Points Unreachable:</strong><br>
+                    • 22% reserve absorbs all realistic shocks<br>
+                    • TP1-TP5 bifurcation boundaries never approached<br>
+                    • System self-corrects via jubilee (AS5)<br><br>
+                    
+                    <strong>2. Wealth Extraction Impossible:</strong><br>
+                    • WE1: r_capital = r_labor (both 0% at equilibrium)<br>
+                    • WE2: v_extract = 1 (cap prevents concentration)<br>
+                    • WE3: R_privilege eliminated (transparency)<br>
+                    • WE4: Debt trap impossible (r = 0, jubilee)<br>
+                    • WE5: Inflation tax neutral (demurrage replaces)<br><br>
+                    
+                    <strong>3. Eight Dualities Balanced:</strong><br>
+                    • Self ↔ Other: UBR ensures both<br>
+                    • Life ↔ Death: Circulation prevents stagnation<br>
+                    • Order ↔ Chaos: Reserve provides stability<br>
+                    • Light ↔ Shadow: Transparency reveals all<br>
+                    • Creation ↔ Destruction: Balanced by circulation<br>
+                    • Knowledge ↔ Mystery: System transparent<br>
+                    • Time ↔ Eternity: Jubilee provides reset<br>
+                    • Freedom ↔ Fate: UBR enables choice<br><br>
+                    
+                    <strong>4. Mathematical Proof:</strong><br>
+                    • All eigenvalues positive (stable equilibrium)<br>
+                    • Lyapunov function V(x) strictly decreasing<br>
+                    • No bifurcation boundaries in feasible region<br>
+                    • Fixed point mathematically guaranteed<br><br>
+                    
+                    <span class="success">CONCLUSION: SYSTEM PROVABLY STABLE</span><br>
+                    Probability of collapse: <10^-12 (trillion years)
+                    </div>
+                    
+                    <div class="narrator">You run a 100-year simulation:</div>
+                    
+                    <div class="system-msg">
+                    EMX SYSTEM SIMULATION - 100 YEARS<br><br>
+                    Starting conditions: Current US economy<br>
+                    Population: 335 million<br><br>
+                    <strong>Year 1:</strong> Transition volatility<br>
+                    <strong>Year 5:</strong> System stabilizes<br>
+                    <strong>Year 10:</strong> NULL baseline solid at 0.22<br>
+                    <strong>Year 20:</strong> Gini 0.31 (vs 0.49 current)<br>
+                    <strong>Year 50:</strong> No tipping points detected<br>
+                    <strong>Year 100:</strong> System stable, sustainable<br><br>
+                    
+                    <strong>Final State (Year 100):</strong><br>
+                    • Poverty rate: 2.1% (vs 11.4% current)<br>
+                    • Median wealth: $347,000 (vs $121,000 current)<br>
+                    • Maximum wealth: $185M (e^(2π) × $347K)<br>
+                    • Billionaires: 0 (vs 735 current)<br>
+                    • Debt/GDP: 42% (vs 121% current)<br>
+                    • Financial crashes: 0 (structurally impossible)<br>
+                    • Wealth extraction: 0 (prevented by design)<br>
+                    • UBR payment: $52,641/year per person<br><br>
+                    
+                    <strong>System Assessment:</strong><br>
+                    • NULL baseline: 0.22 ± 0.01 (stable)<br>
+                    • All 8 dualities balanced<br>
+                    • Zero tipping points approached<br>
+                    • Self-correcting mechanisms active<br>
+                    • Extraction mathematically impossible<br><br>
+                    
+                    <span class="success">VERDICT: PROVABLY STABLE FOR 100+ YEARS</span>
+                    </div>
+                    
+                    <div class="narrator">The room is silent. Finally, one of the economists speaks:</div>
+                    
+                    <div class="dialogue">"It's... it's actually beautiful. Mathematically elegant. And it works."</div>
+                    
+                    <div class="narrator">Walsh turns to you.</div>
+                    
+                    <div class="dialogue">"Can we implement it in thirty days?"</div>
+                    
+                    <div class="narrator">You shake your head.</div>
+                    
+                    <div class="dialogue">"No. Implementation would take years. We have thirty days until the current system collapses. But now we know what to build afterward. We have the blueprint."</div>
+                    
+                    <div class="narrator">You look at the eight equations on the whiteboard.</div>
+                    
+                    <div class="dialogue">"The question isn't technical anymore. It's political. Will humanity choose stability over extraction? Mathematics over power? A system that works for everyone over one that benefits a few?"</div>
+                    
+                    <div class="narrator">Walsh nods slowly.</div>
+                    
+                    <div class="dialogue">"Then we have work to do."</div>
+                    
+                    <div style="text-align: center; color: #00ffff; font-size: 20px; margin: 30px 0;">
+                    ═══════════════════════════════════════════<br>
+                    PART 3: ALTERNATIVE SYSTEM - COMPLETE<br>
+                    ═══════════════════════════════════════════
+                    </div>
+                    
+                    <div class="discovery" style="text-align: center; font-size: 16px;">
+                        <strong>EQUATIONS DISCOVERED: 8/8</strong><br><br>
+                        ✓ AS1: EMx Monetary Equation (22% reserve)<br>
+                        ✓ AS2: Demurrage Rate (3% circulation incentive)<br>
+                        ✓ AS3: Circulation Requirement (22% annual)<br>
+                        ✓ AS4: Zero-Interest Equilibrium (r = 0)<br>
+                        ✓ AS5: Jubilee Trigger (D/GDP > 4.55)<br>
+                        ✓ AS6: Transaction Transparency (visible flows)<br>
+                        ✓ AS7: Wealth Cap (e^(2π) × median = $64.8M)<br>
+                        ✓ AS8: Universal Basic Reserve ($18,388/year)<br>
+                    </div>
+                    
+                    <div class="system-msg">
+                        PART 3 ACHIEVEMENTS:<br><br>
+                        • Designed complete alternative financial system<br>
+                        • Proved mathematical stability (100+ years)<br>
+                        • Eliminated wealth extraction mechanisms<br>
+                        • Prevented tipping points structurally<br>
+                        • Balanced all eight dualities<br>
+                        • Created universal economic floor<br>
+                        • Capped destabilizing concentration<br>
+                        • Made system transparent and self-correcting<br>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; color: #ffff00;">
+                        <strong>TOTAL PROGRESS: 18/47 EQUATIONS</strong><br>
+                        (Parts 1, 2, and 3 Complete)<br><br>
+                        
+                        Part 1: 5 Tipping Point equations<br>
+                        Part 2: 5 Wealth Extraction equations<br>
+                        Part 3: 8 Alternative System equations<br><br>
+                        
+                        You have proven:<br>
+                        • The current system will collapse (mathematical certainty)<br>
+                        • Why it collapses ($11T extraction drives instability)<br>
+                        • How to build a stable alternative (provably stable design)<br>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; color: #00ff88;">
+                        The mathematics is complete.<br>
+                        The alternative is proven.<br>
+                        The choice is humanity's.<br><br>
+                        
+                        Thank you for investigating the EMx Financial System.
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: 'Review all alternative system equations', 
+                        next: 9,
+                        flag: 'review'
+                    },
+                    { 
+                        text: 'Compare old vs new system', 
+                        next: 10,
+                        flag: 'compare'
+                    },
+                    { 
+                        text: 'Return to beginning', 
+                        next: 0,
+                        flag: 'restart'
+                    }
+                ]
+            },
+            
+            // Chapter 9: Review
+            {
+                text: `
+                    <div style="text-align: center; color: #00ff88; font-size: 18px; margin: 20px 0;">
+                    EQUATION REFERENCE - PART 3
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">AS1: EMX MONETARY EQUATION</div>
+                        <div class="formula">M_emx = M_active(0.78) + M_reserve(0.22)</div>
+                        <div class="explanation">
+                        22% reserve prevents collapse. Current 10% → 22% reduces leverage from 10× to 4.5×. Shocks absorbed without bailouts.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">AS2: DEMURRAGE RATE OPTIMIZATION</div>
+                        <div class="formula">δ_optimal = π_target + v_adjustment = 3%</div>
+                        <div class="explanation">
+                        3% annual holding cost. Incentivizes circulation over hoarding. Money becomes like fresh food—use it or lose it.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">AS3: WEALTH CIRCULATION REQUIREMENT</div>
+                        <div class="formula">∫circulation dt ≥ ∅₀ × W_total</div>
+                        <div class="explanation">
+                        22% of wealth must circulate annually. $140T wealth → $30.8T/year circulation minimum. Prevents stagnation.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">AS4: ZERO-INTEREST EQUILIBRIUM</div>
+                        <div class="formula">r_equilibrium = 0 when M_reserve = ∅₀ × M_total</div>
+                        <div class="explanation">
+                        At optimal reserve, interest naturally → 0. Eliminates debt trap. D(t) = D₀ (stable) vs D(t) = D₀·e^(rt) (explosive).
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">AS5: JUBILEE TRIGGER CONDITION</div>
+                        <div class="formula">if D/GDP > 1/∅₀ then trigger_jubilee()</div>
+                        <div class="explanation">
+                        Debt > 455% GDP → automatic partial forgiveness. Prevents unpayable debt accumulation. Safety valve.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">AS6: TRANSACTION TRANSPARENCY</div>
+                        <div class="formula">H(transaction) ≥ threshold</div>
+                        <div class="explanation">
+                        Transactions >$10K publicly logged. Offshore hiding impossible. ~$8T/year tax evasion eliminated.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">AS7: WEALTH CAP VIA PHASE LIMIT</div>
+                        <div class="formula">W_max = W_median × e^(2π) ≈ $64.8M</div>
+                        <div class="explanation">
+                        Maximum wealth = 535× median. Allows significant disparity but prevents destabilizing concentration. No billionaires.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">AS8: UNIVERSAL BASIC RESERVE</div>
+                        <div class="formula">UBR = ∅₀ × GDP / population = $18,388/year</div>
+                        <div class="explanation">
+                        Everyone receives share of 22% GDP reserve. Economic floor for all. Your share of NULL buffer.
+                        </div>
+                    </div>
+                    
+                    <div class="system-msg" style="margin-top: 30px;">
+                        These eight equations form a complete stable system.<br>
+                        Provably stable for 100+ years.<br>
+                        Wealth extraction mathematically impossible.<br>
+                        Tipping points structurally unreachable.<br>
+                        Self-correcting and transparent by design.
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: 'Compare to current system', 
+                        next: 10,
+                        flag: 'comparison'
+                    },
+                    { 
+                        text: 'Return to ending', 
+                        next: 8,
+                        flag: 'back'
+                    }
+                ]
+            },
+            
+            // Chapter 10: Final Comparison
+            {
+                text: `
+                    <div style="text-align: center; color: #00ffff; font-size: 18px; margin: 20px 0;">
+                    SYSTEM COMPARISON - CURRENT VS EMX
+                    </div>
+                    
+                    <div class="comparison-table">
+                        <div class="system-old">
+                            <strong style="font-size: 16px;">CURRENT SYSTEM</strong><br><br>
+                            
+                            <strong>Reserve:</strong> 10%<br>
+                            <strong>Leverage:</strong> 10× (unsafe)<br>
+                            <strong>Interest:</strong> 5.2% (Fed sets)<br>
+                            <strong>Debt Growth:</strong> Exponential<br>
+                            <strong>Transparency:</strong> Offshore hiding<br>
+                            <strong>Wealth Cap:</strong> None<br>
+                            <strong>Basic Income:</strong> None<br><br>
+                            
+                            <strong>Extraction:</strong> $11T/year<br>
+                            <strong>Velocity:</strong> 5.67× upward<br>
+                            <strong>Stability:</strong> 30 days to collapse<br>
+                            <strong>Billionaires:</strong> 735<br>
+                            <strong>Poverty:</strong> 11.4%<br>
+                            <strong>Median Wealth:</strong> $121K<br>
+                            <strong>Debt/GDP:</strong> 121% (rising)<br>
+                        </div>
+                        <div class="system-new">
+                            <strong style="font-size: 16px;">EMX SYSTEM</strong><br><br>
+                            
+                            <strong>Reserve:</strong> 22%<br>
+                            <strong>Leverage:</strong> 4.5× (safe)<br>
+                            <strong>Interest:</strong> 0% (natural)<br>
+                            <strong>Debt Growth:</strong> Stable<br>
+                            <strong>Transparency:</strong> All >$10K visible<br>
+                            <strong>Wealth Cap:</strong> $64.8M (e^(2π))<br>
+                            <strong>Basic Income:</strong> $18,388/year<br><br>
+                            
+                            <strong>Extraction:</strong> $0/year<br>
+                            <strong>Velocity:</strong> 1.0× (balanced)<br>
+                            <strong>Stability:</strong> 100+ years provable<br>
+                            <strong>Billionaires:</strong> 0<br>
+                            <strong>Poverty:</strong> 2.1%<br>
+                            <strong>Median Wealth:</strong> $347K<br>
+                            <strong>Debt/GDP:</strong> 42% (stable)<br>
+                        </div>
+                    </div>
+                    
+                    <div class="proof-box" style="margin-top: 30px;">
+                        <strong style="font-size: 16px;">KEY DIFFERENCES:</strong><br><br>
+                        
+                        <strong>1. Structural Stability</strong><br>
+                        Current: Requires constant intervention (Fed, bailouts)<br>
+                        EMx: Self-stabilizing, no intervention needed<br><br>
+                        
+                        <strong>2. Wealth Extraction</strong><br>
+                        Current: $11T/year systematic transfer<br>
+                        EMx: $0/year, mathematically impossible<br><br>
+                        
+                        <strong>3. Debt Management</strong><br>
+                        Current: Exponential growth, unpayable<br>
+                        EMx: Stable, automatic jubilee safety valve<br><br>
+                        
+                        <strong>4. Transparency</strong><br>
+                        Current: $8T/year hidden offshore<br>
+                        EMx: All flows visible, hiding impossible<br><br>
+                        
+                        <strong>5. Wealth Concentration</strong><br>
+                        Current: 735 billionaires, Gini 0.49<br>
+                        EMx: 0 billionaires, Gini 0.31<br><br>
+                        
+                        <strong>6. Economic Floor</strong><br>
+                        Current: None, 11.4% poverty<br>
+                        EMx: $18,388/year UBR, 2.1% poverty<br><br>
+                        
+                        <strong>7. Median Outcomes</strong><br>
+                        Current: $121K median wealth<br>
+                        EMx: $347K median wealth (2.9× better)<br><br>
+                        
+                        <strong>8. System Lifespan</strong><br>
+                        Current: 30 days to collapse<br>
+                        EMx: 100+ years proven stability
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; color: #00ff88; font-size: 18px;">
+                        The mathematics proves both systems completely.<br>
+                        One collapses by design.<br>
+                        One stabilizes by design.<br><br>
+                        
+                        The choice is not technical—it's political.<br>
+                        Not "can we build it?"—but "will we choose it?"
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: 'Return to ending', 
+                        next: 8,
+                        flag: 'back_to_end'
+                    },
+                    { 
+                        text: 'Restart from beginning', 
+                        next: 0,
+                        flag: 'restart'
+                    }
+                ]
+            }
+        ];
+        
+        // Game Engine
+        function loadChapter(index) {
+            state.chapter = index;
+            const chapter = chapters[index];
+            
+            document.getElementById('story').innerHTML = chapter.text;
+            
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.innerHTML = '';
+            
+            if (chapter.choices) {
+                chapter.choices.forEach(choice => {
+                    const btn = document.createElement('button');
+                    btn.className = 'choice-btn';
+                    btn.textContent = choice.text;
+                    btn.onclick = () => {
+                        unlockEquationsForChapter(choice.next);
+                        loadChapter(choice.next);
+                    };
+                    choicesDiv.appendChild(btn);
+                });
+            }
+            
+            updateStats();
+            document.getElementById('story').scrollTop = 0;
+        }
+        
+        function unlockEquationsForChapter(chapterIndex) {
+            const unlockMap = {
+                1: ['AS1'],
+                2: ['AS7'],
+                3: ['AS1', 'AS2', 'AS3'],
+                4: ['AS1', 'AS4'],
+                5: ['AS1', 'AS2', 'AS3', 'AS4', 'AS5'],
+                6: ['AS1', 'AS2', 'AS3', 'AS4', 'AS5', 'AS6'],
+                7: ['AS1', 'AS2', 'AS3', 'AS4', 'AS5', 'AS6', 'AS7'],
+                8: ['AS1', 'AS2', 'AS3', 'AS4', 'AS5', 'AS6', 'AS7', 'AS8']
+            };
+            
+            const toUnlock = unlockMap[chapterIndex] || [];
+            toUnlock.forEach(eqId => {
+                if (!state.equationsFound.includes(eqId)) {
+                    state.equationsFound.push(eqId);
+                }
+            });
+            
+            updateEquationsList();
+        }
+        
+        function updateStats() {
+            document.getElementById('day').textContent = state.day;
+            document.getElementById('eq-count').textContent = state.equationsFound.length + '/8';
+            document.getElementById('days-left').textContent = state.daysToTipping;
+        }
+        
+        function updateEquationsList() {
+            const listDiv = document.getElementById('equations-unlocked');
+            
+            if (state.equationsFound.length === 0) {
+                listDiv.innerHTML = '<h2>Equations Discovered</h2><div style="color: #666; font-size: 12px;">Design the alternative system...</div>';
+                return;
+            }
+            
+            let html = '<h2 style="color: #00ff88;">Equations Discovered (' + state.equationsFound.length + '/8)</h2>';
+            
+            state.equationsFound.forEach(eqId => {
+                const eq = equations[eqId];
+                html += `
+                    <div class="equation-item" onclick="showEquationDetails('${eqId}')">
+                        <strong>${eq.id}:</strong> ${eq.name}<br>
+                        <span style="color: #00ff88; font-size: 11px;">${eq.formula}</span>
+                    </div>
+                `;
+            });
+            
+            listDiv.innerHTML = html;
+        }
+        
+        function showEquationDetails(eqId) {
+            const eq = equations[eqId];
+            alert(
+                eq.name + '\n\n' +
+                'Formula: ' + eq.formula + '\n\n' +
+                eq.explanation + '\n\n' +
+                'Proof:\n' + eq.proof
+            );
+        }
+        
+        // Start game
+        loadChapter(0);
+    </script>
+</body>
+</html>

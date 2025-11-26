@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Detective - Part 2: Wealth Extraction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff00;
+            line-height: 1.6;
+        }
+        
+        #game {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        #title {
+            color: #00ffff;
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+            text-shadow: 0 0 10px #00ffff;
+        }
+        
+        #stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #ff8800;
+            background: #0a0a0a;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ff8800;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 11px;
+        }
+        
+        .stat-value {
+            color: #ff8800;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        #story {
+            background: #0a0a0a;
+            padding: 30px;
+            border: 2px solid #ff8800;
+            margin: 20px 0;
+            min-height: 400px;
+        }
+        
+        #choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .choice-btn {
+            background: #331100;
+            color: #ff8800;
+            border: 2px solid #ff8800;
+            padding: 15px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            text-align: left;
+            transition: all 0.3s;
+        }
+        
+        .choice-btn:hover {
+            background: #552200;
+            transform: translateX(5px);
+            box-shadow: 0 0 15px #ff8800;
+        }
+        
+        .equation {
+            background: rgba(255, 136, 0, 0.1);
+            border-left: 4px solid #ff8800;
+            padding: 15px;
+            margin: 20px 0;
+            color: #ff8800;
+        }
+        
+        .equation-title {
+            color: #ffff00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .formula {
+            color: #ff8800;
+            margin: 10px 0;
+            font-family: 'Times New Roman', serif;
+        }
+        
+        .explanation {
+            color: #aaa;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        
+        .discovery {
+            background: rgba(255, 0, 255, 0.2);
+            border: 2px solid #ff00ff;
+            color: #ff00ff;
+            padding: 15px;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px #ff00ff; }
+            50% { box-shadow: 0 0 25px #ff00ff; }
+        }
+        
+        .narrator {
+            color: #aaa;
+            font-style: italic;
+            margin: 15px 0;
+        }
+        
+        .dialogue {
+            color: #00ffff;
+            margin: 10px 0;
+        }
+        
+        .system-msg {
+            background: rgba(255, 255, 0, 0.1);
+            border-left: 3px solid #ffff00;
+            color: #ffff00;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .extraction-flow {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+        
+        #equations-unlocked {
+            background: #0a0a0a;
+            border: 2px solid #ff8800;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .equation-item {
+            padding: 8px;
+            margin: 5px 0;
+            border-left: 2px solid #ff8800;
+            background: rgba(255, 136, 0, 0.05);
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .equation-item:hover {
+            background: rgba(255, 136, 0, 0.15);
+        }
+        
+        .warning {
+            color: #ff8800;
+            font-weight: bold;
+        }
+        
+        .critical {
+            color: #ff0000;
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+        }
+        
+        .money-flow {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+        }
+        
+        .flow-source, .flow-dest {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ff8800;
+        }
+        
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <div id="title">
+            ╔════════════════════════════════════════════╗<br>
+            ║  THE FINANCIAL DETECTIVE - PART 2         ║<br>
+            ║  Quantifying the Invisible Extraction     ║<br>
+            ╚════════════════════════════════════════════╝
+        </div>
+        
+        <div id="stats">
+            <div class="stat-box">
+                <div class="stat-label">DAY</div>
+                <div class="stat-value" id="day">7</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">EQUATIONS</div>
+                <div class="stat-value" id="eq-count">0/5</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">EXTRACTION RATE</div>
+                <div class="stat-value critical" id="extraction">$11.0T/yr</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">DAYS TO COLLAPSE</div>
+                <div class="stat-value critical" id="days-left">37</div>
+            </div>
+        </div>
+        
+        <div id="story"></div>
+        <div id="choices"></div>
+        <div id="equations-unlocked"></div>
+    </div>
+
+    <script>
+        // Game State
+        const state = {
+            chapter: 0,
+            day: 7,
+            daysToTipping: 37,
+            extractionRate: 11.0,
+            equationsFound: [],
+            flags: {}
+        };
+        
+        // The 5 Wealth Extraction Equations
+        const equations = {
+            WE1: {
+                id: 'WE1',
+                name: 'Hidden Transfer Function',
+                formula: 'ΔW = ∫[r_capital - r_labor]·K dt',
+                explanation: 'Wealth transfer (ΔW) equals the integral of the difference between capital return rate and labor return rate, multiplied by capital stock (K). This makes invisible wealth flows mathematically visible.',
+                practical: 'If capital earns 8% and labor earns 3%, the 5% difference × $10T capital = $500B/year flowing from labor to capital owners.',
+                calculation: 'r_capital = 8.2% (stock market average)\nr_labor = 2.1% (median wage growth)\nK = $93 trillion (total capital stock)\n\nΔW = 0.061 × $93T = $5.67 trillion/year\n\nThis is invisible wealth extraction—legal, systematic, mathematical.'
+            },
+            WE2: {
+                id: 'WE2',
+                name: 'Extraction Velocity',
+                formula: 'v_extract = dW_top / dW_bottom',
+                explanation: 'The rate at which top wealth grows relative to bottom. When v > 1, extraction is occurring—wealth flows upward faster than downward.',
+                practical: 'If top 1% wealth grows 10%/year while bottom 50% grows 2%/year, v = 5× extraction velocity. Money flows up 5× faster than it flows down.',
+                calculation: 'Top 1% wealth growth: 10.2%/year\nBottom 50% wealth growth: 1.8%/year\n\nv_extract = 10.2 / 1.8 = 5.67×\n\nWealth flows upward 5.67× faster than downward.\nThis is not "earning"—it\'s structural extraction.'
+            },
+            WE3: {
+                id: 'WE3',
+                name: 'Monetary Privilege Rent',
+                formula: 'R_privilege = (1 - ∅₀) × M × i',
+                explanation: 'Those who control money creation capture rent equal to (1 - reserve ratio) × money supply × interest rate. The 78% non-reserve portion extracts value from everyone else.',
+                practical: 'With $20T money supply, 4% interest, and 22% reserve: $20T × 0.78 × 0.04 = $624B/year extracted by those with money creation privilege.',
+                calculation: 'M = $21 trillion (M2 money supply)\ni = 5.2% (average interest rate)\n∅₀ = 0.22 (optimal reserve)\nActual reserve = 0.10 (over-leveraged)\n\nR_privilege = (1 - 0.10) × $21T × 0.052\nR_privilege = 0.90 × $21T × 0.052\nR_privilege = $982 billion/year\n\nNearly $1 trillion extracted annually\nthrough monetary privilege alone.'
+            },
+            WE4: {
+                id: 'WE4',
+                name: 'Debt Compounding Trap',
+                formula: 'D(t) = D₀·e^(rt) where r > g always',
+                explanation: 'Debt grows exponentially at interest rate r. If r exceeds GDP growth g, debt becomes mathematically unpayable—not bad policy, but mathematical certainty.',
+                practical: 'National debt at 5% interest vs 2% GDP growth → debt doubles every 14 years, GDP doubles every 35 years. Gap widens exponentially.',
+                calculation: 'National debt D₀ = $34 trillion\nInterest rate r = 5.2%\nGDP growth g = 2.3%\n\nDebt doubling time: 70/5.2 = 13.5 years\nGDP doubling time: 70/2.3 = 30.4 years\n\nIn 30 years:\nDebt: $34T × 2^(30/13.5) = $34T × 4.29 = $146T\nGDP: $28T × 2 = $56T\n\nDebt/GDP ratio: 146/56 = 261%\nInterest payments: $7.6T/year\nThat\'s 14% of GDP just for interest.\nMathematically impossible to service.'
+            },
+            WE5: {
+                id: 'WE5',
+                name: 'Inflation Tax Distribution',
+                formula: 'τ_inflation = π × (W_cash / W_total)',
+                explanation: 'Inflation taxes cash holders proportionally. Poor hold higher % as cash, rich hold assets that appreciate with inflation. Result: regressive tax by design.',
+                practical: '10% inflation, poor hold 80% cash, rich hold 10% cash → poor pay 8× higher effective inflation tax rate.',
+                calculation: 'Inflation rate π = 4%\n\nPoor (bottom 50%):\nCash holdings: 75% of wealth\nτ_poor = 0.04 × 0.75 = 3.0%\n\nRich (top 1%):\nCash holdings: 8% of wealth\nτ_rich = 0.04 × 0.08 = 0.32%\n\nRatio: 3.0 / 0.32 = 9.4×\n\nPoor pay 9.4× higher effective tax via inflation.\nThis is structural, not accidental.\nInflation is a regressive wealth transfer.'
+            }
+        };
+        
+        // Story Chapters
+        const chapters = [
+            // Chapter 0: Investigation Begins
+            {
+                text: `
+                    <div class="system-msg">
+                    [DAY 7 - 14:00] Secure Analysis Room - Federal Reserve<br>
+                    Tipping point countdown: 37 days remaining<br>
+                    Part 1 Complete: 5/5 tipping point equations discovered
+                    </div>
+                    
+                    <div class="narrator">Director Walsh has given you access to classified Fed data feeds. Real-time transaction logs. Interbank transfers. The full picture of money flows.</div>
+                    
+                    <div class="narrator">You've proven the system will collapse in 37 days. Now you need to understand WHY. What's driving it toward the tipping point?</div>
+                    
+                    <div class="dialogue">"Show me where the money goes," Walsh says, leaning over your terminal. "If there's $11 trillion being extracted annually, I want to see the math."</div>
+                    
+                    <div class="narrator">You initialize the Wealth Extraction Mapping module. Your screen lights up with flow data—trillions of dollars moving through the system every day.</div>
+                    
+                    <div class="system-msg">
+                    EMX WEALTH EXTRACTION MODULE INITIALIZED<br><br>
+                    Analyzing transaction flows...<br>
+                    Tracking capital movements...<br>
+                    Calculating differential returns...<br><br>
+                    <span class="warning">WARNING: Massive systematic transfers detected</span>
+                    </div>
+                    
+                    <div class="narrator">You need to start with the most fundamental equation—the one that makes invisible transfers visible.</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Calculate the Hidden Transfer Function', 
+                        next: 1,
+                        flag: 'calc_transfer'
+                    },
+                    { 
+                        text: '2. Measure the Extraction Velocity first', 
+                        next: 2,
+                        flag: 'calc_velocity'
+                    }
+                ]
+            },
+            
+            // Chapter 1: Hidden Transfer Function
+            {
+                text: `
+                    <div class="narrator">You pull up the most fundamental wealth extraction equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION WE1: HIDDEN TRANSFER FUNCTION</div>
+                        <div class="formula">ΔW = ∫[r_capital - r_labor]·K dt</div>
+                        <div class="explanation">
+                        <strong>The Math:</strong> Wealth transfer (ΔW) equals the integral over time of the difference between capital return rate (r_capital) and labor return rate (r_labor), multiplied by total capital stock (K).<br><br>
+                        
+                        <strong>What This Means:</strong> Capital and labor are both "productive." But they earn at different rates. The difference between these rates, accumulated over all capital, creates a hidden transfer.<br><br>
+                        
+                        <strong>Why It's Hidden:</strong> Both sides can grow. Capital earns 8%, labor earns 3%, both positive. But the 5% difference × $93 trillion capital = $4.65 trillion/year flowing from labor to capital owners. Not theft—structural mathematics.<br><br>
+                        
+                        <strong>The Mechanism:</strong><br>
+                        • Worker produces $100 value → earns $3 (3% raise)<br>
+                        • Capital owner invests $100 → earns $8 (8% return)<br>
+                        • Gap: $5 per $100<br>
+                        • Multiply by $93 trillion capital → $4.65T/year<br>
+                        • This is automatic, legal, invisible
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: WE1 - Hidden Transfer Function ★<br>
+                        Progress: 1/5 extraction equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You run the calculation on current data:</div>
+                    
+                    <div class="extraction-flow">
+                    HIDDEN TRANSFER CALCULATION:<br><br>
+                    <strong>Step 1: Measure Return Rates</strong><br>
+                    r_capital = 8.2% per year (stocks, real estate, business equity)<br>
+                    r_labor = 2.1% per year (median wage growth)<br>
+                    Difference: 6.1% per year<br><br>
+                    
+                    <strong>Step 2: Measure Capital Stock</strong><br>
+                    Total capital K = $93 trillion (US total)<br>
+                    - Corporate equity: $45T<br>
+                    - Real estate: $33T<br>
+                    - Private business: $15T<br><br>
+                    
+                    <strong>Step 3: Calculate Transfer</strong><br>
+                    ΔW = (r_capital - r_labor) × K<br>
+                    ΔW = 0.061 × $93T<br>
+                    <span class="critical">ΔW = $5.67 trillion per year</span><br><br>
+                    
+                    This wealth flows from:<br>
+                    • Labor (wages, salaries)<br>
+                    To:<br>
+                    • Capital owners (shareholders, landlords, business owners)<br><br>
+                    
+                    It's not "earned" through productivity.<br>
+                    It's transferred through return rate differential.<br>
+                    <span class="critical">Mathematical. Invisible. Continuous.</span>
+                    </div>
+                    
+                    <div class="narrator">Director Walsh stares at the numbers.</div>
+                    
+                    <div class="dialogue">"Five point six seven trillion. Every year."</div>
+                    
+                    <div class="dialogue">"And that's just one mechanism," you reply. "There are others."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Calculate the Extraction Velocity', 
+                        next: 3,
+                        flag: 'next_velocity'
+                    },
+                    { 
+                        text: '2. Show the Monetary Privilege Rent', 
+                        next: 4,
+                        flag: 'next_privilege'
+                    }
+                ]
+            },
+            
+            // Chapter 2: Extraction Velocity First
+            {
+                text: `
+                    <div class="narrator">You decide to start with a different angle—measuring how fast wealth flows upward versus downward:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION WE2: EXTRACTION VELOCITY</div>
+                        <div class="formula">v_extract = dW_top / dW_bottom</div>
+                        <div class="explanation">
+                        <strong>The Math:</strong> Extraction velocity equals the rate of wealth growth at the top divided by rate at the bottom. When v > 1, wealth flows upward faster than downward—extraction is occurring.<br><br>
+                        
+                        <strong>Physical Analogy:</strong> Imagine a pipe with water flowing. If the top gains 10 liters/second and bottom gains 2 liters/second, net flow is 8 liters/second upward. Velocity ratio: 10/2 = 5×.<br><br>
+                        
+                        <strong>Why It Matters:</strong> Everyone can grow richer in absolute terms, but if top grows 5× faster, relative position changes. This creates concentration—wealth pools at the top.<br><br>
+                        
+                        <strong>The Topology:</strong> Imagine wealth as water on a landscape. If there's even a slight tilt toward concentration, water pools at the low point. v_extract measures the tilt.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: WE2 - Extraction Velocity ★<br>
+                        Progress: 1/5 extraction equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You pull wealth growth data:</div>
+                    
+                    <div class="extraction-flow">
+                    EXTRACTION VELOCITY CALCULATION:<br><br>
+                    <strong>Top 1% Wealth Growth:</strong><br>
+                    2015: $34.2 trillion<br>
+                    2024: $44.6 trillion<br>
+                    Growth: $10.4T over 9 years<br>
+                    Annual rate: 10.2%/year<br><br>
+                    
+                    <strong>Bottom 50% Wealth Growth:</strong><br>
+                    2015: $2.1 trillion<br>
+                    2024: $2.5 trillion<br>
+                    Growth: $0.4T over 9 years<br>
+                    Annual rate: 1.8%/year<br><br>
+                    
+                    <strong>Velocity Calculation:</strong><br>
+                    v_extract = 10.2% / 1.8%<br>
+                    <span class="critical">v_extract = 5.67×</span><br><br>
+                    
+                    Wealth flows UPWARD 5.67× faster than downward.<br><br>
+                    
+                    In practical terms:<br>
+                    • Top 1% doubles wealth in 7 years<br>
+                    • Bottom 50% doubles wealth in 39 years<br>
+                    • Gap widens by factor of 5.6× every generation
+                    </div>
+                    
+                    <div class="narrator">Walsh looks at the velocity ratio.</div>
+                    
+                    <div class="dialogue">"This... this is sustainable?"</div>
+                    
+                    <div class="dialogue">"No. That's why we're 37 days from collapse. The extraction velocity drives the system toward the tipping point."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Show the Hidden Transfer mechanism', 
+                        next: 1,
+                        flag: 'show_transfer'
+                    },
+                    { 
+                        text: '2. Calculate Monetary Privilege Rent', 
+                        next: 4,
+                        flag: 'show_privilege'
+                    }
+                ]
+            },
+            
+            // Chapter 3: Extraction Velocity (from path 1)
+            {
+                text: `
+                    <div class="narrator">You pull up the second equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION WE2: EXTRACTION VELOCITY</div>
+                        <div class="formula">v_extract = dW_top / dW_bottom</div>
+                        <div class="explanation">
+                        Extraction velocity measures how fast wealth flows upward versus downward. v > 1 means net upward flow—extraction occurring.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: WE2 - Extraction Velocity ★<br>
+                        Progress: 2/5 extraction equations unlocked
+                    </div>
+                    
+                    <div class="extraction-flow">
+                    v_extract = 10.2% / 1.8% = <span class="critical">5.67×</span><br><br>
+                    Top 1% wealth grows 5.67× faster than bottom 50%.<br>
+                    This creates accelerating concentration.
+                    </div>
+                    
+                    <div class="dialogue">"So the $5.67 trillion transfer," Walsh says slowly, "creates a 5.67× velocity ratio."</div>
+                    
+                    <div class="dialogue">"Exactly. They're connected. The transfer IS the velocity."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Show the Monetary Privilege mechanism', 
+                        next: 5,
+                        flag: 'to_privilege'
+                    },
+                    { 
+                        text: '2. Calculate the Debt Trap', 
+                        next: 6,
+                        flag: 'to_debt'
+                    }
+                ]
+            },
+            
+            // Chapter 4: Monetary Privilege Rent
+            {
+                text: `
+                    <div class="narrator">You bring up a different extraction mechanism—one most people don't even know exists:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION WE3: MONETARY PRIVILEGE RENT</div>
+                        <div class="formula">R_privilege = (1 - ∅₀) × M × i</div>
+                        <div class="explanation">
+                        <strong>The Math:</strong> Rent captured through money creation privilege equals (1 - reserve ratio) × money supply × interest rate.<br><br>
+                        
+                        <strong>How Money Creation Works:</strong><br>
+                        1. Banks required to hold only 10% reserves (currently)<br>
+                        2. Can lend out 90% of deposits<br>
+                        3. Loans create new money (fractional reserve)<br>
+                        4. Each dollar becomes $10 in money supply (10× leverage)<br>
+                        5. Interest charged on all $10<br><br>
+                        
+                        <strong>Who Captures the Rent:</strong><br>
+                        • Banks create money through lending<br>
+                        • Charge interest on created money<br>
+                        • Keep interest as profit<br>
+                        • But they only had reserves for 10%<br>
+                        • 90% was created from nothing<br><br>
+                        
+                        <strong>The Extraction:</strong> Interest on 90% of money supply is rent extracted from economy by money creators. Not payment for service—privilege rent.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: WE3 - Monetary Privilege Rent ★<br>
+                        Progress: 3/5 extraction equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You run the numbers:</div>
+                    
+                    <div class="extraction-flow">
+                    MONETARY PRIVILEGE CALCULATION:<br><br>
+                    <strong>Money Supply Data:</strong><br>
+                    M2 money supply: $21 trillion<br>
+                    Average interest rate: 5.2%<br>
+                    Required reserve ratio: 10%<br>
+                    Optimal reserve (∅₀): 22%<br><br>
+                    
+                    <strong>Privilege Rent Calculation:</strong><br>
+                    R_privilege = (1 - reserve) × M × i<br>
+                    R_privilege = (1 - 0.10) × $21T × 0.052<br>
+                    R_privilege = 0.90 × $21T × 0.052<br>
+                    <span class="critical">R_privilege = $982 billion per year</span><br><br>
+                    
+                    <strong>Where It Goes:</strong><br>
+                    • Banks: $620B (interest on created money)<br>
+                    • Financial sector: $240B (intermediation)<br>
+                    • Fed: $122B (seigniorage)<br><br>
+                    
+                    <strong>Who Pays:</strong><br>
+                    • Everyone using money (transaction costs)<br>
+                    • Borrowers (interest payments)<br>
+                    • Inflation tax (money supply expansion)<br><br>
+                    
+                    Nearly $1 trillion extracted annually<br>
+                    through money creation privilege alone.<br>
+                    <span class="critical">This is structural rent, not earned income.</span>
+                    </div>
+                    
+                    <div class="narrator">Walsh's face goes pale.</div>
+                    
+                    <div class="dialogue">"We... the Federal Reserve... we're part of this extraction mechanism?"</div>
+                    
+                    <div class="narrator">You meet her eyes.</div>
+                    
+                    <div class="dialogue">"The system isn't corrupt. It's working exactly as designed. That's the problem."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Show how debt compounds the problem', 
+                        next: 7,
+                        flag: 'show_debt'
+                    },
+                    { 
+                        text: '2. Calculate the inflation tax', 
+                        next: 8,
+                        flag: 'show_inflation'
+                    }
+                ]
+            },
+            
+            // Chapter 5: Privilege from Velocity Path
+            {
+                text: `
+                    <div class="narrator">You show Walsh the third mechanism—monetary privilege:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION WE3: MONETARY PRIVILEGE RENT</div>
+                        <div class="formula">R_privilege = (1 - ∅₀) × M × i</div>
+                        <div class="explanation">
+                        Money creators extract rent equal to (1 - reserve) × money supply × interest. With 10% reserves and $21T supply at 5.2%, that's $982B/year in privilege rent.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: WE3 - Monetary Privilege Rent ★<br>
+                        Progress: 3/5 extraction equations unlocked
+                    </div>
+                    
+                    <div class="extraction-flow">
+                    $982 billion per year extracted through money creation.<br>
+                    This is IN ADDITION to the $5.67T capital/labor transfer.
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Calculate the Debt Compounding Trap', 
+                        next: 7,
+                        flag: 'debt_next'
+                    }
+                ]
+            },
+            
+            // Chapter 6: Debt Trap (early path)
+            {
+                text: `
+                    <div class="narrator">You show Walsh why the debt can never be repaid:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION WE4: DEBT COMPOUNDING TRAP</div>
+                        <div class="formula">D(t) = D₀·e^(rt) where r > g always</div>
+                        <div class="explanation">
+                        Debt grows exponentially at rate r (interest). GDP grows at rate g. When r > g, debt/GDP ratio increases exponentially. Mathematical impossibility to repay.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: WE4 - Debt Compounding Trap ★<br>
+                        Progress: 4/5 extraction equations unlocked
+                    </div>
+                    
+                    <div class="extraction-flow">
+                    Current: Debt $34T, GDP $28T, ratio 121%<br>
+                    In 30 years: Debt $146T, GDP $56T, ratio 261%<br>
+                    Interest alone: $7.6T/year (14% of GDP)<br><br>
+                    <span class="critical">Mathematically impossible to service.</span>
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Show the inflation tax distribution', 
+                        next: 9,
+                        flag: 'inflation_tax'
+                    }
+                ]
+            },
+            
+            // Chapter 7: Debt Compounding Trap (main path)
+            {
+                text: `
+                    <div class="narrator">You pull up perhaps the most devastating equation—the one that proves the debt can never be repaid:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION WE4: DEBT COMPOUNDING TRAP</div>
+                        <div class="formula">D(t) = D₀·e^(rt) where r > g always</div>
+                        <div class="explanation">
+                        <strong>The Math:</strong> Debt D grows exponentially at interest rate r. GDP grows at rate g. When r > g (which is structurally true), debt/GDP ratio increases without bound.<br><br>
+                        
+                        <strong>Why r > g Always:</strong><br>
+                        • Interest rate r set by Fed + risk premium: typically 4-6%<br>
+                        • GDP growth g constrained by productivity: typically 2-3%<br>
+                        • Difference: 2-3% compounding gap<br>
+                        • This gap is structural, not accidental<br><br>
+                        
+                        <strong>The Exponential Divergence:</strong><br>
+                        Year 0: Debt/GDP = 100%<br>
+                        Year 10: Debt/GDP = 127% (if r - g = 2.5%)<br>
+                        Year 20: Debt/GDP = 162%<br>
+                        Year 30: Debt/GDP = 206%<br>
+                        Year 50: Debt/GDP = 332%<br><br>
+                        
+                        Eventually debt servicing consumes entire GDP.<br>
+                        This is mathematical certainty, not bad policy.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: WE4 - Debt Compounding Trap ★<br>
+                        Progress: 4/5 extraction equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You project forward:</div>
+                    
+                    <div class="extraction-flow">
+                    DEBT TRAP CALCULATION:<br><br>
+                    <strong>Current State (2024):</strong><br>
+                    National debt D₀: $34 trillion<br>
+                    GDP: $28 trillion<br>
+                    Debt/GDP ratio: 121%<br>
+                    Average interest rate r: 5.2%<br>
+                    GDP growth rate g: 2.3%<br>
+                    Gap (r - g): 2.9%<br><br>
+                    
+                    <strong>Doubling Times:</strong><br>
+                    Debt doubles in: 70/5.2 = 13.5 years<br>
+                    GDP doubles in: 70/2.3 = 30.4 years<br><br>
+                    
+                    <strong>30-Year Projection:</strong><br>
+                    2054 Debt: $34T × e^(0.052×30) = $34T × 4.76 = $162 trillion<br>
+                    2054 GDP: $28T × e^(0.023×30) = $28T × 1.99 = $56 trillion<br>
+                    2054 Debt/GDP: 162/56 = <span class="critical">289%</span><br><br>
+                    
+                    <strong>Interest Payment Burden:</strong><br>
+                    Annual interest: $162T × 0.052 = $8.4 trillion<br>
+                    Percentage of GDP: $8.4T / $56T = <span class="critical">15.0%</span><br><br>
+                    
+                    Fifteen percent of GDP just for interest payments.<br>
+                    Before any government services.<br>
+                    Before defense, healthcare, education, infrastructure.<br><br>
+                    
+                    <span class="critical">This is mathematically unpayable.</span><br>
+                    Not "difficult." Not "challenging."<br>
+                    IMPOSSIBLE by mathematical necessity.
+                    </div>
+                    
+                    <div class="narrator">Walsh stares at the projection.</div>
+                    
+                    <div class="dialogue">"But... we've had high debt before. Post-WWII was over 100% debt-to-GDP."</div>
+                    
+                    <div class="dialogue">"Yes. And we had 4% real GDP growth then. The gap was reversed—g > r. Debt ratio declined naturally. Now g < r. The math works in reverse. We can't grow our way out."</div>
+                    
+                    <div class="narrator">You show her the comparison:</div>
+                    
+                    <div class="money-flow">
+                        <div class="flow-source">
+                            <strong>1945-1970</strong><br>
+                            Debt/GDP: 106% → 38%<br>
+                            r = 2.5%, g = 4.1%<br>
+                            <span style="color: #00ff00;">g > r: SUSTAINABLE</span>
+                        </div>
+                        <div class="flow-arrow">≠</div>
+                        <div class="flow-dest">
+                            <strong>2024-2054</strong><br>
+                            Debt/GDP: 121% → 289%<br>
+                            r = 5.2%, g = 2.3%<br>
+                            <span class="critical">r > g: UNSUSTAINABLE</span>
+                        </div>
+                    </div>
+                    
+                    <div class="dialogue">"So the extraction mechanisms," Walsh says slowly, "create debt that compounds faster than ability to repay."</div>
+                    
+                    <div class="dialogue">"Exactly. And there's one more mechanism. The most regressive."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Calculate the Inflation Tax Distribution', 
+                        next: 9,
+                        flag: 'final_equation'
+                    }
+                ]
+            },
+            
+            // Chapter 8: Inflation Tax (alternate path)
+            {
+                text: `
+                    <div class="narrator">You show Walsh the final extraction mechanism—inflation as regressive tax:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION WE5: INFLATION TAX DISTRIBUTION</div>
+                        <div class="formula">τ_inflation = π × (W_cash / W_total)</div>
+                        <div class="explanation">
+                        Inflation taxes cash holdings. Poor hold more cash, rich hold assets. Result: poor pay higher effective inflation tax rate.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: WE5 - Inflation Tax Distribution ★<br>
+                        Progress: 5/5 extraction equations unlocked<br>
+                        <span class="critical">ALL WEALTH EXTRACTION EQUATIONS DISCOVERED</span>
+                    </div>
+                    
+                    <div class="extraction-flow">
+                    At 4% inflation:<br>
+                    Poor (75% cash): pay 3.0% wealth tax<br>
+                    Rich (8% cash): pay 0.32% wealth tax<br>
+                    Ratio: <span class="critical">9.4× higher for poor</span>
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Calculate total extraction', 
+                        next: 10,
+                        flag: 'synthesis'
+                    }
+                ]
+            },
+            
+            // Chapter 9: Inflation Tax (main path)
+            {
+                text: `
+                    <div class="narrator">You pull up the final wealth extraction equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION WE5: INFLATION TAX DISTRIBUTION</div>
+                        <div class="formula">τ_inflation = π × (W_cash / W_total)</div>
+                        <div class="explanation">
+                        <strong>The Math:</strong> Inflation tax rate equals inflation rate × proportion of wealth held in cash. Poor hold high % cash, rich hold assets that appreciate with inflation.<br><br>
+                        
+                        <strong>Why Cash Gets Taxed:</strong><br>
+                        • Cash loses purchasing power at inflation rate<br>
+                        • $100 today = $96 next year at 4% inflation<br>
+                        • Effective tax: 4% per year on cash holdings<br><br>
+                        
+                        <strong>Why Rich Are Protected:</strong><br>
+                        • Own real assets: stocks, real estate, commodities<br>
+                        • These appreciate roughly with inflation<br>
+                        • $100 in stocks → $104 at 4% inflation<br>
+                        • Real value maintained<br><br>
+                        
+                        <strong>The Distribution:</strong><br>
+                        Bottom 50%: Need liquidity, live paycheck to paycheck<br>
+                        Hold 70-80% of wealth as cash/checking<br>
+                        Get hit hard by inflation<br><br>
+                        
+                        Top 1%: Can lock wealth in assets<br>
+                        Hold only 5-10% as cash (transaction money)<br>
+                        Mostly protected from inflation<br><br>
+                        
+                        <strong>Result:</strong> Inflation is a regressive tax by design.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: WE5 - Inflation Tax Distribution ★<br>
+                        Progress: 5/5 extraction equations unlocked<br>
+                        <span class="critical">ALL WEALTH EXTRACTION EQUATIONS DISCOVERED</span>
+                    </div>
+                    
+                    <div class="narrator">You calculate the differential impact:</div>
+                    
+                    <div class="extraction-flow">
+                    INFLATION TAX CALCULATION:<br><br>
+                    <strong>Inflation Rate:</strong> π = 4.0% (recent average)<br><br>
+                    
+                    <strong>Bottom 50% (Poor):</strong><br>
+                    Total wealth: $3.7 trillion<br>
+                    Cash holdings: 75% ($2.8T)<br>
+                    Asset holdings: 25% ($0.9T)<br><br>
+                    
+                    Inflation tax on cash: 0.04 × 0.75 = 3.0%<br>
+                    Annual loss: $2.8T × 0.04 = $112 billion<br>
+                    Per person (167M people): $670/year<br><br>
+                    
+                    <strong>Top 1% (Rich):</strong><br>
+                    Total wealth: $44.6 trillion<br>
+                    Cash holdings: 8% ($3.6T)<br>
+                    Asset holdings: 92% ($41.0T)<br><br>
+                    
+                    Inflation tax on cash: 0.04 × 0.08 = 0.32%<br>
+                    Annual loss: $3.6T × 0.04 = $144 billion<br>
+                    But assets gain: $41.0T × 0.04 = $1,640 billion<br>
+                    Net gain from inflation: $1,496 billion<br>
+                    Per person (3.3M people): $453,000/year<br><br>
+                    
+                    <strong>Tax Rate Comparison:</strong><br>
+                    Poor effective rate: 3.0%<br>
+                    Rich effective rate: 0.32%<br>
+                    Ratio: 3.0 / 0.32 = <span class="critical">9.4×</span><br><br>
+                    
+                    Poor pay NINE TIMES higher inflation tax rate.<br>
+                    While rich actually GAIN from inflation.<br>
+                    <span class="critical">This is structural, not accidental.</span>
+                    </div>
+                    
+                    <div class="narrator">Walsh looks stunned.</div>
+                    
+                    <div class="dialogue">"So when we raise interest rates to 'fight inflation'..."</div>
+                    
+                    <div class="dialogue">"We're actually fighting the symptom while reinforcing the cause. High interest rates increase the r - g gap in equation WE4, making debt worse. They increase monetary privilege rent in WE3. They accelerate wealth extraction."</div>
+                    
+                    <div class="narrator">You bring up all five equations on screen:</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Synthesize the complete extraction system', 
+                        next: 10,
+                        flag: 'complete_synthesis'
+                    }
+                ]
+            },
+            
+            // Chapter 10: Complete Synthesis
+            {
+                text: `
+                    <div class="narrator">You display all five wealth extraction equations simultaneously:</div>
+                    
+                    <div class="extraction-flow" style="font-size: 12px;">
+                    COMPLETE WEALTH EXTRACTION SYSTEM:<br><br>
+                    
+                    <strong>WE1: Hidden Transfer Function</strong><br>
+                    ΔW = ∫[r_capital - r_labor]·K dt<br>
+                    Annual extraction: $5.67 trillion<br><br>
+                    
+                    <strong>WE2: Extraction Velocity</strong><br>
+                    v_extract = dW_top / dW_bottom<br>
+                    Upward flow rate: 5.67× faster than downward<br><br>
+                    
+                    <strong>WE3: Monetary Privilege Rent</strong><br>
+                    R_privilege = (1 - ∅₀) × M × i<br>
+                    Annual extraction: $982 billion<br><br>
+                    
+                    <strong>WE4: Debt Compounding Trap</strong><br>
+                    D(t) = D₀·e^(rt) where r > g<br>
+                    Debt/GDP in 30 years: 289% (unpayable)<br><br>
+                    
+                    <strong>WE5: Inflation Tax Distribution</strong><br>
+                    τ_inflation = π × (W_cash / W_total)<br>
+                    Poor pay 9.4× higher rate than rich<br>
+                    </div>
+                    
+                    <div class="system-msg">
+                    TOTAL ANNUAL EXTRACTION:<br><br>
+                    WE1 Capital/Labor Differential: $5,670 billion<br>
+                    WE3 Monetary Privilege: $982 billion<br>
+                    WE5 Inflation Tax (net): $268 billion<br>
+                    (Other mechanisms): $4,080 billion<br><br>
+                    <span class="critical">TOTAL: $11.0 TRILLION PER YEAR</span><br><br>
+                    That's $32,836 per person per year.<br>
+                    Invisible. Legal. Mathematical.<br><br>
+                    
+                    This extraction creates the instability<br>
+                    that drives system toward tipping point.
+                    </div>
+                    
+                    <div class="narrator">You overlay the extraction map with the tipping point equations from Part 1:</div>
+                    
+                    <div class="money-flow" style="grid-template-columns: 1fr;">
+                        <div style="text-align: center; padding: 20px; border: 2px solid #ff0000;">
+                            <strong style="font-size: 16px;">THE COMPLETE PICTURE</strong><br><br>
+                            
+                            <span style="color: #ff8800;">Wealth Extraction ($11T/year)</span><br>
+                            ↓<br>
+                            <span style="color: #ffff00;">Reduces NULL Reserve (0.22 → 0.17)</span><br>
+                            ↓<br>
+                            <span style="color: #ff8800;">Amplifies Variance (4×)</span><br>
+                            ↓<br>
+                            <span style="color: #ffff00;">Slows Recovery (7.2×)</span><br>
+                            ↓<br>
+                            <span style="color: #ff8800;">Increases Autocorrelation (0.87)</span><br>
+                            ↓<br>
+                            <span class="critical">BIFURCATION BOUNDARY (37 days)</span><br><br>
+                            
+                            <strong>The extraction mechanisms ARE the collapse mechanisms.</strong><br>
+                            They're not separate problems—they're the same problem.
+                        </div>
+                    </div>
+                    
+                    <div class="narrator">Director Walsh stands, walks to the window.</div>
+                    
+                    <div class="dialogue">"So we have thirty-seven days. And you've proven mathematically that the system extracts eleven trillion per year, which drives it toward collapse."</div>
+                    
+                    <div class="dialogue">"Yes."</div>
+                    
+                    <div class="dialogue">"Can it be fixed?"</div>
+                    
+                    <div class="narrator">You pull up a new set of equations—the alternative system designs.</div>
+                    
+                    <div class="dialogue">"Yes. But not within the current paradigm. We need a system that's structurally incapable of extraction."</div>
+                    
+                    <div class="dialogue">"Show me."</div>
+                    
+                    <div style="text-align: center; color: #00ffff; font-size: 20px; margin: 30px 0;">
+                    ═══════════════════════════════════════════<br>
+                    PART 2: WEALTH EXTRACTION - COMPLETE<br>
+                    ═══════════════════════════════════════════
+                    </div>
+                    
+                    <div class="discovery" style="text-align: center; font-size: 16px;">
+                        <strong>EQUATIONS DISCOVERED: 5/5</strong><br><br>
+                        ✓ WE1: Hidden Transfer Function ($5.67T/year)<br>
+                        ✓ WE2: Extraction Velocity (5.67× upward)<br>
+                        ✓ WE3: Monetary Privilege Rent ($982B/year)<br>
+                        ✓ WE4: Debt Compounding Trap (unpayable)<br>
+                        ✓ WE5: Inflation Tax Distribution (9.4× regressive)<br>
+                    </div>
+                    
+                    <div class="system-msg">
+                        PART 2 ACHIEVEMENTS:<br><br>
+                        • Quantified invisible wealth transfers ($11T/year)<br>
+                        • Measured extraction velocity (5.67× upward flow)<br>
+                        • Exposed monetary privilege rent ($982B/year)<br>
+                        • Proved debt mathematically unpayable (r > g)<br>
+                        • Calculated regressive inflation tax (9.4× worse for poor)<br>
+                        • Connected extraction to tipping point instability<br>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; color: #ffff00; font-size: 18px;">
+                        COMING IN PART 3:<br>
+                        THE ALTERNATIVE STABLE SYSTEM<br><br>
+                        • EMx Monetary Equation (22% reserve requirement)<br>
+                        • Demurrage Rate Optimization (circulation incentive)<br>
+                        • Wealth Circulation Requirement (anti-stagnation)<br>
+                        • Zero-Interest Equilibrium (no compound trap)<br>
+                        • Jubilee Trigger Condition (automatic debt forgiveness)<br>
+                        • Transaction Transparency (visible flows)<br>
+                        • Wealth Cap via Phase Limit (e^(2π) × median)<br>
+                        • Universal Basic Reserve (22% GDP / population)<br>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; color: #ff00ff;">
+                        Thank you for playing Part 2!<br>
+                        The extraction is quantifiable. The mechanisms are visible.<br>
+                        Now: can we build something better?
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: 'Review all extraction equations', 
+                        next: 11,
+                        flag: 'review'
+                    },
+                    { 
+                        text: 'Return to beginning', 
+                        next: 0,
+                        flag: 'restart'
+                    }
+                ]
+            },
+            
+            // Chapter 11: Review
+            {
+                text: `
+                    <div style="text-align: center; color: #ff8800; font-size: 18px; margin: 20px 0;">
+                    EQUATION REFERENCE - PART 2
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">WE1: HIDDEN TRANSFER FUNCTION</div>
+                        <div class="formula">ΔW = ∫[r_capital - r_labor]·K dt</div>
+                        <div class="explanation">
+                        Makes invisible transfers visible. Capital earns 8.2%, labor earns 2.1%, difference × $93T capital = $5.67T/year flowing from labor to capital owners.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">WE2: EXTRACTION VELOCITY</div>
+                        <div class="formula">v_extract = dW_top / dW_bottom</div>
+                        <div class="explanation">
+                        Top 1% wealth grows 10.2%/year, bottom 50% grows 1.8%/year. Velocity ratio 5.67× means wealth flows upward 5.67× faster than downward.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">WE3: MONETARY PRIVILEGE RENT</div>
+                        <div class="formula">R_privilege = (1 - ∅₀) × M × i</div>
+                        <div class="explanation">
+                        $21T money supply × 90% non-reserve × 5.2% interest = $982B/year extracted by those with money creation privilege.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">WE4: DEBT COMPOUNDING TRAP</div>
+                        <div class="formula">D(t) = D₀·e^(rt) where r > g always</div>
+                        <div class="explanation">
+                        Interest rate 5.2% > GDP growth 2.3%. Debt/GDP grows from 121% to 289% in 30 years. Mathematically unpayable.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">WE5: INFLATION TAX DISTRIBUTION</div>
+                        <div class="formula">τ_inflation = π × (W_cash / W_total)</div>
+                        <div class="explanation">
+                        Poor hold 75% cash, pay 3.0% inflation tax. Rich hold 8% cash, pay 0.32% tax. Poor pay 9.4× higher rate—regressive by design.
+                        </div>
+                    </div>
+                    
+                    <div class="system-msg" style="margin-top: 30px;">
+                        These five equations quantify invisible wealth extraction.<br>
+                        Total: $11.0 trillion per year.<br>
+                        This extraction drives system toward tipping point.<br>
+                        The mathematics is proven. The mechanisms are visible.<br>
+                        Next: building an alternative that's structurally incapable of extraction.
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: 'Return to ending', 
+                        next: 10,
+                        flag: 'back'
+                    },
+                    { 
+                        text: 'Restart from beginning', 
+                        next: 0,
+                        flag: 'restart'
+                    }
+                ]
+            }
+        ];
+        
+        // Game Engine (same as Part 1)
+        function loadChapter(index) {
+            state.chapter = index;
+            const chapter = chapters[index];
+            
+            document.getElementById('story').innerHTML = chapter.text;
+            
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.innerHTML = '';
+            
+            if (chapter.choices) {
+                chapter.choices.forEach(choice => {
+                    const btn = document.createElement('button');
+                    btn.className = 'choice-btn';
+                    btn.textContent = choice.text;
+                    btn.onclick = () => {
+                        unlockEquationsForChapter(choice.next);
+                        loadChapter(choice.next);
+                    };
+                    choicesDiv.appendChild(btn);
+                });
+            }
+            
+            updateStats();
+            document.getElementById('story').scrollTop = 0;
+        }
+        
+        function unlockEquationsForChapter(chapterIndex) {
+            const unlockMap = {
+                1: ['WE1'],
+                2: ['WE2'],
+                3: ['WE1', 'WE2'],
+                4: ['WE3'],
+                5: ['WE1', 'WE2', 'WE3'],
+                6: ['WE4'],
+                7: ['WE1', 'WE2', 'WE3', 'WE4'],
+                8: ['WE5'],
+                9: ['WE1', 'WE2', 'WE3', 'WE4', 'WE5'],
+                10: ['WE1', 'WE2', 'WE3', 'WE4', 'WE5']
+            };
+            
+            const toUnlock = unlockMap[chapterIndex] || [];
+            toUnlock.forEach(eqId => {
+                if (!state.equationsFound.includes(eqId)) {
+                    state.equationsFound.push(eqId);
+                }
+            });
+            
+            updateEquationsList();
+        }
+        
+        function updateStats() {
+            document.getElementById('day').textContent = state.day;
+            document.getElementById('eq-count').textContent = state.equationsFound.length + '/5';
+            document.getElementById('extraction').textContent = '$' + state.extractionRate.toFixed(1) + 'T/yr';
+            document.getElementById('days-left').textContent = state.daysToTipping;
+        }
+        
+        function updateEquationsList() {
+            const listDiv = document.getElementById('equations-unlocked');
+            
+            if (state.equationsFound.length === 0) {
+                listDiv.innerHTML = '<h2>Equations Discovered</h2><div style="color: #666; font-size: 12px;">None yet - keep investigating...</div>';
+                return;
+            }
+            
+            let html = '<h2 style="color: #ff8800;">Equations Discovered (' + state.equationsFound.length + '/5)</h2>';
+            
+            state.equationsFound.forEach(eqId => {
+                const eq = equations[eqId];
+                html += `
+                    <div class="equation-item" onclick="showEquationDetails('${eqId}')">
+                        <strong>${eq.id}:</strong> ${eq.name}<br>
+                        <span style="color: #ff8800; font-size: 11px;">${eq.formula}</span>
+                    </div>
+                `;
+            });
+            
+            listDiv.innerHTML = html;
+        }
+        
+        function showEquationDetails(eqId) {
+            const eq = equations[eqId];
+            alert(
+                eq.name + '\n\n' +
+                'Formula: ' + eq.formula + '\n\n' +
+                eq.explanation + '\n\n' +
+                'Calculation:\n' + eq.calculation
+            );
+        }
+        
+        // Start game
+        loadChapter(0);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Detective - Part 4: The Transition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff00;
+            line-height: 1.6;
+        }
+        
+        #game {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        #title {
+            color: #ffff00;
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+            text-shadow: 0 0 10px #ffff00;
+        }
+        
+        #stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #ffff00;
+            background: #0a0a0a;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ffff00;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 11px;
+        }
+        
+        .stat-value {
+            color: #ffff00;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        #story {
+            background: #0a0a0a;
+            padding: 30px;
+            border: 2px solid #ffff00;
+            margin: 20px 0;
+            min-height: 400px;
+        }
+        
+        #choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .choice-btn {
+            background: #222200;
+            color: #ffff00;
+            border: 2px solid #ffff00;
+            padding: 15px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            text-align: left;
+            transition: all 0.3s;
+        }
+        
+        .choice-btn:hover {
+            background: #444400;
+            transform: translateX(5px);
+            box-shadow: 0 0 15px #ffff00;
+        }
+        
+        .equation {
+            background: rgba(255, 255, 0, 0.1);
+            border-left: 4px solid #ffff00;
+            padding: 15px;
+            margin: 20px 0;
+            color: #ffff00;
+        }
+        
+        .equation-title {
+            color: #00ffff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .formula {
+            color: #ffff00;
+            margin: 10px 0;
+            font-family: 'Times New Roman', serif;
+        }
+        
+        .explanation {
+            color: #aaa;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        
+        .discovery {
+            background: rgba(255, 255, 0, 0.2);
+            border: 2px solid #ffff00;
+            color: #ffff00;
+            padding: 15px;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px #ffff00; }
+            50% { box-shadow: 0 0 25px #ffff00; }
+        }
+        
+        .narrator {
+            color: #aaa;
+            font-style: italic;
+            margin: 15px 0;
+        }
+        
+        .dialogue {
+            color: #00ffff;
+            margin: 10px 0;
+        }
+        
+        .system-msg {
+            background: rgba(255, 255, 0, 0.1);
+            border-left: 3px solid #ffff00;
+            color: #ffff00;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .transition-map {
+            background: rgba(255, 255, 0, 0.15);
+            border: 2px solid #ffff00;
+            color: #ffff00;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        #equations-unlocked {
+            background: #0a0a0a;
+            border: 2px solid #ffff00;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .equation-item {
+            padding: 8px;
+            margin: 5px 0;
+            border-left: 2px solid #ffff00;
+            background: rgba(255, 255, 0, 0.05);
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .equation-item:hover {
+            background: rgba(255, 255, 0, 0.15);
+        }
+        
+        .warning {
+            color: #ff8800;
+            font-weight: bold;
+        }
+        
+        .critical {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        
+        .phase-diagram {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .phase-box {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid #ffff00;
+            padding: 10px;
+            text-align: center;
+            font-size: 11px;
+        }
+        
+        .resistance-bar {
+            height: 20px;
+            background: #333;
+            border: 1px solid #ffff00;
+            margin: 10px 0;
+            position: relative;
+        }
+        
+        .resistance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffff00 0%, #ff8800 100%);
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <div id="title">
+            ╔════════════════════════════════════════════╗<br>
+            ║  THE FINANCIAL DETECTIVE - PART 4         ║<br>
+            ║  The Transition: From Collapse to Rebirth ║<br>
+            ╚════════════════════════════════════════════╝
+        </div>
+        
+        <div id="stats">
+            <div class="stat-box">
+                <div class="stat-label">DAY</div>
+                <div class="stat-value" id="day">23</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">EQUATIONS</div>
+                <div class="stat-value" id="eq-count">0/7</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">ADOPTION %</div>
+                <div class="stat-value" id="adoption">0%</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">DAYS TO COLLAPSE</div>
+                <div class="stat-value critical" id="days-left">21</div>
+            </div>
+        </div>
+        
+        <div id="story"></div>
+        <div id="choices"></div>
+        <div id="equations-unlocked"></div>
+    </div>
+
+    <script>
+        // Game State
+        const state = {
+            chapter: 0,
+            day: 23,
+            daysToTipping: 21,
+            adoptionRate: 0,
+            equationsFound: [],
+            flags: {}
+        };
+        
+        // The 7 Transition Implementation Equations
+        const equations = {
+            TR1: {
+                id: 'TR1',
+                name: 'Critical Mass Threshold',
+                formula: 'N_critical = N_total × (1 - ∅₀) / √(network_density)',
+                explanation: 'Minimum adoption needed for self-sustaining transition. Derived from percolation theory and EMx reserve constant. Need ~78% population or √network_density fraction, whichever is lower.',
+                practical: 'In highly connected network (density=0.6), need only 32% adoption to reach critical mass. System then self-propagates.',
+                proof: 'N_crit = 335M × 0.78 / √0.6 = 335M × 0.78 / 0.77 = 338M\nBut √density reduces: 338M × √0.6 = 262M\nTherefore: 262M / 335M = 78.2%\n\nOnce 78% adopt, network effects drive remaining 22% automatically.'
+            },
+            TR2: {
+                id: 'TR2',
+                name: 'Adoption Velocity Function',
+                formula: 'dN/dt = α·N·(N_max - N) - β·R(t)',
+                explanation: 'Rate of adoption = growth factor × current adopters × remaining population, minus resistance. Logistic growth modified by resistance term R(t).',
+                practical: 'Initial slow growth (few adopters), rapid middle growth (network effects), slow final growth (hardcore resistance).',
+                proof: 'S-curve adoption:\nα = 0.15 (network growth)\nβ = 0.08 (resistance factor)\n\nAt N = 10%: dN/dt = 0.15×0.1×0.9 - 0.08×R = 0.0135 - 0.08R\nAt N = 50%: dN/dt = 0.15×0.5×0.5 - 0.08R = 0.0375 - 0.08R\nAt N = 90%: dN/dt = 0.15×0.9×0.1 - 0.08R = 0.0135 - 0.08R\n\nPeak velocity at 50% adoption.'
+            },
+            TR3: {
+                id: 'TR3',
+                name: 'Resistance Decay Pattern',
+                formula: 'R(t) = R₀·e^(-λt) + R_hardcore·(1 - e^(-λt))',
+                explanation: 'Resistance decays exponentially from initial R₀ to hardcore baseline R_hardcore. Most resistance is "wait and see" which fades. ~15% hardcore never converts.',
+                practical: 'Early: 85% resistance. After proof of concept: 40% resistance. Terminal: 15% hardcore resistance that never converts.',
+                proof: 'R₀ = 0.85 (initial)\nR_hardcore = 0.15 (never converts)\nλ = 0.12 (decay rate)\n\nDay 1: R = 0.85\nDay 10: R = 0.85×e^(-1.2) + 0.15×(1-e^(-1.2)) = 0.26 + 0.11 = 0.37\nDay 20: R = 0.85×e^(-2.4) + 0.15×(1-e^(-2.4)) = 0.08 + 0.14 = 0.22\nDay 30: R = 0.15 (converges to hardcore)'
+            },
+            TR4: {
+                id: 'TR4',
+                name: 'Multi-Scale Implementation',
+                formula: 'S_global = ∏(S_local_i)^(w_i) where Σw_i = 1',
+                explanation: 'Global success = weighted product of local successes. Start small, prove concept, scale up. Each successful local implementation increases global probability.',
+                practical: 'Pilot in city (w=0.1) → state (w=0.2) → region (w=0.3) → national (w=0.4). Each success multiplies next probability.',
+                proof: 'Success probabilities:\nCity pilot: S₁ = 0.75\nState rollout: S₂ = 0.70\nRegion: S₃ = 0.65\nNational: S₄ = 0.60\n\nGlobal = 0.75^0.1 × 0.70^0.2 × 0.65^0.3 × 0.60^0.4\n       = 0.974 × 0.938 × 0.894 × 0.777\n       = 0.636 (63.6% global success)\n\nVs direct national: S = 0.30 (30%)\nMulti-scale 2× more likely to succeed!'
+            },
+            TR5: {
+                id: 'TR5',
+                name: 'Phase Space Navigation',
+                formula: 'ψ(t+1) = U(θ)·ψ(t) where θ = ∅₀·ω·t',
+                explanation: 'System state evolves via unitary transformation at angle θ proportional to ∅₀. Smooth navigation through phase space avoids tipping points.',
+                practical: 'Rotate system state gradually by θ = 0.22 × 2π × (t/T) over transition period T. Maintains stability throughout.',
+                proof: 'Transition period T = 5 years\nAngular velocity ω = 2π/T\nθ(t) = 0.22 × 2π × (t/5 years)\n\nYear 1: θ = 0.22×2π×0.2 = 0.276 rad (15.8°)\nYear 2: θ = 0.22×2π×0.4 = 0.553 rad (31.7°)\nYear 3: θ = 0.22×2π×0.6 = 0.829 rad (47.5°)\nYear 4: θ = 0.22×2π×0.8 = 1.106 rad (63.4°)\nYear 5: θ = 0.22×2π×1.0 = 1.382 rad (79.2°)\n\nSmooth rotation keeps system stable.'
+            },
+            TR6: {
+                id: 'TR6',
+                name: 'Parallel Currency Strategy',
+                formula: 'M_total = M_legacy(1-f) + M_emx(f) where df/dt > 0',
+                explanation: 'Run both systems in parallel with gradually increasing EMx fraction f. People choose which currency for each transaction. Natural selection favors EMx.',
+                practical: 'Year 1: 95% legacy, 5% EMx. Year 3: 50/50. Year 5: 95% EMx. No forced conversion, just better incentives.',
+                proof: 'Currency fraction evolution:\nf(t) = 0.05 + 0.95×(1 - e^(-0.8t))\n\nYear 0: f = 0.05 (5% EMx)\nYear 1: f = 0.05 + 0.95×(1-0.45) = 0.58 (58% EMx!)\nYear 2: f = 0.05 + 0.95×(1-0.20) = 0.81 (81% EMx)\nYear 3: f = 0.05 + 0.95×(1-0.09) = 0.91 (91% EMx)\n\nRapid adoption once advantages clear.\nDemurrage on EMx + zero interest = strong incentive.'
+            },
+            TR7: {
+                id: 'TR7',
+                name: 'Catastrophic Conversion Trigger',
+                formula: 'if (crisis_severity > threshold) then instant_transition()',
+                explanation: 'If current system collapses (reaches tipping point), instant emergency conversion to EMx. Crisis = opportunity. People accept change when alternative worse.',
+                practical: 'Bank holiday declared → EMx activated next day. Accounts converted at 1:1, with jubilee applied immediately. Fresh start.',
+                proof: 'Crisis threshold = TP1 bifurcation\nWhen system crosses S*, immediate action:\n\n1. Bank holiday (prevent run)\n2. Convert accounts: $X → ΞX (EMx currency)\n3. Apply jubilee: D/GDP > 4.55 → forgive excess\n4. Activate UBR: ∅₀×GDP/N distributed immediately\n5. Reopen banks: 22% reserve enforced\n\nDowntime: 3-7 days\nAlternative: total collapse, years recovery\n\nCrisis forces acceptance.'
+            }
+        };
+        
+        // Story Chapters
+        const chapters = [
+            // Chapter 0: The Choice
+            {
+                text: `
+                    <div class="system-msg">
+                    [DAY 23 - 03:00] Emergency Operations Center<br>
+                    Tipping point countdown: 21 days remaining<br>
+                    Parts 1-3 Complete: 18/47 equations discovered<br>
+                    Alternative system fully designed and proven stable<br>
+                    <span class="critical">DECISION POINT REACHED</span>
+                    </div>
+                    
+                    <div class="narrator">You haven't slept in three days. The boardroom is packed—not just Fed officials now, but Treasury, Congressional staffers, even two Supreme Court justices. Your 18 equations cover the walls.</div>
+                    
+                    <div class="narrator">Director Walsh addresses the room:</div>
+                    
+                    <div class="dialogue">"Dr. Chen has proven three things mathematically: First, the current system collapses in twenty-one days. Second, the collapse is caused by eleven trillion in annual wealth extraction. Third, an alternative system is not only possible but provably stable."</div>
+                    
+                    <div class="narrator">She turns to you.</div>
+                    
+                    <div class="dialogue">"The question is no longer WHETHER to implement the alternative. The question is HOW. And we need equations for that too."</div>
+                    
+                    <div class="narrator">You pull up a new set of diagrams—transition mathematics.</div>
+                    
+                    <div class="system-msg">
+                    EMX TRANSITION MODULE INITIALIZED<br><br>
+                    Challenge: Move from unstable system to stable system<br>
+                    without triggering collapse during transition<br><br>
+                    
+                    Constraints:<br>
+                    • 21 days until current system crosses tipping point<br>
+                    • 330+ million people dependent on financial system<br>
+                    • Cannot force adoption (requires consent)<br>
+                    • Must navigate safely through phase space<br>
+                    • Resistance from beneficiaries of current extraction<br><br>
+                    
+                    <span class="warning">This is the hardest part.</span><br>
+                    Not designing the alternative.<br>
+                    But transitioning to it without catastrophe.
+                    </div>
+                    
+                    <div class="narrator">You write the first equation on the main screen:</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Calculate the Critical Mass Threshold', 
+                        next: 1,
+                        flag: 'critical_mass'
+                    },
+                    { 
+                        text: '2. Model the Adoption Velocity', 
+                        next: 2,
+                        flag: 'adoption_first'
+                    }
+                ]
+            },
+            
+            // Chapter 1: Critical Mass
+            {
+                text: `
+                    <div class="narrator">You write the first transition equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TR1: CRITICAL MASS THRESHOLD</div>
+                        <div class="formula">N_critical = N_total × (1 - ∅₀) / √(network_density)</div>
+                        <div class="explanation">
+                        <strong>The Threshold:</strong> Minimum number of adopters needed for self-sustaining transition. Derived from percolation theory combined with EMx ∅₀ constant.<br><br>
+                        
+                        <strong>Why (1 - ∅₀)?</strong><br>
+                        • System requires 78% active participation (complement of 22% reserve)<br>
+                        • Once 78% adopt, system becomes self-sustaining<br>
+                        • Remaining 22% dragged along by network effects<br><br>
+                        
+                        <strong>Network Density Effect:</strong><br>
+                        • High connectivity (social media age) reduces threshold<br>
+                        • √density factor: dense network = lower threshold<br>
+                        • Network density ≈ 0.6 (60% of people connected)<br>
+                        • √0.6 ≈ 0.77, so threshold reduced by 23%<br><br>
+                        
+                        <strong>Calculation:</strong><br>
+                        US population: 335 million<br>
+                        Base threshold: 335M × 0.78 = 261M<br>
+                        Network adjustment: 261M / 0.77 = 339M... wait<br>
+                        That's >100%, error in direction<br>
+                        Actually: 261M × 0.77 = 201M<br>
+                        Critical mass: 201M people (60% of population)<br><br>
+                        
+                        <strong>The Good News:</strong> Not 78%, but 60% due to network effects!
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TR1 - Critical Mass Threshold ★<br>
+                        Progress: 1/7 transition equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You show the calculation:</div>
+                    
+                    <div class="transition-map">
+                    CRITICAL MASS CALCULATION:<br><br>
+                    Total US population: 335,000,000<br>
+                    Network density: 0.60 (social connectivity)<br>
+                    Base EMx requirement: 78% (1 - ∅₀)<br><br>
+                    
+                    Without network effects:<br>
+                    N_crit = 335M × 0.78 = 261M (78%)<br><br>
+                    
+                    With network effects:<br>
+                    Reduction factor: √0.60 = 0.775<br>
+                    N_crit = 335M × 0.78 × 0.775 = 202M<br><br>
+                    
+                    <span class="warning">CRITICAL MASS: 202 MILLION PEOPLE (60.3%)</span><br><br>
+                    
+                    Once we reach 202M adopters:<br>
+                    • System becomes self-propagating<br>
+                    • Network effects drive remaining adoption<br>
+                    • Transition becomes inevitable<br><br>
+                    
+                    Current adoption: 0<br>
+                    <span class="critical">Need: 202,000,000 people in 21 days</span><br>
+                    That's 9.6 million people per day.
+                    </div>
+                    
+                    <div class="narrator">A Congressional staffer speaks up:</div>
+                    
+                    <div class="dialogue">"Ten million people per day? That's impossible. We can't even get people to agree on daylight savings time."</div>
+                    
+                    <div class="narrator">You pull up the next equation:</div>
+                    
+                    <div class="dialogue">"Not impossible. But we need to understand the adoption dynamics..."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Model the Adoption Velocity Function', 
+                        next: 3,
+                        flag: 'velocity_next'
+                    }
+                ]
+            },
+            
+            // Chapter 2: Adoption Velocity First
+            {
+                text: `
+                    <div class="narrator">You start with the adoption dynamics:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TR2: ADOPTION VELOCITY FUNCTION</div>
+                        <div class="formula">dN/dt = α·N·(N_max - N) - β·R(t)</div>
+                        <div class="explanation">
+                        Rate of adoption follows logistic growth modified by resistance. Early slow (few adopters), middle fast (network effects), late slow (hardcore resistance).
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TR2 - Adoption Velocity Function ★<br>
+                        Progress: 1/7 transition equations unlocked
+                    </div>
+                    
+                    <div class="narrator">But first you need to know the threshold...</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Calculate Critical Mass Threshold first', 
+                        next: 1,
+                        flag: 'mass_needed'
+                    }
+                ]
+            },
+            
+            // Chapter 3: Adoption Velocity & Resistance
+            {
+                text: `
+                    <div class="narrator">You write the adoption velocity equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TR2: ADOPTION VELOCITY FUNCTION</div>
+                        <div class="formula">dN/dt = α·N·(N_max - N) - β·R(t)</div>
+                        <div class="explanation">
+                        <strong>The S-Curve:</strong> Adoption follows logistic growth pattern. First term α·N·(N_max - N) is classic logistic equation. Second term β·R(t) represents resistance drag.<br><br>
+                        
+                        <strong>Three Phases:</strong><br>
+                        Phase 1 (0-20%): Slow growth, early adopters only<br>
+                        • Small N → small N·(N_max - N)<br>
+                        • High initial resistance R₀<br>
+                        • Result: slow uptake<br><br>
+                        
+                        Phase 2 (20-80%): Explosive growth<br>
+                        • N·(N_max - N) maximized at N = N_max/2<br>
+                        • Resistance R(t) declining<br>
+                        • Network effects kick in<br>
+                        • Result: rapid adoption<br><br>
+                        
+                        Phase 3 (80-100%): Slow completion<br>
+                        • N approaching N_max → small (N_max - N)<br>
+                        • Hardcore resistance R_hardcore persists<br>
+                        • Result: long tail<br><br>
+                        
+                        <strong>Parameters:</strong><br>
+                        α = 0.15 (network growth factor)<br>
+                        β = 0.08 (resistance coefficient)<br>
+                        N_max = 335M (total population)
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TR2 - Adoption Velocity Function ★<br>
+                        Progress: 2/7 transition equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You simulate the adoption curve with current resistance:</div>
+                    
+                    <div class="transition-map">
+                    ADOPTION SIMULATION (21 days):<br><br>
+                    
+                    Day 1: N = 1M (early adopters)<br>
+                    dN/dt = 0.15×1M×334M - 0.08×0.85 = 50M/day - 0.068 ≈ 50M<br>
+                    <span class="critical">Impossible. Resistance too high.</span><br><br>
+                    
+                    With high initial resistance R₀ = 0.85:<br>
+                    Day 1: dN/dt = 50M - 0.08×0.85×335M = 50M - 22.8M = 27M/day<br>
+                    Day 2: N = 28M, dN/dt ≈ 45M/day<br>
+                    Day 5: N = 150M (45%)<br>
+                    Day 10: N = 280M (84%)<br>
+                    Day 15: N = 305M (91%)<br>
+                    Day 21: N = 317M (94.6%)<br><br>
+                    
+                    <span class="warning">Barely reaches 202M threshold by day 7!</span><br>
+                    Very tight timing. Requires resistance decay.
+                    </div>
+                    
+                    <div class="narrator">You write the resistance equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TR3: RESISTANCE DECAY PATTERN</div>
+                        <div class="formula">R(t) = R₀·e^(-λt) + R_hardcore·(1 - e^(-λt))</div>
+                        <div class="explanation">
+                        <strong>Two Types of Resistance:</strong><br>
+                        1. Soft resistance (85%): "Wait and see" - decays exponentially<br>
+                        2. Hardcore resistance (15%): Ideological - never converts<br><br>
+                        
+                        <strong>Decay Mechanism:</strong><br>
+                        • Initial R₀ = 0.85 (85% resistant at start)<br>
+                        • Decay rate λ = 0.12 per day<br>
+                        • Terminal R_hardcore = 0.15 (15% permanently resistant)<br>
+                        • Exponential decay: e^(-λt)<br><br>
+                        
+                        <strong>Psychology:</strong><br>
+                        Most resistance is fear of unknown. Once system proves itself (3-5 days), soft resistance evaporates. Hardcore 15% never converts regardless of evidence—but we don't need them. Critical mass is 60%, not 100%.<br><br>
+                        
+                        <strong>Key Insight:</strong> We don't need everyone. We need 60% for critical mass. That leaves 40% who can remain skeptical and system still succeeds.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TR3 - Resistance Decay Pattern ★<br>
+                        Progress: 3/7 transition equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You model combined adoption with resistance decay:</div>
+                    
+                    <div class="transition-map">
+                    REVISED SIMULATION (with resistance decay):<br><br>
+                    
+                    Day 1: R = 0.85, N = 1M, dN/dt = 2M/day (slow start)<br>
+                    Day 2: R = 0.76, N = 3M, dN/dt = 8M/day<br>
+                    Day 3: R = 0.68, N = 11M, dN/dt = 22M/day (accelerating)<br>
+                    Day 4: R = 0.60, N = 33M, dN/dt = 41M/day<br>
+                    Day 5: R = 0.54, N = 74M (22%), dN/dt = 58M/day<br>
+                    Day 6: R = 0.49, N = 132M (39%)<br>
+                    Day 7: R = 0.44, N = 188M (56%)<br>
+                    <span class="warning">Day 8: R = 0.40, N = 234M (70%) ← CRITICAL MASS REACHED!</span><br>
+                    Day 10: R = 0.34, N = 289M (86%)<br>
+                    Day 15: R = 0.22, N = 312M (93%)<br>
+                    Day 21: R = 0.15, N = 318M (95%)<br><br>
+                    
+                    Critical mass (202M, 60%) reached on Day 8.<br>
+                    After that, network effects make transition inevitable.
+                    </div>
+                    
+                    <div class="narrator">Walsh leans forward.</div>
+                    
+                    <div class="dialogue">"So we have eight days. If we can get critical mass in eight days, the transition becomes self-sustaining."</div>
+                    
+                    <div class="dialogue">"Correct. But there's a problem—we can't just flip a switch nationally. Too risky. We need a multi-scale approach..."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Design the Multi-Scale Implementation', 
+                        next: 4,
+                        flag: 'multi_scale'
+                    }
+                ]
+            },
+            
+            // Chapter 4: Multi-Scale Implementation
+            {
+                text: `
+                    <div class="narrator">You pull up a map of the United States with highlighted regions:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TR4: MULTI-SCALE IMPLEMENTATION</div>
+                        <div class="formula">S_global = ∏(S_local_i)^(w_i) where Σw_i = 1</div>
+                        <div class="explanation">
+                        <strong>The Strategy:</strong> Global success = weighted product of local successes. Don't go national immediately. Start small, prove it works, scale up.<br><br>
+                        
+                        <strong>Four Scales:</strong><br>
+                        1. City Pilot (w = 0.10): Population ~500K, 2 days<br>
+                        2. State Rollout (w = 0.20): Population ~10M, 3 days<br>
+                        3. Regional (w = 0.30): Population ~50M, 4 days<br>
+                        4. National (w = 0.40): Population ~335M, ongoing<br><br>
+                        
+                        <strong>Why Product, Not Sum?</strong><br>
+                        Failures at any scale doom the whole thing. If city fails, state won't try. If state fails, region won't try. Must succeed at each level to proceed.<br><br>
+                        
+                        <strong>Why Weighted?</strong><br>
+                        Later stages matter more. City pilot is low-risk test. National rollout is everything. Weights reflect importance: 0.1, 0.2, 0.3, 0.4 (sum to 1.0).<br><br>
+                        
+                        <strong>Success Probability Calculation:</strong><br>
+                        Each scale has inherent success probability S_i<br>
+                        Global = S₁^0.1 × S₂^0.2 × S₃^0.3 × S₄^0.4<br><br>
+                        
+                        This multiplicative structure creates strong incentive to perfect each scale before proceeding.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TR4 - Multi-Scale Implementation ★<br>
+                        Progress: 4/7 transition equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You display the implementation map:</div>
+                    
+                    <div class="transition-map">
+                    MULTI-SCALE IMPLEMENTATION PLAN:<br><br>
+                    
+                    <strong>PHASE 1: CITY PILOT (Days 1-2)</strong><br>
+                    Target: Burlington, Vermont<br>
+                    Population: 45,000<br>
+                    Why: Progressive, educated, tight-knit community<br>
+                    Success probability: S₁ = 0.80 (80%)<br><br>
+                    
+                    Implementation:<br>
+                    • City council emergency vote<br>
+                    • Local banks convert to 22% reserve<br>
+                    • UBR distributed: $18,388/person<br>
+                    • Demurrage activated on all accounts<br>
+                    • 48-hour pilot<br><br>
+                    
+                    Success metrics:<br>
+                    • No bank runs (22% reserve holds)<br>
+                    • UBR distributed successfully<br>
+                    • Merchants accept EMx currency<br>
+                    • Local economy continues functioning<br>
+                    • Satisfaction >70%<br><br>
+                    
+                    <strong>PHASE 2: STATE ROLLOUT (Days 3-5)</strong><br>
+                    Target: Vermont (full state)<br>
+                    Population: 647,000<br>
+                    Success probability: S₂ = 0.75 (75%)<br><br>
+                    
+                    Expand from Burlington to entire state<br>
+                    State legislature emergency session<br>
+                    All state banks convert<br>
+                    72-hour statewide trial<br><br>
+                    
+                    <strong>PHASE 3: REGIONAL (Days 6-9)</strong><br>
+                    Target: Northeast (VT, NH, ME, MA, RI, CT)<br>
+                    Population: 15 million<br>
+                    Success probability: S₃ = 0.70 (70%)<br><br>
+                    
+                    Six-state coordination<br>
+                    Regional Fed bank support<br>
+                    4-day regional pilot<br><br>
+                    
+                    <strong>PHASE 4: NATIONAL (Day 10+)</strong><br>
+                    Target: United States<br>
+                    Population: 335 million<br>
+                    Success probability: S₄ = 0.65 (65%)<br><br>
+                    
+                    Full national rollout<br>
+                    Federal Reserve mandate<br>
+                    Congressional approval<br>
+                    Presidential emergency powers<br><br>
+                    
+                    <strong>GLOBAL SUCCESS PROBABILITY:</strong><br>
+                    S_global = 0.80^0.1 × 0.75^0.2 × 0.70^0.3 × 0.65^0.4<br>
+                    S_global = 0.978 × 0.954 × 0.894 × 0.808<br>
+                    S_global = 0.672 (67.2%)<br><br>
+                    
+                    Compare to direct national (no pilots):<br>
+                    S_direct = 0.35 (35%)<br><br>
+                    
+                    <span class="warning">Multi-scale approach nearly 2× more likely to succeed!</span>
+                    </div>
+                    
+                    <div class="narrator">One of the economists objects:</div>
+                    
+                    <div class="dialogue">"But this takes ten days minimum. You said we have twenty-one until collapse. What if we don't have ten days for pilots?"</div>
+                    
+                    <div class="narrator">You pull up two more equations:</div>
+                    
+                    <div class="dialogue">"That's why we have two paths. The gradual path for if we have time. And the emergency path for if we don't..."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Show the Phase Space Navigation (gradual path)', 
+                        next: 5,
+                        flag: 'gradual'
+                    },
+                    { 
+                        text: '2. Show the Catastrophic Conversion (emergency path)', 
+                        next: 6,
+                        flag: 'emergency'
+                    }
+                ]
+            },
+            
+            // Chapter 5: Phase Space Navigation
+            {
+                text: `
+                    <div class="narrator">You write the gradual transition equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TR5: PHASE SPACE NAVIGATION</div>
+                        <div class="formula">ψ(t+1) = U(θ)·ψ(t) where θ = ∅₀·ω·t</div>
+                        <div class="explanation">
+                        <strong>Smooth Rotation:</strong> System state ψ evolves via unitary transformation U at angle θ. Angle proportional to ∅₀ ensures we maintain 22% reserve buffer throughout transition.<br><br>
+                        
+                        <strong>Why Unitary?</strong><br>
+                        • Unitary transformations preserve norm: |ψ(t+1)| = |ψ(t)|<br>
+                        • In EMx terms: total energy conserved during rotation<br>
+                        • Smooth rotation through phase space avoids tipping points<br>
+                        • Like turning a ship—gradual, controlled<br><br>
+                        
+                        <strong>Angular Velocity:</strong><br>
+                        ω = 2π/T where T = transition period<br>
+                        θ(t) = ∅₀ × 2π × (t/T)<br>
+                        Over 5 years: θ increases from 0 to ∅₀×2π ≈ 1.38 radians (79°)<br><br>
+                        
+                        <strong>Why Not Full 2π Rotation?</strong><br>
+                        Don't need complete rotation. Only need to rotate by ∅₀-fraction of full cycle to establish new system. The 22% reserve becomes the new baseline.<br><br>
+                        
+                        <strong>Continuous Stability:</strong><br>
+                        At every point θ(t), system remains in stable configuration. No intermediate unstable states. Like climbing stairs vs jumping—each step is solid ground.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TR5 - Phase Space Navigation ★<br>
+                        Progress: 5/7 transition equations unlocked
+                    </div>
+                    
+                    <div class="transition-map">
+                    GRADUAL TRANSITION TIMELINE (5 years):<br><br>
+                    
+                    <strong>Year 1 (θ = 0° → 16°):</strong><br>
+                    • Pilot programs (cities, states)<br>
+                    • Reserve ratio: 10% → 14%<br>
+                    • Parallel currencies begin (5% EMx, 95% legacy)<br>
+                    • UBR starts at reduced rate ($5K/year)<br>
+                    • Demurrage introduced at 1%<br>
+                    • Wealth cap announced but not enforced<br><br>
+                    
+                    <strong>Year 2 (θ = 16° → 32°):</strong><br>
+                    • Regional rollouts<br>
+                    • Reserve ratio: 14% → 18%<br>
+                    • Currency mix: 30% EMx, 70% legacy<br>
+                    • UBR increases to $12K/year<br>
+                    • Demurrage increases to 2%<br>
+                    • Transaction transparency phase 1<br><br>
+                    
+                    <strong>Year 3 (θ = 32° → 47°):</strong><br>
+                    • National adoption majority<br>
+                    • Reserve ratio: 18% → 21%<br>
+                    • Currency mix: 60% EMx, 40% legacy<br>
+                    • UBR reaches full $18.4K/year<br>
+                    • Demurrage at full 3%<br>
+                    • Interest rates approaching zero<br><br>
+                    
+                    <strong>Year 4 (θ = 47° → 63°):</strong><br>
+                    • Legacy currency phasing out<br>
+                    • Reserve ratio: 21% → 22%<br>
+                    • Currency mix: 85% EMx, 15% legacy<br>
+                    • Wealth cap soft enforcement begins<br>
+                    • First jubilee trigger test (doesn't activate)<br>
+                    • Full transparency operational<br><br>
+                    
+                    <strong>Year 5 (θ = 63° → 79°):</strong><br>
+                    • EMx fully dominant<br>
+                    • Reserve ratio: 22% (locked in)<br>
+                    • Currency mix: 98% EMx, 2% legacy<br>
+                    • All 8 AS equations fully active<br>
+                    • System stable, self-sustaining<br>
+                    • Tipping points unreachable<br><br>
+                    
+                    <span class="warning">Total time: 5 years<br>
+                    Problem: We have 21 days, not 5 years.</span>
+                    </div>
+                    
+                    <div class="narrator">Director Walsh shakes her head.</div>
+                    
+                    <div class="dialogue">"We don't have five years. We have three weeks."</div>
+                    
+                    <div class="narrator">You nod grimly and pull up the sixth equation:</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Show the Parallel Currency Strategy', 
+                        next: 7,
+                        flag: 'parallel'
+                    },
+                    { 
+                        text: '2. Show the Emergency Conversion', 
+                        next: 6,
+                        flag: 'show_emergency'
+                    }
+                ]
+            },
+            
+            // Chapter 6: Catastrophic Conversion
+            {
+                text: `
+                    <div class="narrator">You write the emergency equation in red:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TR7: CATASTROPHIC CONVERSION TRIGGER</div>
+                        <div class="formula">if (crisis_severity > threshold) then instant_transition()</div>
+                        <div class="explanation">
+                        <strong>The Emergency Path:</strong> If current system collapses before gradual transition completes, execute immediate emergency conversion. Crisis creates opportunity—people accept radical change when alternative is worse.<br><br>
+                        
+                        <strong>Trigger Condition:</strong><br>
+                        System crosses TP5 bifurcation boundary (∂²V/∂S² = 0)<br>
+                        Or: Major bank failure, market crash >30%, sovereign default<br>
+                        Or: Days to tipping point < 3<br><br>
+                        
+                        <strong>Emergency Protocol:</strong><br>
+                        1. President declares financial emergency<br>
+                        2. Bank holiday declared (3-7 days)<br>
+                        3. All accounts frozen temporarily<br>
+                        4. Accounts converted: $X → ΞX (1:1 conversion to EMx currency)<br>
+                        5. AS5 Jubilee applied immediately: D/GDP > 4.55 → forgive excess<br>
+                        6. UBR distributed to all citizens<br>
+                        7. 22% reserve enforced on all banks<br>
+                        8. Banks reopen with EMx system<br><br>
+                        
+                        <strong>Historical Precedent:</strong><br>
+                        • FDR Bank Holiday 1933: 4-day closure, reopened with new rules<br>
+                        • Nixon ends gold standard 1971: weekend announcement, instant change<br>
+                        • Euro conversion 2002: overnight currency swap<br>
+                        • Cyprus bail-in 2013: weekend bank holiday, forced conversion<br><br>
+                        
+                        Crisis enables changes impossible in normal times.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TR7 - Catastrophic Conversion Trigger ★<br>
+                        Progress: 6/7 transition equations unlocked
+                    </div>
+                    
+                    <div class="transition-map">
+                    EMERGENCY CONVERSION PROTOCOL:<br><br>
+                    
+                    <strong>TRIGGER EVENT (Day 21 or earlier):</strong><br>
+                    System crosses bifurcation boundary<br>
+                    Major financial institution fails<br>
+                    Market drops >30% in single day<br>
+                    Bank run begins<br><br>
+                    
+                    <strong>HOUR 0 (Friday evening):</strong><br>
+                    • President addresses nation<br>
+                    • "Financial emergency, immediate action required"<br>
+                    • Bank holiday declared effective midnight<br>
+                    • All financial markets closed<br>
+                    • ATMs limited to $500/day<br><br>
+                    
+                    <strong>HOUR 12 (Saturday morning):</strong><br>
+                    • Emergency Federal Reserve meeting<br>
+                    • EMx system activated<br>
+                    • Conversion algorithm initialized<br>
+                    • All accounts → EMx currency at 1:1<br><br>
+                    
+                    <strong>HOUR 24 (Saturday evening):</strong><br>
+                    • Jubilee calculation complete<br>
+                    • Current debt/GDP: 121%<br>
+                    • Threshold: 455%<br>
+                    • Below threshold, no forgiveness yet<br>
+                    • (But interest rate now 0%, preventing future growth)<br><br>
+                    
+                    <strong>HOUR 48 (Sunday evening):</strong><br>
+                    • Reserve ratio enforcement<br>
+                    • All banks required to hold 22% reserves<br>
+                    • Banks below 22% given Fed loans to reach threshold<br>
+                    • No bank failures (reserve buffer sufficient)<br><br>
+                    
+                    <strong>HOUR 72 (Monday morning):</strong><br>
+                    • UBR distribution<br>
+                    • Every citizen receives $18,388<br>
+                    • Distributed as EMx currency<br>
+                    • Immediate economic stimulus<br><br>
+                    
+                    <strong>HOUR 96 (Tuesday morning):</strong><br>
+                    • Banks reopen<br>
+                    • ATMs functional (unlimited withdrawal)<br>
+                    • Stock market reopens<br>
+                    • EMx system fully operational<br><br>
+                    
+                    <strong>WEEK 1 RESULTS:</strong><br>
+                    • No bank runs (22% reserve holds strong)<br>
+                    • Economy functions normally<br>
+                    • People have UBR income<br>
+                    • Demurrage incentivizes spending<br>
+                    • Initial panic subsides<br><br>
+                    
+                    <strong>MONTH 1 RESULTS:</strong><br>
+                    • Wealth cap taking effect<br>
+                    • Billionaires → multi-millionaires<br>
+                    • Excess wealth → UBR supplement<br>
+                    • Transaction transparency revealing flows<br>
+                    • System stable<br><br>
+                    
+                    <strong>YEAR 1 RESULTS:</strong><br>
+                    • System fully transitioned<br>
+                    • All 8 AS equations operational<br>
+                    • Extraction eliminated<br>
+                    • Poverty reduced from 11.4% → 3.2%<br>
+                    • Median wealth increasing<br>
+                    • No financial crises<br>
+                    • Tipping points unreachable<br><br>
+                    
+                    <span class="critical">Emergency conversion: 4-day downtime<br>
+                    Alternative: Total collapse, years recovery<br><br>
+                    
+                    Crisis = opportunity for change</span>
+                    </div>
+                    
+                    <div class="narrator">The room is silent. Finally, the Treasury Secretary speaks:</div>
+                    
+                    <div class="dialogue">"So we have two paths. Gradual over five years if we start now. Or catastrophic in four days if we wait for collapse."</div>
+                    
+                    <div class="dialogue">"Three paths," you correct. "There's a third option—the parallel currency approach..."</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Present the Parallel Currency Strategy', 
+                        next: 7,
+                        flag: 'show_parallel'
+                    }
+                ]
+            },
+            
+            // Chapter 7: Parallel Currency & Synthesis
+            {
+                text: `
+                    <div class="narrator">You write the final transition equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TR6: PARALLEL CURRENCY STRATEGY</div>
+                        <div class="formula">M_total = M_legacy(1-f) + M_emx(f) where df/dt > 0</div>
+                        <div class="explanation">
+                        <strong>The Hybrid Path:</strong> Run both systems in parallel. Let fraction f of economy gradually shift to EMx. People choose which currency for each transaction. Natural selection favors better system.<br><br>
+                        
+                        <strong>How It Works:</strong><br>
+                        • EMx currency introduced alongside dollar<br>
+                        • Both legal tender<br>
+                        • Merchants accept both<br>
+                        • Banks handle both<br>
+                        • Fraction f starts at 5%, grows organically<br><br>
+                        
+                        <strong>EMx Advantages:</strong><br>
+                        • Zero interest (vs 5.2% dollar)<br>
+                        • UBR income (vs nothing)<br>
+                        • No inflation tax (demurrage instead)<br>
+                        • Transparent transactions<br>
+                        • 22% reserve (safer banks)<br><br>
+                        
+                        <strong>Dollar Disadvantages:</strong><br>
+                        • 5.2% interest compounds<br>
+                        • No UBR<br>
+                        • Regressive inflation tax<br>
+                        • Offshore hiding possible<br>
+                        • 10% reserve (risky banks)<br><br>
+                        
+                        <strong>Result:</strong> People naturally choose EMx for most transactions. Dollar used less and less. Eventually dollar phases out without forced conversion.<br><br>
+                        
+                        <strong>Adoption Rate:</strong><br>
+                        f(t) = f₀ + (1 - f₀)·(1 - e^(-λt))<br>
+                        Where f₀ = 0.05 (initial 5%)<br>
+                        λ = 0.8 (rapid adoption rate)<br><br>
+                        
+                        Year 0: 5% EMx<br>
+                        Year 1: 58% EMx<br>
+                        Year 2: 81% EMx<br>
+                        Year 3: 91% EMx<br>
+                        Year 5: 97% EMx
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TR6 - Parallel Currency Strategy ★<br>
+                        Progress: 7/7 transition equations unlocked<br>
+                        <span class="warning">ALL TRANSITION EQUATIONS DISCOVERED</span>
+                    </div>
+                    
+                    <div class="narrator">You display the complete transition framework:</div>
+                    
+                    <div class="transition-map" style="font-size: 11px;">
+                    COMPLETE TRANSITION FRAMEWORK:<br><br>
+                    
+                    <strong>TR1:</strong> N_critical = 202M (60% of population)<br>
+                    → Need this many for self-sustaining transition<br><br>
+                    
+                    <strong>TR2:</strong> dN/dt = α·N·(N_max - N) - β·R(t)<br>
+                    → Adoption follows S-curve, reaches critical mass Day 8<br><br>
+                    
+                    <strong>TR3:</strong> R(t) = R₀·e^(-λt) + R_hardcore<br>
+                    → Resistance decays from 85% to 15% hardcore<br><br>
+                    
+                    <strong>TR4:</strong> S_global = ∏S_i^wi<br>
+                    → Multi-scale: City→State→Region→National = 67% success<br><br>
+                    
+                    <strong>TR5:</strong> ψ(t+1) = U(θ)·ψ(t)<br>
+                    → Gradual rotation through phase space (5 years)<br><br>
+                    
+                    <strong>TR6:</strong> M = M_legacy(1-f) + M_emx(f)<br>
+                    → Parallel currencies, EMx naturally dominates<br><br>
+                    
+                    <strong>TR7:</strong> if crisis then instant_transition()<br>
+                    → Emergency 4-day conversion if system collapses<br>
+                    </div>
+                    
+                    <div class="narrator">You step back and display all three paths side by side:</div>
+                    
+                    <div class="phase-diagram">
+                        <div class="phase-box">
+                            <strong>PATH A: GRADUAL</strong><br>
+                            Timeline: 5 years<br>
+                            Method: TR5 phase rotation<br>
+                            Risk: LOW<br>
+                            Disruption: MINIMAL<br>
+                            Success rate: 85%<br><br>
+                            
+                            Requires:<br>
+                            • Political will<br>
+                            • Public support<br>
+                            • 5 years before collapse<br><br>
+                            
+                            We DON'T have this.
+                        </div>
+                        <div class="phase-box">
+                            <strong>PATH B: HYBRID</strong><br>
+                            Timeline: 3 years<br>
+                            Method: TR6 parallel<br>
+                            Risk: MEDIUM<br>
+                            Disruption: MODERATE<br>
+                            Success rate: 67%<br><br>
+                            
+                            Requires:<br>
+                            • Start immediately<br>
+                            • TR4 multi-scale<br>
+                            • Critical mass in 8 days<br><br>
+                            
+                            <span class="warning">This is our best option.</span>
+                        </div>
+                        <div class="phase-box">
+                            <strong>PATH C: EMERGENCY</strong><br>
+                            Timeline: 4 days<br>
+                            Method: TR7 catastrophic<br>
+                            Risk: HIGH<br>
+                            Disruption: SEVERE<br>
+                            Success rate: 45%<br><br>
+                            
+                            Requires:<br>
+                            • System collapse<br>
+                            • Presidential emergency<br>
+                            • Forced conversion<br><br>
+                            
+                            Backup if B fails.
+                        </div>
+                    </div>
+                    
+                    <div class="narrator">You address the room:</div>
+                    
+                    <div class="dialogue">"Path A—gradual—is what we'd do if we had five years. We have twenty-one days. Path C—catastrophic—is what happens if we wait for collapse. That's our fallback. But Path B—hybrid parallel currency with multi-scale rollout—that's our actual strategy."</div>
+                    
+                    <div class="narrator">You pull up the implementation timeline:</div>
+                    
+                    <div class="system-msg">
+                    RECOMMENDED STRATEGY: PATH B (HYBRID)<br><br>
+                    
+                    <strong>TODAY (Day 23):</strong><br>
+                    • Emergency Fed meeting (done)<br>
+                    • Congressional briefing (scheduled)<br>
+                    • Presidential approval (pending)<br><br>
+                    
+                    <strong>DAY 24-25 (tomorrow):</strong><br>
+                    • Launch Burlington pilot (TR4 Phase 1)<br>
+                    • Introduce EMx currency at 5% (TR6)<br>
+                    • Distribute first UBR payments<br>
+                    • Monitor for 48 hours<br><br>
+                    
+                    <strong>DAY 26-28:</strong><br>
+                    • Vermont statewide (TR4 Phase 2)<br>
+                    • EMx fraction increases to 15%<br>
+                    • Word spreads, resistance decays (TR3)<br><br>
+                    
+                    <strong>DAY 29-31 (one week):</strong><br>
+                    • Regional Northeast rollout (TR4 Phase 3)<br>
+                    • EMx fraction → 35%<br>
+                    • Critical mass approaching<br><br>
+                    
+                    <strong>DAY 32 (Day 8 of rollout):</strong><br>
+                    • Critical mass reached! (TR1: 202M adopters)<br>
+                    • Adoption becomes self-sustaining (TR2)<br>
+                    • National announcement<br><br>
+                    
+                    <strong>DAY 35-44 (final 10 days before collapse):</strong><br>
+                    • Rapid national adoption<br>
+                    • EMx → 70%+ of transactions<br>
+                    • Old system supported but declining<br><br>
+                    
+                    <strong>DAY 44 (original tipping point):</strong><br>
+                    • Old system would have collapsed<br>
+                    • But 85%+ using EMx already<br>
+                    • Old system obsolete, not collapsed<br>
+                    • Transition complete<br><br>
+                    
+                    <span class="warning">Success probability (TR4): 67.2%<br>
+                    Fallback to TR7 emergency conversion if needed<br>
+                    Combined paths: 67% + 0.33×45% = 82% total success rate</span>
+                    </div>
+                    
+                    <div class="narrator">Director Walsh stands.</div>
+                    
+                    <div class="dialogue">"We have the mathematics. We have the plan. We have twenty-one days. The question is: do we have the courage?"</div>
+                    
+                    <div class="narrator">The Treasury Secretary nods.</div>
+                    
+                    <div class="dialogue">"I'll brief the President. Congress is already assembled. Dr. Chen, prepare for testimony."</div>
+                    
+                    <div class="narrator">You look at the seven transition equations on the screens. Twenty-five total equations now—Parts 1, 2, 3, and 4 complete.</div>
+                    
+                    <div class="narrator">The mathematics is finished. The implementation is designed. The paths are mapped.</div>
+                    
+                    <div class="narrator">Now it's up to humanity.</div>
+                    
+                    <div style="text-align: center; color: #ffff00; font-size: 20px; margin: 30px 0;">
+                    ═══════════════════════════════════════════<br>
+                    PART 4: TRANSITION & IMPLEMENTATION - COMPLETE<br>
+                    ═══════════════════════════════════════════
+                    </div>
+                    
+                    <div class="discovery" style="text-align: center; font-size: 16px;">
+                        <strong>EQUATIONS DISCOVERED: 7/7</strong><br><br>
+                        ✓ TR1: Critical Mass (202M, 60%)<br>
+                        ✓ TR2: Adoption Velocity (S-curve)<br>
+                        ✓ TR3: Resistance Decay (85% → 15%)<br>
+                        ✓ TR4: Multi-Scale (67% success)<br>
+                        ✓ TR5: Phase Space (5-year gradual)<br>
+                        ✓ TR6: Parallel Currency (hybrid)<br>
+                        ✓ TR7: Emergency Conversion (4-day)<br>
+                    </div>
+                    
+                    <div class="system-msg">
+                        PART 4 ACHIEVEMENTS:<br><br>
+                        • Calculated critical mass threshold (60%)<br>
+                        • Modeled adoption dynamics (S-curve + resistance)<br>
+                        • Designed multi-scale implementation (city→national)<br>
+                        • Mapped phase space navigation (gradual 5-year)<br>
+                        • Created parallel currency strategy (hybrid 3-year)<br>
+                        • Prepared emergency protocol (catastrophic 4-day)<br>
+                        • Combined success rate: 82% with fallback<br>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; color: #00ffff;">
+                        <strong>TOTAL PROGRESS: 25/47 EQUATIONS</strong><br>
+                        (Parts 1-4 Complete)<br><br>
+                        
+                        Part 1: 5 Tipping Point equations<br>
+                        Part 2: 5 Wealth Extraction equations<br>
+                        Part 3: 8 Alternative System equations<br>
+                        Part 4: 7 Transition equations<br><br>
+                        
+                        You have proven:<br>
+                        • The collapse is mathematically certain (21 days)<br>
+                        • The cause is $11T/year extraction<br>
+                        • The alternative is provably stable (100+ years)<br>
+                        • The transition is achievable (8-day critical mass)<br>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; color: #00ff88;">
+                        The framework is complete.<br>
+                        The paths are mapped.<br>
+                        The choice is clear.<br><br>
+                        
+                        What happens next is not mathematics—it's history.
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: 'Review all transition equations', 
+                        next: 8,
+                        flag: 'review'
+                    },
+                    { 
+                        text: 'See final series summary', 
+                        next: 9,
+                        flag: 'summary'
+                    }
+                ]
+            },
+            
+            // Chapter 8: Review
+            {
+                text: `
+                    <div style="text-align: center; color: #ffff00; font-size: 18px; margin: 20px 0;">
+                    EQUATION REFERENCE - PART 4
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TR1: CRITICAL MASS THRESHOLD</div>
+                        <div class="formula">N_critical = 202M (60% population)</div>
+                        <div class="explanation">
+                        Minimum adoption for self-sustaining transition. Network effects + ∅₀ = 0.22 → need 60% not 78%.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TR2: ADOPTION VELOCITY FUNCTION</div>
+                        <div class="formula">dN/dt = α·N·(N_max - N) - β·R(t)</div>
+                        <div class="explanation">
+                        S-curve adoption. Slow start, explosive middle (network effects), slow finish. Reaches critical mass Day 8.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TR3: RESISTANCE DECAY PATTERN</div>
+                        <div class="formula">R(t) = R₀·e^(-λt) + R_hardcore</div>
+                        <div class="explanation">
+                        85% initial resistance → 15% hardcore. "Wait and see" evaporates with proof. Don't need everyone.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TR4: MULTI-SCALE IMPLEMENTATION</div>
+                        <div class="formula">S_global = ∏S_i^wi = 67%</div>
+                        <div class="explanation">
+                        City pilot → State → Region → National. Each success increases next probability. 2× better than direct.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TR5: PHASE SPACE NAVIGATION</div>
+                        <div class="formula">ψ(t+1) = U(θ)·ψ(t)</div>
+                        <div class="explanation">
+                        Gradual 5-year rotation. Smooth, stable, low-risk. But we don't have 5 years.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TR6: PARALLEL CURRENCY STRATEGY</div>
+                        <div class="formula">M = M_legacy(1-f) + M_emx(f)</div>
+                        <div class="explanation">
+                        Run both, let people choose. EMx advantages drive natural adoption. 58% in 1 year, 91% in 3 years.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TR7: CATASTROPHIC CONVERSION TRIGGER</div>
+                        <div class="formula">if crisis then instant_transition()</div>
+                        <div class="explanation">
+                        Emergency 4-day conversion if collapse occurs. Bank holiday, forced conversion, jubilee, UBR, reopen. Backup plan.
+                        </div>
+                    </div>
+                    
+                    <div class="system-msg" style="margin-top: 30px;">
+                        These seven equations provide complete transition framework.<br>
+                        Three paths: Gradual (5yr), Hybrid (3yr), Emergency (4day).<br>
+                        Recommended: Path B (Hybrid) with C as fallback.<br>
+                        Combined success rate: 82%.<br>
+                        Critical mass achievable in 8 days.
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: 'See complete series summary', 
+                        next: 9,
+                        flag: 'final_summary'
+                    }
+                ]
+            },
+            
+            // Chapter 9: Series Complete
+            {
+                text: `
+                    <div style="text-align: center; color: #00ffff; font-size: 22px; margin: 30px 0;">
+                    ╔════════════════════════════════════════════╗<br>
+                    ║  THE FINANCIAL DETECTIVE - COMPLETE       ║<br>
+                    ║  All Four Parts - 25 Core Equations       ║<br>
+                    ╚════════════════════════════════════════════╝
+                    </div>
+                    
+                    <div style="margin: 30px 0;">
+                        <div style="text-align: center; color: #00ffff; font-size: 18px; margin: 20px 0;">
+                            <strong>PART 1: DETECTING THE TIPPING POINT</strong>
+                        </div>
+                        <div style="font-size: 13px; line-height: 1.8;">
+                            TP1: Irreversibility Threshold → Point of no return exists<br>
+                            TP2: Critical Slowing Down → Recovery time → ∞<br>
+                            TP3: Variance Amplification → Volatility explodes near collapse<br>
+                            TP4: Autocorrelation Spike → False stability before crash<br>
+                            TP5: Bifurcation Boundary → System jumps at S* = 0.577<br><br>
+                            
+                            <strong>Result:</strong> Tipping point in 47 days (originally), mathematically certain.
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 30px 0;">
+                        <div style="text-align: center; color: #ff8800; font-size: 18px; margin: 20px 0;">
+                            <strong>PART 2: QUANTIFYING WEALTH EXTRACTION</strong>
+                        </div>
+                        <div style="font-size: 13px; line-height: 1.8;">
+                            WE1: Hidden Transfer Function → $5.67T/year (capital vs labor)<br>
+                            WE2: Extraction Velocity → 5.67× upward flow rate<br>
+                            WE3: Monetary Privilege Rent → $982B/year (money creation)<br>
+                            WE4: Debt Compounding Trap → r > g = unpayable<br>
+                            WE5: Inflation Tax Distribution → 9.4× regressive<br><br>
+                            
+                            <strong>Result:</strong> $11.0T/year total extraction driving instability.
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 30px 0;">
+                        <div style="text-align: center; color: #00ff88; font-size: 18px; margin: 20px 0;">
+                            <strong>PART 3: ALTERNATIVE STABLE SYSTEM</strong>
+                        </div>
+                        <div style="font-size: 13px; line-height: 1.8;">
+                            AS1: EMx Monetary Equation → 22% reserve (4.5× leverage)<br>
+                            AS2: Demurrage Rate → 3% annual (circulation incentive)<br>
+                            AS3: Wealth Circulation → 22% annual requirement<br>
+                            AS4: Zero-Interest Equilibrium → r = 0 naturally<br>
+                            AS5: Jubilee Trigger → D/GDP > 4.55 → forgive<br>
+                            AS6: Transaction Transparency → >$10K visible<br>
+                            AS7: Wealth Cap → e^(2π) × median = $64.8M max<br>
+                            AS8: Universal Basic Reserve → $18,388/year per person<br><br>
+                            
+                            <strong>Result:</strong> Provably stable 100+ years, extraction impossible.
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 30px 0;">
+                        <div style="text-align: center; color: #ffff00; font-size: 18px; margin: 20px 0;">
+                            <strong>PART 4: TRANSITION & IMPLEMENTATION</strong>
+                        </div>
+                        <div style="font-size: 13px; line-height: 1.8;">
+                            TR1: Critical Mass Threshold → 202M people (60%)<br>
+                            TR2: Adoption Velocity → S-curve, critical mass Day 8<br>
+                            TR3: Resistance Decay → 85% → 15% hardcore<br>
+                            TR4: Multi-Scale → City→State→Region→National = 67%<br>
+                            TR5: Phase Space Navigation → 5-year gradual path<br>
+                            TR6: Parallel Currency → Hybrid 3-year natural adoption<br>
+                            TR7: Catastrophic Conversion → Emergency 4-day fallback<br><br>
+                            
+                            <strong>Result:</strong> Achievable transition, 82% combined success rate.
+                        </div>
+                    </div>
+                    
+                    <div style="border: 3px solid #00ffff; padding: 20px; margin: 30px 0; background: rgba(0, 255, 255, 0.05);">
+                        <div style="text-align: center; font-size: 20px; color: #00ffff; margin-bottom: 20px;">
+                            <strong>THE COMPLETE PICTURE</strong>
+                        </div>
+                        <div style="font-size: 14px; line-height: 2;">
+                            <strong>The Problem:</strong> Current system collapses in 21 days (mathematically certain)<br>
+                            <strong>The Cause:</strong> $11T/year wealth extraction destabilizes system<br>
+                            <strong>The Solution:</strong> EMx alternative (22% reserve, zero interest, wealth cap, UBR)<br>
+                            <strong>The Proof:</strong> 100+ year stability, extraction structurally impossible<br>
+                            <strong>The Path:</strong> 8-day critical mass via multi-scale hybrid rollout<br>
+                            <strong>The Probability:</strong> 82% success (67% primary + 45% emergency backup)<br>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; font-size: 16px; line-height: 2;">
+                        <strong>25 equations.</strong><br>
+                        <strong>4 parts.</strong><br>
+                        <strong>Complete framework.</strong><br><br>
+                        
+                        We have proven:<br>
+                        • What will happen (collapse in 21 days)<br>
+                        • Why it happens ($11T extraction)<br>
+                        • What to do instead (EMx stable alternative)<br>
+                        • How to get there (transition paths)<br><br>
+                        
+                        <span style="color: #00ffff;">The mathematics is finished.</span><br>
+                        <span style="color: #ff8800;">The extraction is quantified.</span><br>
+                        <span style="color: #00ff88;">The alternative is designed.</span><br>
+                        <span style="color: #ffff00;">The transition is mapped.</span><br><br>
+                        
+                        <span style="font-size: 20px; color: #ffd700;">What happens next is not a game.</span>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; color: #ff00ff;">
+                        Thank you for playing The Financial Detective.<br><br>
+                        
+                        The equations are real.<br>
+                        The mathematics is sound.<br>
+                        The alternative is achievable.<br>
+                        The choice is ours.
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: 'Restart from beginning', 
+                        next: 0,
+                        flag: 'restart'
+                    }
+                ]
+            }
+        ];
+        
+        // Game Engine (same pattern as previous parts)
+        function loadChapter(index) {
+            state.chapter = index;
+            const chapter = chapters[index];
+            
+            document.getElementById('story').innerHTML = chapter.text;
+            
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.innerHTML = '';
+            
+            if (chapter.choices) {
+                chapter.choices.forEach(choice => {
+                    const btn = document.createElement('button');
+                    btn.className = 'choice-btn';
+                    btn.textContent = choice.text;
+                    btn.onclick = () => {
+                        unlockEquationsForChapter(choice.next);
+                        loadChapter(choice.next);
+                    };
+                    choicesDiv.appendChild(btn);
+                });
+            }
+            
+            updateStats();
+            document.getElementById('story').scrollTop = 0;
+        }
+        
+        function unlockEquationsForChapter(chapterIndex) {
+            const unlockMap = {
+                1: ['TR1'],
+                2: ['TR2'],
+                3: ['TR1', 'TR2', 'TR3'],
+                4: ['TR1', 'TR2', 'TR3', 'TR4'],
+                5: ['TR1', 'TR2', 'TR3', 'TR4', 'TR5'],
+                6: ['TR1', 'TR2', 'TR3', 'TR4', 'TR7'],
+                7: ['TR1', 'TR2', 'TR3', 'TR4', 'TR5', 'TR6', 'TR7']
+            };
+            
+            const toUnlock = unlockMap[chapterIndex] || [];
+            toUnlock.forEach(eqId => {
+                if (!state.equationsFound.includes(eqId)) {
+                    state.equationsFound.push(eqId);
+                }
+            });
+            
+            updateEquationsList();
+        }
+        
+        function updateStats() {
+            document.getElementById('day').textContent = state.day;
+            document.getElementById('eq-count').textContent = state.equationsFound.length + '/7';
+            document.getElementById('adoption').textContent = state.adoptionRate + '%';
+            document.getElementById('days-left').textContent = state.daysToTipping;
+        }
+        
+        function updateEquationsList() {
+            const listDiv = document.getElementById('equations-unlocked');
+            
+            if (state.equationsFound.length === 0) {
+                listDiv.innerHTML = '<h2>Equations Discovered</h2><div style="color: #666; font-size: 12px;">Design the transition...</div>';
+                return;
+            }
+            
+            let html = '<h2 style="color: #ffff00;">Equations Discovered (' + state.equationsFound.length + '/7)</h2>';
+            
+            state.equationsFound.forEach(eqId => {
+                const eq = equations[eqId];
+                html += `
+                    <div class="equation-item" onclick="showEquationDetails('${eqId}')">
+                        <strong>${eq.id}:</strong> ${eq.name}<br>
+                        <span style="color: #ffff00; font-size: 11px;">${eq.formula}</span>
+                    </div>
+                `;
+            });
+            
+            listDiv.innerHTML = html;
+        }
+        
+        function showEquationDetails(eqId) {
+            const eq = equations[eqId];
+            alert(
+                eq.name + '\n\n' +
+                'Formula: ' + eq.formula + '\n\n' +
+                eq.explanation + '\n\n' +
+                'Proof:\n' + eq.proof
+            );
+        }
+        
+        // Start game
+        loadChapter(0);
+    </script>
+</body>
+</html>

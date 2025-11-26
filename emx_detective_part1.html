@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Detective - Part 1: Tipping Points</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff00;
+            line-height: 1.6;
+        }
+        
+        #game {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        #title {
+            color: #00ffff;
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+            text-shadow: 0 0 10px #00ffff;
+        }
+        
+        #stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #00ff00;
+            background: #0a0a0a;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #00ff00;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 11px;
+        }
+        
+        .stat-value {
+            color: #00ff00;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        #story {
+            background: #0a0a0a;
+            padding: 30px;
+            border: 2px solid #00ff00;
+            margin: 20px 0;
+            min-height: 400px;
+        }
+        
+        #choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .choice-btn {
+            background: #003300;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 15px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            text-align: left;
+            transition: all 0.3s;
+        }
+        
+        .choice-btn:hover {
+            background: #005500;
+            transform: translateX(5px);
+            box-shadow: 0 0 15px #00ff00;
+        }
+        
+        .equation {
+            background: rgba(0, 255, 255, 0.1);
+            border-left: 4px solid #00ffff;
+            padding: 15px;
+            margin: 20px 0;
+            color: #00ffff;
+        }
+        
+        .equation-title {
+            color: #ffff00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .formula {
+            color: #00ffff;
+            margin: 10px 0;
+            font-family: 'Times New Roman', serif;
+        }
+        
+        .explanation {
+            color: #aaa;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        
+        .discovery {
+            background: rgba(255, 0, 255, 0.2);
+            border: 2px solid #ff00ff;
+            color: #ff00ff;
+            padding: 15px;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px #ff00ff; }
+            50% { box-shadow: 0 0 25px #ff00ff; }
+        }
+        
+        .narrator {
+            color: #aaa;
+            font-style: italic;
+            margin: 15px 0;
+        }
+        
+        .dialogue {
+            color: #00ffff;
+            margin: 10px 0;
+        }
+        
+        .system-msg {
+            background: rgba(255, 255, 0, 0.1);
+            border-left: 3px solid #ffff00;
+            color: #ffff00;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        #equations-unlocked {
+            background: #0a0a0a;
+            border: 2px solid #00ff00;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .equation-item {
+            padding: 8px;
+            margin: 5px 0;
+            border-left: 2px solid #00ff00;
+            background: rgba(0, 255, 0, 0.05);
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .equation-item:hover {
+            background: rgba(0, 255, 0, 0.15);
+        }
+        
+        .warning {
+            color: #ff8800;
+            font-weight: bold;
+        }
+        
+        .critical {
+            color: #ff0000;
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <div id="title">
+            ╔══════════════════════════════════════════╗<br>
+            ║  THE FINANCIAL DETECTIVE - PART 1       ║<br>
+            ║  Detecting the Irreversible Tipping Point ║<br>
+            ╚══════════════════════════════════════════╝
+        </div>
+        
+        <div id="stats">
+            <div class="stat-box">
+                <div class="stat-label">DAY</div>
+                <div class="stat-value" id="day">1</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">EQUATIONS DISCOVERED</div>
+                <div class="stat-value" id="eq-count">0/5</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">DAYS TO TIPPING POINT</div>
+                <div class="stat-value critical" id="days-left">47</div>
+            </div>
+        </div>
+        
+        <div id="story"></div>
+        <div id="choices"></div>
+        <div id="equations-unlocked"></div>
+    </div>
+
+    <script>
+        // Game State
+        const state = {
+            chapter: 0,
+            day: 1,
+            daysToTipping: 47,
+            equationsFound: [],
+            flags: {}
+        };
+        
+        // The 5 Equations for Part 1
+        const equations = {
+            TP1: {
+                id: 'TP1',
+                name: 'Irreversibility Threshold',
+                formula: 'dS/dt = ∇·(D∇S) + R(S) | ∂R/∂S < 0 at S*',
+                explanation: 'When the rate of change of system state shows NEGATIVE feedback at critical point S*, the system cannot naturally return to equilibrium. Like a boulder at the peak of a hill—once it tips past center, gravity pulls it away.',
+                practical: 'In finance: When debt servicing costs exceed GDP growth rate, system spirals irreversibly into default. No amount of policy can reverse it.',
+                example: 'Greece 2010: Debt 145% of GDP, interest payments 7%, GDP growth -4%. The math made default inevitable.'
+            },
+            TP2: {
+                id: 'TP2',
+                name: 'Critical Slowing Down',
+                formula: 'τ_recovery = 1/|λ| → ∞ as λ → 0',
+                explanation: 'Recovery time (τ) approaches INFINITY as the leading eigenvalue (λ) approaches zero. System becomes "sluggish"—takes longer to bounce back from shocks. This is early warning.',
+                practical: 'Markets near crash take weeks/months to recover from small dips instead of days. Each shock leaves system weaker.',
+                example: '2007-2008: Market volatility increased 300%, recovery time from corrections went from ~5 days to ~45 days. Warned of 2008 crash.'
+            },
+            TP3: {
+                id: 'TP3',
+                name: 'Variance Amplification',
+                formula: 'σ²(S) ∝ 1/(S* - S) as S → S*',
+                explanation: 'Variance grows inversely with distance from critical point. Small perturbations cause HUGE swings. Like a table balanced on one leg—tiny push = big wobble.',
+                practical: 'Stock market "flash crashes" become more frequent and severe. What used to move markets 1% now moves them 5-10%.',
+                example: 'Flash Crash May 2010: Dow dropped 1000 points (9%) in minutes. Near tipping point, tiny trigger = massive response.'
+            },
+            TP4: {
+                id: 'TP4',
+                name: 'Autocorrelation Spike',
+                formula: 'ρ(τ) = ⟨S(t)S(t+τ)⟩ → 1 as t → t_critical',
+                explanation: 'Past values become highly predictive of future (autocorrelation → 1). System "remembers" its history longer. Trending becomes stronger, more persistent.',
+                practical: 'Market becomes more predictable but also more dangerous. Strong trends before sudden collapse—like calm before storm.',
+                example: '1929: Stock market showed 0.89 autocorrelation vs historical 0.43. Strong uptrend right before Oct crash. Pattern repeated 2007-2008.'
+            },
+            TP5: {
+                id: 'TP5',
+                name: 'Bifurcation Boundary',
+                formula: '∂²V/∂S² = 0 defines fold bifurcation',
+                explanation: 'Second derivative of potential equals zero marks FOLD BIFURCATION—point where system suddenly jumps to new state. Not gradual decline, but sudden shift.',
+                practical: 'Currency devaluations, bank runs, regime changes. System doesn\'t slide—it jumps. One moment stable, next moment collapsed.',
+                example: 'Lehman Brothers Sept 2008: Trading at $60/share Friday, bankrupt Monday. Crossed bifurcation boundary over weekend.'
+            }
+        };
+        
+        // Story chapters
+        const chapters = [
+            // Chapter 0: Opening
+            {
+                text: `
+                    <div class="narrator">Your EMx terminal boots up with a soft hum. The holographic display casts cyan light across your cramped office at the Federal Reserve Bank of New York.</div>
+                    
+                    <div class="narrator">You're Dr. Alex Chen, one of the few economists who actually understands what EMx can do. Most colleagues think it's just "fancy math." They don't understand EMx can see things traditional economics cannot—like tipping points.</div>
+                    
+                    <div class="narrator">You glance at your dashboard. Something's wrong.</div>
+                    
+                    <div class="system-msg">ALERT: Anomalous market behavior detected<br>
+                    NULL baseline drift: 0.22 → 0.19 → 0.17<br>
+                    Reserve buffer eroding below critical threshold</div>
+                    
+                    <div class="narrator">This is how it starts. Not with a crash, but with a drift. The reserve buffer eroding until there's nothing left to absorb shocks.</div>
+                    
+                    <div class="dialogue">"Dr. Chen?" Your assistant's voice through the intercom. "Director Walsh wants you immediately."</div>
+                    
+                    <div class="narrator">You have a choice to make:</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Investigate the NULL drift first (Technical Path)', 
+                        next: 1,
+                        flag: 'technical'
+                    },
+                    { 
+                        text: '2. Go to Director Walsh\'s office (Political Path)', 
+                        next: 2,
+                        flag: 'political'
+                    }
+                ]
+            },
+            
+            // Chapter 1: Technical Investigation
+            {
+                text: `
+                    <div class="narrator">You ignore the intercom. If you're right about what this drift means, a meeting won't matter. You need to run the numbers.</div>
+                    
+                    <div class="narrator">Your fingers dance across the keyboard, pulling up the EMx Tipping Point Detection suite. You start with the most fundamental equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TP1: IRREVERSIBILITY THRESHOLD</div>
+                        <div class="formula">dS/dt = ∇·(D∇S) + R(S) | ∂R/∂S < 0 at S*</div>
+                        <div class="explanation">
+                        <strong>Translation:</strong> The rate of change of system state (dS/dt) depends on diffusion (∇·(D∇S)) and reaction term R(S). When the derivative of the reaction term (∂R/∂S) becomes NEGATIVE at critical point S*, feedback reverses—system cannot return to equilibrium.<br><br>
+                        
+                        <strong>Physical Meaning:</strong> Imagine pushing a ball up a hill. At the peak (S*), if you push just slightly past, gravity (negative feedback) pulls it down the other side. You cannot push it back without enormous energy.<br><br>
+                        
+                        <strong>Financial Application:</strong><br>
+                        S = debt-to-GDP ratio<br>
+                        R(S) = economic growth rate - interest rate<br>
+                        When debt gets too high, R becomes negative: interest > growth<br>
+                        Past this point, debt spirals unavoidably upward<br>
+                        No policy can reverse it—mathematics forbids it
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TP1 - Irreversibility Threshold ★<br>
+                        Progress: 1/5 equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You feed current Fed balance sheet data into the equation. The gradient field appears—a topological map of financial stability.</div>
+                    
+                    <div class="narrator">And there it is: a basin boundary. The system is approaching a fold bifurcation.</div>
+                    
+                    <div class="system-msg">
+                        ANALYSIS RESULTS:<br>
+                        Current state S = 0.67 (67% various metrics)<br>
+                        Critical threshold S* = 0.73<br>
+                        Distance to tipping point: 0.06<br>
+                        Drift rate: 0.00127 per day<br><br>
+                        <span class="critical">ESTIMATED TIME TO S*: 47 DAYS</span>
+                    </div>
+                    
+                    <div class="narrator">Forty-seven days until the financial system crosses the point of no return.</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Calculate the recovery time to confirm', 
+                        next: 3,
+                        flag: 'calculate_recovery'
+                    },
+                    { 
+                        text: '2. Check variance amplification patterns', 
+                        next: 4,
+                        flag: 'check_variance'
+                    }
+                ]
+            },
+            
+            // Chapter 2: Political Path
+            {
+                text: `
+                    <div class="narrator">You head to Director Walsh's office. She's standing at her window, looking out over Wall Street.</div>
+                    
+                    <div class="dialogue">"Chen. What's going on? I'm seeing alerts from your terminal."</div>
+                    
+                    <div class="dialogue">"Director, I need to show you something. It's... not good."</div>
+                    
+                    <div class="narrator">You pull up your EMx pad, displaying the first equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TP1: IRREVERSIBILITY THRESHOLD</div>
+                        <div class="formula">dS/dt = ∇·(D∇S) + R(S) | ∂R/∂S < 0 at S*</div>
+                        <div class="explanation">
+                        "Director, think of the economy as a ball on a landscape. Valleys are stable states, hills are unstable. This equation tells us exactly where the hills are."<br><br>
+                        
+                        "We're approaching the peak of a hill. Once we cross it, gravity—in this case, mathematical certainty—pulls the system down into a new valley. A worse valley."<br><br>
+                        
+                        "The math shows: when debt servicing costs exceed GDP growth, there's no policy that can reverse it. It's not politics. It's topology."
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TP1 - Irreversibility Threshold ★<br>
+                        Progress: 1/5 equations unlocked
+                    </div>
+                    
+                    <div class="narrator">Walsh stares at the equation. "How close are we?"</div>
+                    
+                    <div class="dialogue">"Forty-seven days. Maybe less."</div>
+                    
+                    <div class="narrator">She goes pale.</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Explain the warning signs in detail', 
+                        next: 3,
+                        flag: 'explain_warnings'
+                    },
+                    { 
+                        text: '2. Show the market volatility data', 
+                        next: 4,
+                        flag: 'show_volatility'
+                    }
+                ]
+            },
+            
+            // Chapter 3: Recovery Time Analysis
+            {
+                text: `
+                    <div class="narrator">You pull up the second equation—the one that measures how long it takes a system to recover from shocks:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TP2: CRITICAL SLOWING DOWN</div>
+                        <div class="formula">τ_recovery = 1/|λ| → ∞ as λ → 0</div>
+                        <div class="explanation">
+                        <strong>The Math:</strong> Recovery time (τ) equals 1 divided by the absolute value of the leading eigenvalue (λ). As λ approaches zero, τ approaches infinity.<br><br>
+                        
+                        <strong>What's an Eigenvalue?</strong> It measures how fast the system returns to equilibrium after being disturbed. Large λ = quick recovery. Small λ = slow recovery. Zero λ = never recovers.<br><br>
+                        
+                        <strong>Critical Slowing Down:</strong> Near tipping points, λ → 0. System becomes "sluggish." Takes longer to bounce back from shocks. This is the early warning.<br><br>
+                        
+                        <strong>Real Example:</strong><br>
+                        - 2005: Market correction recovery time ~5 days (λ = 0.20)<br>
+                        - 2007: Market correction recovery time ~30 days (λ = 0.033)<br>
+                        - 2008 Aug: Recovery time ~45 days (λ = 0.022)<br>
+                        - 2008 Sept: Lehman collapse (λ → 0, no recovery)
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TP2 - Critical Slowing Down ★<br>
+                        Progress: 2/5 equations unlocked
+                    </div>
+                    
+                    <div class="narrator">You run the calculation on current market data. The results appear:</div>
+                    
+                    <div class="system-msg">
+                        EIGENVALUE ANALYSIS:<br>
+                        Leading eigenvalue λ = 0.023<br>
+                        Recovery time τ = 1/0.023 = 43.5 days<br><br>
+                        Historical comparison:<br>
+                        - 2006 average: τ = 6 days<br>
+                        - Current: τ = 43 days<br>
+                        - Change: <span class="critical">7.2× slower recovery</span><br><br>
+                        System is critically slowing down.<br>
+                        This is a tipping point warning signal.
+                    </div>
+                    
+                    <div class="narrator">The system is taking more than seven times longer to recover from shocks than it did just a few years ago. It's like quicksand—the harder it struggles, the deeper it sinks.</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Check the variance patterns for confirmation', 
+                        next: 5,
+                        flag: 'confirm_variance'
+                    },
+                    { 
+                        text: '2. Calculate when the bifurcation happens', 
+                        next: 6,
+                        flag: 'calculate_bifurcation'
+                    }
+                ]
+            },
+            
+            // Chapter 4: Variance Amplification
+            {
+                text: `
+                    <div class="narrator">You pull up market volatility data and overlay the third equation:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TP3: VARIANCE AMPLIFICATION</div>
+                        <div class="formula">σ²(S) ∝ 1/(S* - S) as S → S*</div>
+                        <div class="explanation">
+                        <strong>The Math:</strong> Variance (σ²) is proportional to the inverse of distance from critical point. As system state S approaches S*, variance explodes.<br><br>
+                        
+                        <strong>Intuitive Picture:</strong> Imagine a table balanced on one leg. When it's upright (far from S*), you can push it and it barely moves (low variance). But as it tips toward falling (approaching S*), the tiniest push makes it wobble wildly (high variance).<br><br>
+                        
+                        <strong>In Markets:</strong> Small news that used to move markets 0.5% now moves them 5%. Same input, 10× larger response. This is variance amplification.<br><br>
+                        
+                        <strong>Mathematical Certainty:</strong> This isn't psychological. It's not "market sentiment." It's topology. Near bifurcation boundaries, variance MUST increase. The math requires it.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TP3 - Variance Amplification ★<br>
+                        Progress: 3/5 equations unlocked
+                    </div>
+                    
+                    <div class="narrator">The data is damning:</div>
+                    
+                    <div class="system-msg">
+                        VARIANCE ANALYSIS:<br><br>
+                        Historical average (1990-2005): σ² = 1.2<br>
+                        Current measured variance: σ² = 4.8<br>
+                        Amplification factor: <span class="critical">4.0×</span><br><br>
+                        Distance to critical point: S* - S = 0.06<br>
+                        Predicted variance: σ² ∝ 1/0.06 ≈ 16.7<br><br>
+                        <span class="warning">WARNING: Variance still increasing<br>
+                        Expected to reach 16.7× baseline as S → S*</span><br><br>
+                        Translation: Markets will become 4× MORE volatile<br>
+                        before the tipping point is reached.
+                    </div>
+                    
+                    <div class="narrator">Flash crashes. Sudden rallies. Whipsaw movements. All symptoms of variance amplification near a critical transition.</div>
+                    
+                    <div class="narrator">The system isn't just unstable. It's screaming warnings.</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Check autocorrelation patterns', 
+                        next: 7,
+                        flag: 'check_autocorrelation'
+                    },
+                    { 
+                        text: '2. Calculate the exact bifurcation point', 
+                        next: 6,
+                        flag: 'find_bifurcation'
+                    }
+                ]
+            },
+            
+            // Chapter 5: Combined Analysis
+            {
+                text: `
+                    <div class="narrator">You've now confirmed two independent warning signals. Time to check the third.</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TP4: AUTOCORRELATION SPIKE</div>
+                        <div class="formula">ρ(τ) = ⟨S(t)S(t+τ)⟩ → 1 as t → t_critical</div>
+                        <div class="explanation">
+                        <strong>The Math:</strong> Autocorrelation ρ(τ) measures how well past values predict future values. ρ = 0 means no relationship. ρ = 1 means perfect prediction. Near tipping points, ρ → 1.<br><br>
+                        
+                        <strong>Why This Happens:</strong> System "remembers" its history longer near critical transitions. Like a pendulum slowing down—at the top of its arc, its current position strongly predicts where it'll be moments later.<br><br>
+                        
+                        <strong>The Danger:</strong> High autocorrelation makes markets look predictable. Strong trends form. Everyone sees the same patterns. This creates false confidence right before collapse.<br><br>
+                        
+                        <strong>Historical Pattern:</strong><br>
+                        - 1929: ρ increased from 0.41 to 0.89 before Oct crash<br>
+                        - 2007-2008: ρ increased from 0.45 to 0.91 before Lehman<br>
+                        - Both showed strong uptrends before sudden collapse
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TP4 - Autocorrelation Spike ★<br>
+                        Progress: 4/5 equations unlocked
+                    </div>
+                    
+                    <div class="system-msg">
+                        AUTOCORRELATION ANALYSIS:<br><br>
+                        Current autocorrelation: ρ = 0.87<br>
+                        Historical baseline: ρ = 0.43<br>
+                        Increase: <span class="critical">2.0× baseline</span><br><br>
+                        Market trending strength: <span class="warning">EXTREME</span><br>
+                        Predictability: <span class="warning">DANGEROUSLY HIGH</span><br><br>
+                        Pattern matches:<br>
+                        - 1929 pre-crash: 94% match<br>
+                        - 2008 pre-crash: 97% match<br><br>
+                        <span class="critical">This is the "calm before the storm" signal.</span>
+                    </div>
+                    
+                    <div class="narrator">Three independent measures—recovery time, variance, autocorrelation—all pointing to the same conclusion: critical transition imminent.</div>
+                    
+                    <div class="narrator">You need the final piece: the exact bifurcation point.</div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Calculate the bifurcation boundary', 
+                        next: 8,
+                        flag: 'final_calculation'
+                    }
+                ]
+            },
+            
+            // Chapter 6: Bifurcation Point
+            {
+                text: `
+                    <div class="narrator">Time for the final equation—the one that pinpoints exactly where the system jumps.</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TP5: BIFURCATION BOUNDARY</div>
+                        <div class="formula">∂²V/∂S² = 0 defines fold bifurcation</div>
+                        <div class="explanation">
+                        <strong>The Math:</strong> The second derivative of the potential function V with respect to state S equals zero at a fold bifurcation. This marks the point where the system suddenly transitions.<br><br>
+                        
+                        <strong>Visual Understanding:</strong><br>
+                        - First derivative ∂V/∂S = 0: You're at a hill/valley (equilibrium)<br>
+                        - Second derivative ∂²V/∂S² > 0: You're in a valley (stable)<br>
+                        - Second derivative ∂²V/∂S² < 0: You're on a hill (unstable)<br>
+                        - Second derivative ∂²V/∂S² = 0: FOLD POINT (bifurcation)<br><br>
+                        
+                        At the fold point, the valley disappears. The system doesn't gradually slide—it JUMPS to a new state.<br><br>
+                        
+                        <strong>Real Examples:</strong><br>
+                        - Currency devaluations: Trading at X, suddenly jumps to X/2<br>
+                        - Bank runs: Operating normally, suddenly insolvent overnight<br>
+                        - Lehman Brothers: $60/share Friday, bankrupt Monday<br><br>
+                        
+                        The transition isn't gradual. It's a discontinuous jump.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TP5 - Bifurcation Boundary ★<br>
+                        Progress: 5/5 equations unlocked<br>
+                        <span class="critical">ALL TIPPING POINT EQUATIONS DISCOVERED</span>
+                    </div>
+                    
+                    <div class="narrator">You construct the potential function from market data and calculate its derivatives:</div>
+                    
+                    <div class="system-msg">
+                        BIFURCATION ANALYSIS:<br><br>
+                        Potential function: V(S) = -S²/2 + S⁴/4 + external_forcing<br>
+                        First derivative: ∂V/∂S = -S + S³<br>
+                        Second derivative: ∂²V/∂S² = -1 + 3S²<br><br>
+                        Bifurcation occurs when: ∂²V/∂S² = 0<br>
+                        Solving: -1 + 3S² = 0<br>
+                        S* = √(1/3) ≈ 0.577<br><br>
+                        Current state: S = 0.521<br>
+                        Distance to bifurcation: 0.056<br>
+                        Drift rate: 0.00127/day<br><br>
+                        <span class="critical">BIFURCATION DATE: 44 DAYS FROM NOW</span><br><br>
+                        After this point, the system will jump discontinuously<br>
+                        to a new stable state. Recovery will be impossible.
+                    </div>
+                    
+                    <div class="narrator">You've mapped the complete picture. Five equations, five independent confirmations:</div>
+                    
+                    <div class="system-msg">
+                        SYNTHESIS - TIPPING POINT DETECTION:<br><br>
+                        TP1: System approaching irreversibility threshold ✓<br>
+                        TP2: Recovery time critically slowing (7.2×) ✓<br>
+                        TP3: Variance amplifying (4.0× current, 16.7× at S*) ✓<br>
+                        TP4: Autocorrelation spiking (matches 1929, 2008) ✓<br>
+                        TP5: Bifurcation boundary calculated (44 days) ✓<br><br>
+                        <span class="critical">CONCLUSION: CRITICAL TRANSITION IMMINENT</span><br><br>
+                        The financial system will cross an irreversible tipping point<br>
+                        in approximately 44 days. After this, collapse is certain.<br>
+                        No policy intervention can prevent it—the math forbids it.
+                    </div>
+                    
+                    <div class="narrator">Your office door opens. Director Walsh stands in the doorway, face pale.</div>
+                    
+                    <div class="dialogue">"Chen. Tell me you have a solution."</div>
+                    
+                    <div class="narrator">You turn your screen toward her, showing all five equations arranged like pieces of a puzzle.</div>
+                    
+                    <div class="dialogue">"I have proof of the problem. The solution... that requires understanding wealth extraction. And building an alternative."</div>
+                    
+                    <div class="dialogue">"Show me."</div>
+                `,
+                choices: [
+                    { 
+                        text: '★ CONTINUE TO PART 2: Wealth Extraction ★', 
+                        next: 9,
+                        flag: 'part2'
+                    }
+                ]
+            },
+            
+            // Chapter 7: Autocorrelation First
+            {
+                text: `
+                    <div class="narrator">Before calculating the exact tipping point, you check one more confirmation signal:</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TP4: AUTOCORRELATION SPIKE</div>
+                        <div class="formula">ρ(τ) = ⟨S(t)S(t+τ)⟩ → 1 as t → t_critical</div>
+                        <div class="explanation">
+                        Autocorrelation ρ measures how well past predicts future. Near tipping points, ρ → 1 (perfect prediction). System "remembers" longer. Creates false sense of stability—strong trends right before collapse.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TP4 - Autocorrelation Spike ★<br>
+                        Progress: 4/5 equations unlocked
+                    </div>
+                    
+                    <div class="system-msg">
+                        AUTOCORRELATION: ρ = 0.87 (vs 0.43 baseline)<br>
+                        Pattern matches 1929 and 2008 pre-crash profiles<br>
+                        <span class="critical">Strong trending before collapse confirmed</span>
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: '1. Calculate the bifurcation point', 
+                        next: 8,
+                        flag: 'to_bifurcation'
+                    }
+                ]
+            },
+            
+            // Chapter 8: Final Calculation (same as Chapter 6)
+            {
+                text: `
+                    <div class="narrator">All the warning signals point to one thing. You need the exact point of no return.</div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">EQUATION TP5: BIFURCATION BOUNDARY</div>
+                        <div class="formula">∂²V/∂S² = 0 defines fold bifurcation</div>
+                        <div class="explanation">
+                        Second derivative equals zero marks the fold bifurcation—where the system jumps discontinuously to a new state. Not gradual decline, but sudden transition.
+                        </div>
+                    </div>
+                    
+                    <div class="discovery">
+                        ★ EQUATION DISCOVERED: TP5 - Bifurcation Boundary ★<br>
+                        Progress: 5/5 equations unlocked<br>
+                        <span class="critical">PART 1 COMPLETE</span>
+                    </div>
+                    
+                    <div class="system-msg">
+                        BIFURCATION ANALYSIS COMPLETE:<br>
+                        Critical point S* = 0.577<br>
+                        Current state S = 0.521<br>
+                        <span class="critical">TIME TO TIPPING POINT: 44 DAYS</span><br><br>
+                        After this point, collapse is mathematically certain.
+                    </div>
+                    
+                    <div class="narrator">You have detected the irreversible tipping point. The financial system has 44 days before it crosses the point of no return.</div>
+                    
+                    <div class="narrator">Now you need to understand WHY it's happening—the wealth extraction mechanisms—and what to do about it.</div>
+                `,
+                choices: [
+                    { 
+                        text: '★ PART 1 COMPLETE - Continue to Part 2 ★', 
+                        next: 9,
+                        flag: 'completed_part1'
+                    }
+                ]
+            },
+            
+            // Chapter 9: Part 1 Complete
+            {
+                text: `
+                    <div style="text-align: center; color: #00ffff; font-size: 20px; margin: 30px 0;">
+                    ═══════════════════════════════════════════<br>
+                    PART 1: TIPPING POINT DETECTION - COMPLETE<br>
+                    ═══════════════════════════════════════════
+                    </div>
+                    
+                    <div class="discovery" style="text-align: center; font-size: 16px;">
+                        <strong>EQUATIONS DISCOVERED: 5/5</strong><br><br>
+                        ✓ TP1: Irreversibility Threshold<br>
+                        ✓ TP2: Critical Slowing Down<br>
+                        ✓ TP3: Variance Amplification<br>
+                        ✓ TP4: Autocorrelation Spike<br>
+                        ✓ TP5: Bifurcation Boundary<br>
+                    </div>
+                    
+                    <div class="narrator" style="margin: 30px 0;">
+                        You've successfully detected that the financial system is approaching an irreversible tipping point in 44 days. The mathematics is unambiguous—five independent measurements all confirm the same conclusion.
+                    </div>
+                    
+                    <div class="system-msg">
+                        PART 1 ACHIEVEMENTS:<br><br>
+                        • Learned to detect tipping points mathematically<br>
+                        • Calculated exact time to bifurcation (44 days)<br>
+                        • Identified early warning signals (slowing, variance, autocorrelation)<br>
+                        • Proved collapse is mathematically certain without intervention<br>
+                    </div>
+                    
+                    <div class="narrator" style="margin: 30px 0;">
+                        But knowing WHEN the collapse happens isn't enough. You need to understand WHY—what's driving the system toward this tipping point?
+                    </div>
+                    
+                    <div class="narrator">
+                        That requires investigating the wealth extraction mechanisms—the invisible flows of capital that destabilize the system.
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; color: #ffff00; font-size: 18px;">
+                        COMING IN PART 2:<br>
+                        WEALTH EXTRACTION QUANTIFICATION<br><br>
+                        • Hidden Transfer Function (making invisible flows visible)<br>
+                        • Extraction Velocity (measuring upward flow rates)<br>
+                        • Monetary Privilege Rent (who benefits from money creation)<br>
+                        • Debt Compounding Trap (mathematical impossibility of repayment)<br>
+                        • Inflation Tax Distribution (regressive by design)<br>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 40px 0; color: #ff00ff;">
+                        Thank you for playing Part 1!<br>
+                        The mathematics is real. The tipping point is calculable.<br>
+                        The question is: what do we do about it?
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: 'Review all equations discovered', 
+                        next: 10,
+                        flag: 'review'
+                    },
+                    { 
+                        text: 'Restart from beginning', 
+                        next: 0,
+                        flag: 'restart'
+                    }
+                ]
+            },
+            
+            // Chapter 10: Review
+            {
+                text: `
+                    <div style="text-align: center; color: #00ffff; font-size: 18px; margin: 20px 0;">
+                    EQUATION REFERENCE - PART 1
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TP1: IRREVERSIBILITY THRESHOLD</div>
+                        <div class="formula">dS/dt = ∇·(D∇S) + R(S) | ∂R/∂S < 0 at S*</div>
+                        <div class="explanation">
+                        When system feedback becomes negative at critical point, return to equilibrium becomes mathematically impossible. The "point of no return."
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TP2: CRITICAL SLOWING DOWN</div>
+                        <div class="formula">τ_recovery = 1/|λ| → ∞ as λ → 0</div>
+                        <div class="explanation">
+                        Recovery time approaches infinity as eigenvalue approaches zero. System becomes "sluggish"—takes longer to bounce back from shocks. Early warning signal.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TP3: VARIANCE AMPLIFICATION</div>
+                        <div class="formula">σ²(S) ∝ 1/(S* - S) as S → S*</div>
+                        <div class="explanation">
+                        Variance grows inversely with distance from critical point. Small shocks cause huge movements. Flash crashes, extreme volatility—symptoms of approaching tipping point.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TP4: AUTOCORRELATION SPIKE</div>
+                        <div class="formula">ρ(τ) = ⟨S(t)S(t+τ)⟩ → 1 as t → t_critical</div>
+                        <div class="explanation">
+                        Past becomes highly predictive of future near critical transitions. System "remembers" longer. Creates false stability—strong trends right before collapse.
+                        </div>
+                    </div>
+                    
+                    <div class="equation">
+                        <div class="equation-title">TP5: BIFURCATION BOUNDARY</div>
+                        <div class="formula">∂²V/∂S² = 0 defines fold bifurcation</div>
+                        <div class="explanation">
+                        Second derivative equals zero marks fold bifurcation—where system suddenly jumps. Not gradual decline, but discontinuous transition. Currency crashes, bank runs, sudden collapses.
+                        </div>
+                    </div>
+                    
+                    <div class="system-msg" style="margin-top: 30px;">
+                        These five equations form a complete tipping point detection system.<br>
+                        Together, they can predict critical transitions before they happen.<br>
+                        The mathematics is proven. The application is real.<br>
+                        The question is: will we use it?
+                    </div>
+                `,
+                choices: [
+                    { 
+                        text: 'Return to main ending', 
+                        next: 9,
+                        flag: 'back'
+                    },
+                    { 
+                        text: 'Restart from beginning', 
+                        next: 0,
+                        flag: 'restart'
+                    }
+                ]
+            }
+        ];
+        
+        // Game Engine
+        function loadChapter(index) {
+            state.chapter = index;
+            const chapter = chapters[index];
+            
+            // Display story
+            document.getElementById('story').innerHTML = chapter.text;
+            
+            // Display choices
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.innerHTML = '';
+            
+            if (chapter.choices) {
+                chapter.choices.forEach(choice => {
+                    const btn = document.createElement('button');
+                    btn.className = 'choice-btn';
+                    btn.textContent = choice.text;
+                    btn.onclick = () => {
+                        if (choice.flag && choice.flag.startsWith('calculate') || choice.flag.includes('equation')) {
+                            // Unlock equations based on chapter progression
+                            unlockEquationsForChapter(choice.next);
+                        }
+                        loadChapter(choice.next);
+                    };
+                    choicesDiv.appendChild(btn);
+                });
+            }
+            
+            // Update stats
+            updateStats();
+            
+            // Scroll to top
+            document.getElementById('story').scrollTop = 0;
+        }
+        
+        function unlockEquationsForChapter(chapterIndex) {
+            // Unlock equations based on story progression
+            const unlockMap = {
+                1: ['TP1'],
+                2: ['TP1'],
+                3: ['TP1', 'TP2'],
+                4: ['TP1', 'TP3'],
+                5: ['TP1', 'TP2', 'TP3', 'TP4'],
+                6: ['TP1', 'TP2', 'TP3', 'TP4', 'TP5'],
+                7: ['TP1', 'TP2', 'TP3', 'TP4'],
+                8: ['TP1', 'TP2', 'TP3', 'TP4', 'TP5']
+            };
+            
+            const toUnlock = unlockMap[chapterIndex] || [];
+            toUnlock.forEach(eqId => {
+                if (!state.equationsFound.includes(eqId)) {
+                    state.equationsFound.push(eqId);
+                }
+            });
+            
+            updateEquationsList();
+        }
+        
+        function updateStats() {
+            document.getElementById('day').textContent = state.day;
+            document.getElementById('eq-count').textContent = state.equationsFound.length + '/5';
+            document.getElementById('days-left').textContent = state.daysToTipping;
+        }
+        
+        function updateEquationsList() {
+            const listDiv = document.getElementById('equations-unlocked');
+            
+            if (state.equationsFound.length === 0) {
+                listDiv.innerHTML = '<h2>Equations Discovered</h2><div style="color: #666; font-size: 12px;">None yet - keep investigating...</div>';
+                return;
+            }
+            
+            let html = '<h2>Equations Discovered (' + state.equationsFound.length + '/5)</h2>';
+            
+            state.equationsFound.forEach(eqId => {
+                const eq = equations[eqId];
+                html += `
+                    <div class="equation-item" onclick="showEquationDetails('${eqId}')">
+                        <strong>${eq.id}:</strong> ${eq.name}<br>
+                        <span style="color: #00ffff; font-size: 11px;">${eq.formula}</span>
+                    </div>
+                `;
+            });
+            
+            listDiv.innerHTML = html;
+        }
+        
+        function showEquationDetails(eqId) {
+            const eq = equations[eqId];
+            alert(
+                eq.name + '\n\n' +
+                'Formula: ' + eq.formula + '\n\n' +
+                'Explanation: ' + eq.explanation + '\n\n' +
+                'Practical: ' + eq.practical
+            );
+        }
+        
+        // Start game
+        loadChapter(0);
+    </script>
+</body>
+</html>
