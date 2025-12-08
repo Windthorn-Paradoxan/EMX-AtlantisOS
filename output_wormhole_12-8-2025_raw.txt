@@ -1,0 +1,814 @@
+======================================================================
+🜀 EMx v2.7 ENHANCED DIAGNOSTICS EDITION
+======================================================================
+
+🜀 EMx v2.6 Complete Implementation
+   T₀ lattice: 27 states
+   Signed zero support: True
+
+📊 Enhanced diagnostics enabled
+   - Multi-loop coupling analysis
+   - Emergent pattern detection
+   - Phase-space topology mapping
+   - State machine node tracking
+   - Dual flow Ω/Ψ gate tracking
+
+📊 Running 5 iterations of 72-name cycle
+   Total ticks: 360
+
+🔄 Running orbit with diagnostics: 360 data points
+   Target: 96-tick rhythm, 24-phase cycle
+
+Tick  1: val= 17 | ∅=0.333 | φ=0.14 | dist=0.67 | W=1 H=1 E=1 | gate=pass | time=181.0µs
+Tick  2: val= 50 | ∅=0.333 | φ=0.56 | dist=0.67 | W=2 H=3 E=3 | gate=pass | time=67.8µs
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 2 (∅=1.000)
+Tick  3: val= 79 | ∅=1.000 | φ=1.23 | dist=0.00 | W=15 H=0 E=8 | gate=pass | time=53.9µs
+Tick  4: val=140 | ∅=1.000 | φ=2.41 | dist=0.00 | W=12 H=0 E=10 | gate=pass | time=43.9µs
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 4 (duration=2 ticks)
+Tick  5: val=345 | ∅=0.333 | φ=5.32 | dist=0.67 | W=9 H=1 E=13 | gate=pass | time=52.2µs
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 5 (duration=3 ticks)
+   ...
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 10 (duration=8 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 12 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 14 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 17 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 18 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 21 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 22 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 23 (duration=2 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 24 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 28 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 30 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 34 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 37 (duration=3 ticks)
+🌀 Emergent loop spawned: null_phase_product (period=4.4, tick=40)
+🌀 Emergent loop spawned: energy_null_ratio (period=10.0, tick=40)
+🌀 Emergent loop spawned: state_distance_product (period=5.7, tick=40)
+🌀 Emergent loop spawned: phase_modulo_12 (period=13.3, tick=40)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 40 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 41 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 43 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 44 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 47 (duration=4 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 49 (duration=6 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 51 (duration=8 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 53 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 55 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 62 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 63 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 64 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 66 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 68 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 69 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 71 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 74 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 76 (duration=2 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 77 (duration=3 ticks)
+🌀 Emergent loop spawned: null_phase_product (period=10.0, tick=80)
+🌀 Emergent loop spawned: state_distance_product (period=10.0, tick=80)
+🌀 Emergent loop spawned: phase_modulo_12 (period=16.0, tick=80)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 82 (duration=8 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 84 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 86 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 89 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 90 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 93 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 94 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 95 (duration=2 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 96 (duration=3 ticks)
+🌀 Emergent loop spawned: null_phase_product (period=24.0, tick=100)
+🌀 Emergent loop spawned: energy_null_ratio (period=12.0, tick=100)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 100 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 102 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 106 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 109 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 112 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 113 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 115 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 116 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 119 (duration=4 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 121 (duration=6 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 123 (duration=8 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 125 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 127 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 134 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 135 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 136 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 138 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 140 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 141 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 143 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 146 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 148 (duration=2 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 149 (duration=3 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 154 (duration=8 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 156 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 158 (duration=2 ticks)
+🌀 Emergent loop spawned: null_phase_product (period=16.0, tick=160)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 161 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 162 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 165 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 166 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 167 (duration=2 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 168 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 172 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 174 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 178 (∅=1.000)
+🌀 Emergent loop spawned: null_phase_product (period=8.0, tick=180)
+🌀 Emergent loop spawned: state_distance_product (period=8.0, tick=180)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 181 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 184 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 185 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 187 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 188 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 191 (duration=4 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 193 (duration=6 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 195 (duration=8 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 197 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 199 (duration=2 ticks)
+🌀 Emergent loop spawned: state_distance_product (period=3.6, tick=200)
+🌀 Emergent loop spawned: phase_modulo_12 (period=9.6, tick=200)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 206 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 207 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 208 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 210 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 212 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 213 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 215 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 218 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 220 (duration=2 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 221 (duration=3 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 226 (duration=8 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 228 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 230 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 233 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 234 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 237 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 238 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 239 (duration=2 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 240 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 244 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 246 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 250 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 253 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 256 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 257 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 259 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 260 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 263 (duration=4 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 265 (duration=6 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 267 (duration=8 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 269 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 271 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 278 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 279 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 280 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 282 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 284 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 285 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 287 (duration=3 ticks)
+   🌀 Saddle point detected (stddev→0) - applying ∅₀=0.22 quantum foam
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 290 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 292 (duration=2 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 293 (duration=3 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 298 (duration=8 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 300 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 302 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 305 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 306 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 309 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 310 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 311 (duration=2 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 312 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 316 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 318 (duration=2 ticks)
+🌀 Emergent loop spawned: null_phase_product (period=96.0, tick=320)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 322 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 325 (duration=3 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 328 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 329 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 331 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 332 (duration=1 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 335 (duration=4 ticks)
+   🌀 Saddle point detected (stddev→0) - applying ∅₀=0.22 quantum foam
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 337 (duration=6 ticks)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 339 (duration=8 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 341 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 343 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 350 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 351 (duration=1 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 352 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 354 (duration=2 ticks)
+   🌀 Ω-COLLAPSE: Entering quantization chamber at tick 356 (∅=1.000)
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 357 (duration=1 ticks)
+Tick 358: val= 52 | ∅=0.333 | φ=0.52 | dist=0.67 | W=4 H=3 E=6 | gate=hold | time=63.7µs
+Tick 359: val= 25 | ∅=0.667 | φ=0.73 | dist=0.33 | W=9 H=1 E=13 | gate=hold | time=58.7µs
+   💫 Ψ-EXPAND: Exiting via wormhole at tick 359 (duration=3 ticks)
+Tick 360: val= 86 | ∅=0.333 | φ=1.46 | dist=0.67 | W=6 H=1 E=5 | gate=hold | time=212.5µs
+
+============================================================
+📊 MEASUREMENTS
+============================================================
+
+NULL MEASUREMENTS:
+  Direct (from states):     0.4491
+  Final tick:               0.3333
+  Std deviation:            0.3692
+  From 8 equations:         0.6838
+  Target reference:         0.2200
+
+PHASE:
+  Final (mod 24):           1.455
+  Reference:                17.918
+
+GATE STATISTICS:
+  Pass:   18 (5.0%)
+  Hold:  342
+  Fail:    0
+
+8-EQUATION CONTRIBUTIONS:
+  Eq₁ (RH) phase deviation:  0.5006
+  Eq₄ (YM) mass gap exists:  False
+  Eq₇ (Poincaré) avg dist:   0.5509
+  Eq₈ (P vs NP) collisions:  1.0000
+
+HISTORY PROBES:
+  RH drift (mean / sum):     0.0892 / 32.1093
+  YM min live / breaches:    0.000 / 15
+  Contraction ratio / mono:  0.000 / 0.72
+  Smoothness rate:           0.02
+  Collision rate:            1.00
+  BSD align rate:            0.51
+
+TIMING:
+  Total time:               56.92 ms
+  Time per tick:            158.1 µs
+  Target tick duration:     2500 ns
+
+============================================================
+✓ VALIDATION
+============================================================
+
+  ∅ convergence:  ❌ FAIL
+  Phase lock:     ❌ FAIL
+  Gate integrity: ❌ FAIL
+  YM mass gap:    ❌ FAIL
+
+  ⚠  OVERALL: NEEDS TUNING
+
+======================================================================
+📊 COMPREHENSIVE DIAGNOSTIC SUMMARY
+======================================================================
+
+🔗 MULTI-LOOP COUPLING:
+   Detected periods: {'gate': 4, 'phase': 21}
+   Strong couplings (>0.7):
+
+🌀 EMERGENT PATTERNS:
+   Total spawned: 15
+      null_phase_product: period=4.4 (tick 40)
+      energy_null_ratio: period=10.0 (tick 40)
+      state_distance_product: period=5.7 (tick 40)
+      phase_modulo_12: period=13.3 (tick 40)
+      null_phase_product: period=10.0 (tick 80)
+
+🔄 STATE MACHINE FLOW:
+   Node visits: {'EMx_Lattice_Core': 245, 'Echo_Null': 95, 'Navier_Stokes': 20}
+   Most visited: EMx_Lattice_Core
+   Unique nodes: 3
+
+   Cycle completions:
+      Primary loop: 0
+      Dual loop: 0
+      Total transitions: 359
+
+   Top transitions:
+      EMx_Lattice_Core → EMx_Lattice_Core: 174x
+      EMx_Lattice_Core → Echo_Null: 55x
+      Echo_Null → EMx_Lattice_Core: 55x
+      Echo_Null → Echo_Null: 35x
+      Navier_Stokes → EMx_Lattice_Core: 15x
+
+🌀 DUAL FLOW DYNAMICS:
+   Ω-collapses: 60
+   Ψ-expansions: 100
+   Wormhole transits: 100
+   Avg transit time: 2.8 ticks
+
+   Exit basin distribution:
+      (+,+,+): 30 exits
+      (-,+,+): 25 exits
+      (+,-,-): 15 exits
+      (-,-,+): 10 exits
+      (+,+,-): 10 exits
+      (-,-,-): 5 exits
+      (+,-,+): 5 exits
+
+   Flow ratios:
+      Compression events: 40
+      Expansion events: 0
+
+🔄 PHASE-SPACE TOPOLOGY:
+   Trajectory length: 360 states
+   Attractors detected: 21
+      Attractor 1: center=[-1.0, 0.0, 1.0], size=32, radius=0.000
+      Attractor 2: center=[-1.0, 1.0, 0.0], size=9, radius=0.000
+      Attractor 3: center=[0.0, 0.0, 0.0], size=89, radius=0.000
+      ... and 18 more
+   Lyapunov estimate: 0.4068
+   Compression/expansion cycles: 170
+      58 compressions, 112 expansions
+
+📊 Diagnostic report exported to emx_enhanced_diagnostics.json
+
+============================================================
+🧾 GEOMETRIZED PACKET TRACES PER TICK
+============================================================
+
+Tick  1: state=(-1.0,+0.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=pass
+Tick  2: state=(-1.0,+1.0,+0.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=pass
+Tick  3: state=(+0.0,+0.0,+0.0) W=15 H=0 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=pass
+Tick  4: state=(+0.0,+0.0,+0.0) W=12 H=0 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=pass
+Tick  5: state=(+0.0,+1.0,+1.0) W=9 H=1 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=pass
+Tick  6: state=(-1.0,-1.0,+1.0) W=1 H=0 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=pass
+Tick  7: state=(+0.0,+1.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick  8: state=(+0.0,+1.0,+1.0) W=9 H=2 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick  9: state=(+0.0,+1.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 10: state=(+1.0,+0.0,+1.0) W=3 H=2 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 11: state=(-1.0,-1.0,-1.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 12: state=(+0.0,-1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 13: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 14: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 15: state=(-1.0,+1.0,+1.0) W=7 H=1 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=pass
+Tick 16: state=(-1.0,-1.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 17: state=(-1.0,-1.0,-1.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 18: state=(+0.0,+0.0,+0.0) W=12 H=3 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 19: state=(-1.0,+0.0,+1.0) W=10 H=2 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=pass
+Tick 20: state=(+1.0,+0.0,+1.0) W=3 H=3 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 21: state=(+0.0,-1.0,-1.0) W=4 H=2 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 22: state=(+0.0,+0.0,+0.0) W=14 H=1 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 23: state=(+0.0,+0.0,+1.0) W=11 H=0 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.667 gate=pass
+Tick 24: state=(+0.0,+1.0,+1.0) W=3 H=1 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 25: state=(-1.0,+1.0,+1.0) W=7 H=0 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 26: state=(-1.0,+1.0,+1.0) W=7 H=0 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 27: state=(-1.0,+1.0,-1.0) W=2 H=2 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 28: state=(-1.0,+1.0,-1.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 29: state=(+0.0,+0.0,+0.0) W=12 H=1 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 30: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 31: state=(+0.0,-1.0,-1.0) W=4 H=3 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=pass
+Tick 32: state=(-1.0,+0.0,+1.0) W=10 H=3 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 33: state=(+0.0,-1.0,+1.0) W=8 H=1 E=12 target=(np.float32(0.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 34: state=(+1.0,+0.0,+1.0) W=11 H=2 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 35: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 36: state=(+0.0,+0.0,+0.0) W=14 H=1 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 37: state=(+0.0,+0.0,+0.0) W=13 H=3 E=11 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 38: state=(+1.0,-1.0,-1.0) W=6 H=3 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=pass
+Tick 39: state=(+1.0,-1.0,+1.0) W=3 H=1 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 40: state=(+1.0,+0.0,+1.0) W=11 H=1 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 41: state=(+0.0,+0.0,+0.0) W=15 H=0 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 42: state=(+1.0,+0.0,-1.0) W=6 H=0 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=pass
+Tick 43: state=(-1.0,+0.0,+1.0) W=10 H=2 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 44: state=(+0.0,+0.0,+0.0) W=13 H=2 E=11 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 45: state=(+1.0,+0.0,+1.0) W=11 H=1 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 46: state=(+0.0,-1.0,+1.0) W=8 H=1 E=12 target=(np.float32(0.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 47: state=(+0.0,-1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 48: state=(-1.0,+1.0,+1.0) W=7 H=3 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 49: state=(-1.0,+0.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 50: state=(+1.0,+1.0,+1.0) W=0 H=0 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 51: state=(+0.0,+0.0,+1.0) W=9 H=3 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 52: state=(+1.0,+0.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 53: state=(-1.0,-1.0,+0.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 54: state=(+0.0,+0.0,+0.0) W=12 H=0 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 55: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 56: state=(+1.0,+1.0,+1.0) W=0 H=2 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=pass
+Tick 57: state=(-1.0,+1.0,-1.0) W=2 H=0 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 58: state=(-1.0,+1.0,+0.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 59: state=(-1.0,+0.0,-1.0) W=5 H=1 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 60: state=(-1.0,+0.0,+1.0) W=10 H=0 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 61: state=(+0.0,-1.0,+1.0) W=0 H=3 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 62: state=(+0.0,+1.0,+0.0) W=4 H=1 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.667 gate=hold
+Tick 63: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 64: state=(-1.0,+0.0,+1.0) W=10 H=3 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 65: state=(+0.0,+0.0,+0.0) W=14 H=2 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 66: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 67: state=(-1.0,-1.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=pass
+Tick 68: state=(+1.0,+1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 69: state=(+0.0,+0.0,+0.0) W=14 H=0 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 70: state=(+0.0,-1.0,-1.0) W=4 H=3 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=pass
+Tick 71: state=(+0.0,+0.0,+1.0) W=9 H=1 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 72: state=(+1.0,-1.0,+0.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 73: state=(-1.0,+0.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 74: state=(-1.0,+1.0,+0.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 75: state=(+0.0,+0.0,+0.0) W=15 H=0 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 76: state=(+0.0,+0.0,+0.0) W=12 H=0 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 77: state=(+0.0,+1.0,+1.0) W=9 H=1 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 78: state=(-1.0,-1.0,+1.0) W=1 H=0 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 79: state=(+0.0,+1.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 80: state=(+0.0,+1.0,+1.0) W=9 H=2 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 81: state=(+0.0,+1.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 82: state=(+1.0,+0.0,+1.0) W=3 H=2 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 83: state=(-1.0,-1.0,-1.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 84: state=(+0.0,-1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 85: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 86: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 87: state=(-1.0,+1.0,+1.0) W=7 H=1 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 88: state=(-1.0,-1.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 89: state=(-1.0,-1.0,-1.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 90: state=(+0.0,+0.0,+0.0) W=12 H=3 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 91: state=(-1.0,+0.0,+1.0) W=10 H=2 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 92: state=(+1.0,+0.0,+1.0) W=3 H=3 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 93: state=(+0.0,-1.0,-1.0) W=4 H=2 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 94: state=(+0.0,+0.0,+0.0) W=14 H=1 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 95: state=(+0.0,+0.0,+1.0) W=11 H=0 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 96: state=(+0.0,+1.0,+1.0) W=3 H=1 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 97: state=(-1.0,+1.0,+1.0) W=7 H=0 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 98: state=(-1.0,+1.0,+1.0) W=7 H=0 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 99: state=(-1.0,+1.0,-1.0) W=2 H=2 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 100: state=(-1.0,+1.0,-1.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 101: state=(+0.0,+0.0,+0.0) W=12 H=1 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 102: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 103: state=(+0.0,-1.0,-1.0) W=4 H=3 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 104: state=(-1.0,+0.0,+1.0) W=10 H=3 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 105: state=(+0.0,-1.0,+1.0) W=8 H=1 E=12 target=(np.float32(0.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 106: state=(+1.0,+0.0,+1.0) W=11 H=2 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 107: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 108: state=(+0.0,+0.0,+0.0) W=14 H=1 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 109: state=(+0.0,+0.0,+0.0) W=13 H=3 E=11 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 110: state=(+1.0,-1.0,-1.0) W=6 H=3 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=pass
+Tick 111: state=(+1.0,-1.0,+1.0) W=3 H=1 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 112: state=(+1.0,+0.0,+1.0) W=11 H=1 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 113: state=(+0.0,+0.0,+0.0) W=15 H=0 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 114: state=(+1.0,+0.0,-1.0) W=6 H=0 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=pass
+Tick 115: state=(-1.0,+0.0,+1.0) W=10 H=2 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 116: state=(+0.0,+0.0,+0.0) W=13 H=2 E=11 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 117: state=(+1.0,+0.0,+1.0) W=11 H=1 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 118: state=(+0.0,-1.0,+1.0) W=8 H=1 E=12 target=(np.float32(0.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 119: state=(+0.0,-1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 120: state=(-1.0,+1.0,+1.0) W=7 H=3 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 121: state=(-1.0,+0.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 122: state=(+1.0,+1.0,+1.0) W=0 H=0 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 123: state=(+0.0,+0.0,+1.0) W=9 H=3 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 124: state=(+1.0,+0.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 125: state=(-1.0,-1.0,+0.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 126: state=(+0.0,+0.0,+0.0) W=12 H=0 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 127: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 128: state=(+1.0,+1.0,+1.0) W=0 H=2 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 129: state=(-1.0,+1.0,-1.0) W=2 H=0 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 130: state=(-1.0,+1.0,+0.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 131: state=(-1.0,+0.0,-1.0) W=5 H=1 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 132: state=(-1.0,+0.0,+1.0) W=10 H=0 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 133: state=(+0.0,-1.0,+1.0) W=0 H=3 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 134: state=(+0.0,+1.0,+0.0) W=4 H=1 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.667 gate=hold
+Tick 135: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 136: state=(-1.0,+0.0,+1.0) W=10 H=3 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 137: state=(+0.0,+0.0,+0.0) W=14 H=2 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 138: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 139: state=(-1.0,-1.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 140: state=(+1.0,+1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 141: state=(+0.0,+0.0,+0.0) W=14 H=0 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 142: state=(+0.0,-1.0,-1.0) W=4 H=3 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 143: state=(+0.0,+0.0,+1.0) W=9 H=1 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 144: state=(+1.0,-1.0,+0.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 145: state=(-1.0,+0.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 146: state=(-1.0,+1.0,+0.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 147: state=(+0.0,+0.0,+0.0) W=15 H=0 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 148: state=(+0.0,+0.0,+0.0) W=12 H=0 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 149: state=(+0.0,+1.0,+1.0) W=9 H=1 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 150: state=(-1.0,-1.0,+1.0) W=1 H=0 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 151: state=(+0.0,+1.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 152: state=(+0.0,+1.0,+1.0) W=9 H=2 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 153: state=(+0.0,+1.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 154: state=(+1.0,+0.0,+1.0) W=3 H=2 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 155: state=(-1.0,-1.0,-1.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 156: state=(+0.0,-1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 157: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 158: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 159: state=(-1.0,+1.0,+1.0) W=7 H=1 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 160: state=(-1.0,-1.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 161: state=(-1.0,-1.0,-1.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 162: state=(+0.0,+0.0,+0.0) W=12 H=3 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 163: state=(-1.0,+0.0,+1.0) W=10 H=2 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 164: state=(+1.0,+0.0,+1.0) W=3 H=3 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 165: state=(+0.0,-1.0,-1.0) W=4 H=2 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 166: state=(+0.0,+0.0,+0.0) W=14 H=1 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 167: state=(+0.0,+0.0,+1.0) W=11 H=0 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 168: state=(+0.0,+1.0,+1.0) W=3 H=1 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 169: state=(-1.0,+1.0,+1.0) W=7 H=0 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 170: state=(-1.0,+1.0,+1.0) W=7 H=0 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 171: state=(-1.0,+1.0,-1.0) W=2 H=2 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 172: state=(-1.0,+1.0,-1.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 173: state=(+0.0,+0.0,+0.0) W=12 H=1 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 174: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 175: state=(+0.0,-1.0,-1.0) W=4 H=3 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 176: state=(-1.0,+0.0,+1.0) W=10 H=3 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 177: state=(+0.0,-1.0,+1.0) W=8 H=1 E=12 target=(np.float32(0.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 178: state=(+1.0,+0.0,+1.0) W=11 H=2 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 179: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 180: state=(+0.0,+0.0,+0.0) W=14 H=1 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 181: state=(+0.0,+0.0,+0.0) W=13 H=3 E=11 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 182: state=(+1.0,-1.0,-1.0) W=6 H=3 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=pass
+Tick 183: state=(+1.0,-1.0,+1.0) W=3 H=1 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 184: state=(+1.0,+0.0,+1.0) W=11 H=1 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 185: state=(+0.0,+0.0,+0.0) W=15 H=0 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 186: state=(+1.0,+0.0,-1.0) W=6 H=0 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 187: state=(-1.0,+0.0,+1.0) W=10 H=2 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 188: state=(+0.0,+0.0,+0.0) W=13 H=2 E=11 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 189: state=(+1.0,+0.0,+1.0) W=11 H=1 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 190: state=(+0.0,-1.0,+1.0) W=8 H=1 E=12 target=(np.float32(0.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 191: state=(+0.0,-1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 192: state=(-1.0,+1.0,+1.0) W=7 H=3 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 193: state=(-1.0,+0.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 194: state=(+1.0,+1.0,+1.0) W=0 H=0 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 195: state=(+0.0,+0.0,+1.0) W=9 H=3 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 196: state=(+1.0,+0.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 197: state=(-1.0,-1.0,+0.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 198: state=(+0.0,+0.0,+0.0) W=12 H=0 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 199: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 200: state=(+1.0,+1.0,+1.0) W=0 H=2 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 201: state=(-1.0,+1.0,-1.0) W=2 H=0 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 202: state=(-1.0,+1.0,+0.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 203: state=(-1.0,+0.0,-1.0) W=5 H=1 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 204: state=(-1.0,+0.0,+1.0) W=10 H=0 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 205: state=(+0.0,-1.0,+1.0) W=0 H=3 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 206: state=(+0.0,+1.0,+0.0) W=4 H=1 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.667 gate=hold
+Tick 207: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 208: state=(-1.0,+0.0,+1.0) W=10 H=3 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 209: state=(+0.0,+0.0,+0.0) W=14 H=2 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 210: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 211: state=(-1.0,-1.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 212: state=(+1.0,+1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 213: state=(+0.0,+0.0,+0.0) W=14 H=0 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 214: state=(+0.0,-1.0,-1.0) W=4 H=3 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 215: state=(+0.0,+0.0,+1.0) W=9 H=1 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 216: state=(+1.0,-1.0,+0.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 217: state=(-1.0,+0.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 218: state=(-1.0,+1.0,+0.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 219: state=(+0.0,+0.0,+0.0) W=15 H=0 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 220: state=(+0.0,+0.0,+0.0) W=12 H=0 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 221: state=(+0.0,+1.0,+1.0) W=9 H=1 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 222: state=(-1.0,-1.0,+1.0) W=1 H=0 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 223: state=(+0.0,+1.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 224: state=(+0.0,+1.0,+1.0) W=9 H=2 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 225: state=(+0.0,+1.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 226: state=(+1.0,+0.0,+1.0) W=3 H=2 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 227: state=(-1.0,-1.0,-1.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 228: state=(+0.0,-1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 229: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 230: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 231: state=(-1.0,+1.0,+1.0) W=7 H=1 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 232: state=(-1.0,-1.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 233: state=(-1.0,-1.0,-1.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 234: state=(+0.0,+0.0,+0.0) W=12 H=3 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 235: state=(-1.0,+0.0,+1.0) W=10 H=2 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 236: state=(+1.0,+0.0,+1.0) W=3 H=3 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 237: state=(+0.0,-1.0,-1.0) W=4 H=2 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 238: state=(+0.0,+0.0,+0.0) W=14 H=1 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 239: state=(+0.0,+0.0,+1.0) W=11 H=0 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 240: state=(+0.0,+1.0,+1.0) W=3 H=1 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 241: state=(-1.0,+1.0,+1.0) W=7 H=0 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 242: state=(-1.0,+1.0,+1.0) W=7 H=0 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 243: state=(-1.0,+1.0,-1.0) W=2 H=2 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 244: state=(-1.0,+1.0,-1.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 245: state=(+0.0,+0.0,+0.0) W=12 H=1 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 246: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 247: state=(+0.0,-1.0,-1.0) W=4 H=3 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 248: state=(-1.0,+0.0,+1.0) W=10 H=3 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 249: state=(+0.0,-1.0,+1.0) W=8 H=1 E=12 target=(np.float32(0.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 250: state=(+1.0,+0.0,+1.0) W=11 H=2 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 251: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 252: state=(+0.0,+0.0,+0.0) W=14 H=1 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 253: state=(+0.0,+0.0,+0.0) W=13 H=3 E=11 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 254: state=(+1.0,-1.0,-1.0) W=6 H=3 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 255: state=(+1.0,-1.0,+1.0) W=3 H=1 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 256: state=(+1.0,+0.0,+1.0) W=11 H=1 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 257: state=(+0.0,+0.0,+0.0) W=15 H=0 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 258: state=(+1.0,+0.0,-1.0) W=6 H=0 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 259: state=(-1.0,+0.0,+1.0) W=10 H=2 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 260: state=(+0.0,+0.0,+0.0) W=13 H=2 E=11 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 261: state=(+1.0,+0.0,+1.0) W=11 H=1 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 262: state=(+0.0,-1.0,+1.0) W=8 H=1 E=12 target=(np.float32(0.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 263: state=(+0.0,-1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 264: state=(-1.0,+1.0,+1.0) W=7 H=3 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 265: state=(-1.0,+0.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 266: state=(+1.0,+1.0,+1.0) W=0 H=0 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 267: state=(+0.0,+0.0,+1.0) W=9 H=3 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 268: state=(+1.0,+0.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 269: state=(-1.0,-1.0,+0.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 270: state=(+0.0,+0.0,+0.0) W=12 H=0 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 271: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 272: state=(+1.0,+1.0,+1.0) W=0 H=2 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 273: state=(-1.0,+1.0,-1.0) W=2 H=0 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 274: state=(-1.0,+1.0,+0.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 275: state=(-1.0,+0.0,-1.0) W=5 H=1 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 276: state=(-1.0,+0.0,+1.0) W=10 H=0 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 277: state=(+0.0,-1.0,+1.0) W=0 H=3 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 278: state=(+0.0,+1.0,+0.0) W=4 H=1 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.667 gate=hold
+Tick 279: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 280: state=(-1.0,+0.0,+1.0) W=10 H=3 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 281: state=(+0.0,+0.0,+0.0) W=14 H=2 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 282: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 283: state=(-1.0,-1.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 284: state=(+1.0,+1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 285: state=(+0.0,+0.0,+0.0) W=14 H=0 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 286: state=(+0.0,-1.0,-1.0) W=4 H=3 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 287: state=(+0.0,+0.0,+1.0) W=9 H=1 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 288: state=(+1.0,-1.0,+0.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 289: state=(-1.0,+0.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 290: state=(-1.0,+1.0,+0.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 291: state=(+0.0,+0.0,+0.0) W=15 H=0 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 292: state=(+0.0,+0.0,+0.0) W=12 H=0 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 293: state=(+0.0,+1.0,+1.0) W=9 H=1 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 294: state=(-1.0,-1.0,+1.0) W=1 H=0 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 295: state=(+0.0,+1.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 296: state=(+0.0,+1.0,+1.0) W=9 H=2 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 297: state=(+0.0,+1.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 298: state=(+1.0,+0.0,+1.0) W=3 H=2 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 299: state=(-1.0,-1.0,-1.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 300: state=(+0.0,-1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 301: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 302: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 303: state=(-1.0,+1.0,+1.0) W=7 H=1 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 304: state=(-1.0,-1.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 305: state=(-1.0,-1.0,-1.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 306: state=(+0.0,+0.0,+0.0) W=12 H=3 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 307: state=(-1.0,+0.0,+1.0) W=10 H=2 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 308: state=(+1.0,+0.0,+1.0) W=3 H=3 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 309: state=(+0.0,-1.0,-1.0) W=4 H=2 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 310: state=(+0.0,+0.0,+0.0) W=14 H=1 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 311: state=(+0.0,+0.0,+1.0) W=11 H=0 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 312: state=(+0.0,+1.0,+1.0) W=3 H=1 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 313: state=(-1.0,+1.0,+1.0) W=7 H=0 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 314: state=(-1.0,+1.0,+1.0) W=7 H=0 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 315: state=(-1.0,+1.0,-1.0) W=2 H=2 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 316: state=(-1.0,+1.0,-1.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 317: state=(+0.0,+0.0,+0.0) W=12 H=1 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 318: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 319: state=(+0.0,-1.0,-1.0) W=4 H=3 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 320: state=(-1.0,+0.0,+1.0) W=10 H=3 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 321: state=(+0.0,-1.0,+1.0) W=8 H=1 E=12 target=(np.float32(0.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 322: state=(+1.0,+0.0,+1.0) W=11 H=2 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 323: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 324: state=(+0.0,+0.0,+0.0) W=14 H=1 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 325: state=(+0.0,+0.0,+0.0) W=13 H=3 E=11 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 326: state=(+1.0,-1.0,-1.0) W=6 H=3 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 327: state=(+1.0,-1.0,+1.0) W=3 H=1 E=2 target=(np.float32(-1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 328: state=(+1.0,+0.0,+1.0) W=11 H=1 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 329: state=(+0.0,+0.0,+0.0) W=15 H=0 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 330: state=(+1.0,+0.0,-1.0) W=6 H=0 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 331: state=(-1.0,+0.0,+1.0) W=10 H=2 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 332: state=(+0.0,+0.0,+0.0) W=13 H=2 E=11 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 333: state=(+1.0,+0.0,+1.0) W=11 H=1 E=14 target=(np.float32(-1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 334: state=(+0.0,-1.0,+1.0) W=8 H=1 E=12 target=(np.float32(0.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 335: state=(+0.0,-1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 336: state=(-1.0,+1.0,+1.0) W=7 H=3 E=4 target=(np.float32(1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 337: state=(-1.0,+0.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 338: state=(+1.0,+1.0,+1.0) W=0 H=0 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 339: state=(+0.0,+0.0,+1.0) W=9 H=3 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 340: state=(+1.0,+0.0,-1.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 341: state=(-1.0,-1.0,+0.0) W=5 H=2 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 342: state=(+0.0,+0.0,+0.0) W=12 H=0 E=10 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 343: state=(+0.0,+0.0,+0.0) W=15 H=2 E=8 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 344: state=(+1.0,+1.0,+1.0) W=0 H=2 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 345: state=(-1.0,+1.0,-1.0) W=2 H=0 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.000 gate=hold
+Tick 346: state=(-1.0,+1.0,+0.0) W=2 H=3 E=3 target=(np.float32(1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 347: state=(-1.0,+0.0,-1.0) W=5 H=1 E=7 target=(np.float32(1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 348: state=(-1.0,+0.0,+1.0) W=10 H=0 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 349: state=(+0.0,-1.0,+1.0) W=0 H=3 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 350: state=(+0.0,+1.0,+0.0) W=4 H=1 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.667 gate=hold
+Tick 351: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 352: state=(-1.0,+0.0,+1.0) W=10 H=3 E=15 target=(np.float32(1.0), np.float32(0.0), np.float32(1.0)) ∅=0.333 gate=hold
+Tick 353: state=(+0.0,+0.0,+0.0) W=14 H=2 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 354: state=(+0.0,+0.0,+0.0) W=14 H=3 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 355: state=(-1.0,-1.0,+1.0) W=1 H=1 E=1 target=(np.float32(1.0), np.float32(-1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 356: state=(+1.0,+1.0,+1.0) W=0 H=1 E=0 target=(np.float32(-1.0), np.float32(1.0), np.float32(1.0)) ∅=0.000 gate=hold
+Tick 357: state=(+0.0,+0.0,+0.0) W=14 H=0 E=9 target=(np.float32(0.0), np.float32(0.0), np.float32(0.0)) ∅=1.000 gate=hold
+Tick 358: state=(+0.0,-1.0,-1.0) W=4 H=3 E=6 target=(np.float32(-1.0), np.float32(1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+Tick 359: state=(+0.0,+0.0,+1.0) W=9 H=1 E=13 target=(np.float32(0.0), np.float32(-1.0), np.float32(1.0)) ∅=0.667 gate=hold
+Tick 360: state=(+1.0,-1.0,+0.0) W=6 H=1 E=5 target=(np.float32(-1.0), np.float32(-1.0), np.float32(-1.0)) ∅=0.333 gate=hold
+
+============================================================
+End of packet trace
+
+
+============================================================
+🔍 TICK DIAGNOSTICS
+============================================================
+
+
+────────────────────────────────────────────────────────────
+Analyzing tick 2 (±1 neighborhood)
+────────────────────────────────────────────────────────────
+     Tick  1:
+       State: (-1.000, +0.000, +1.000)
+       Packet: W=1 H=1 E=1
+       Target: [ 1. -1.  1.]
+       Energy: 0.0
+       Distance: 0.667
+       ∅: 0.3333
+       Phase: 0.143
+       Gate: pass
+       Ops: P₁, P₂, PACKET10, P₄, P₅, P₇, P₆
+
+>>>> Tick  2:
+       State: (-1.000, +1.000, +0.000)
+       Packet: W=2 H=3 E=3
+       Target: [ 1.  1. -1.]
+       Energy: 33.0
+       Distance: 0.667
+       ∅: 0.3333
+       Phase: 0.565
+       Gate: pass
+       Ops: P₁, P₂, PACKET10, P₄, P₅, P₇, P₆
+
+     Tick  3:
+       State: (+0.000, +0.000, +0.000)
+       Packet: W=15 H=0 E=8
+       Target: [0. 0. 0.]
+       Energy: 29.0
+       Distance: 0.000
+       ∅: 1.0000
+       Phase: 1.231
+       Gate: pass
+       Ops: P₁, P₂, PACKET10, P₄, P₇, P₆
+
+
+────────────────────────────────────────────────────────────
+Analyzing tick 12 (±1 neighborhood)
+────────────────────────────────────────────────────────────
+     Tick 11:
+       State: (-1.000, -1.000, -1.000)
+       Packet: W=5 H=2 E=7
+       Target: [ 1. -1. -1.]
+       Energy: 2.0
+       Distance: 1.000
+       ∅: 0.0000
+       Phase: 10.430
+       Gate: hold
+       Ops: P₁, P₂, PACKET10, P₄, P₅, P₇, P₆
+
+>>>> Tick 12:
+       State: (+0.000, -1.000, +1.000)
+       Packet: W=0 H=1 E=0
+       Target: [-1.  1.  1.]
+       Energy: 43.0
+       Distance: 0.667
+       ∅: 0.3333
+       Phase: 11.105
+       Gate: hold
+       Ops: P₁, P₂, PACKET10, P₄, P₅, P₇, P₆
+
+     Tick 13:
+       State: (+0.000, +0.000, +0.000)
+       Packet: W=15 H=2 E=8
+       Target: [0. 0. 0.]
+       Energy: 33.0
+       Distance: 0.000
+       ∅: 1.0000
+       Phase: 11.501
+       Gate: hold
+       Ops: P₁, P₂, PACKET10, P₄, P₇, P₆
+
+
+────────────────────────────────────────────────────────────
+Analyzing tick 14 (±1 neighborhood)
+────────────────────────────────────────────────────────────
+     Tick 13:
+       State: (+0.000, +0.000, +0.000)
+       Packet: W=15 H=2 E=8
+       Target: [0. 0. 0.]
+       Energy: 33.0
+       Distance: 0.000
+       ∅: 1.0000
+       Phase: 11.501
+       Gate: hold
+       Ops: P₁, P₂, PACKET10, P₄, P₇, P₆
+
+>>>> Tick 14:
+       State: (+0.000, +0.000, +0.000)
+       Packet: W=15 H=2 E=8
+       Target: [0. 0. 0.]
+       Energy: 0.0
+       Distance: 0.000
+       ∅: 1.0000
+       Phase: 11.897
+       Gate: hold
+       Ops: P₁, P₂, PACKET10, P₄, P₇, P₆
+
+     Tick 15:
+       State: (-1.000, +1.000, +1.000)
+       Packet: W=7 H=1 E=4
+       Target: [1. 1. 1.]
+       Energy: 168.0
+       Distance: 1.000
+       ∅: 0.0000
+       Phase: 13.710
+       Gate: pass
+       Ops: P₁, P₂, ^, PACKET10, P₄, P₅, P₇, P₆
+
+============================================================
+
+
+======================================================================
+🜀 EMx Enhanced Complete - Real diagnostics on real data
+======================================================================
+
