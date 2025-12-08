@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EMx — Aztec Sun Cycle Diagnostic Visual</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#f59e0b;--muted:#94a3b8;--glass:rgba(255,255,255,0.03)}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial; background:linear-gradient(180deg,#071025 0%, #0b1220 100%);color:#e6eef6}
+    .container{max-width:1100px;margin:28px auto;padding:24px}
+    header{display:flex;align-items:center;gap:16px}
+    h1{margin:0;font-size:20px}
+    .meta{color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+    .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .small{font-size:13px;color:var(--muted)}
+    .kpi{display:flex;gap:12px;align-items:center}
+    .kpi .val{font-size:20px;font-weight:600;color:#fff}
+    table{width:100%;border-collapse:collapse}
+    table th{font-size:12px;text-align:left;color:var(--muted);padding:8px 6px}
+    table td{padding:8px 6px;border-top:1px dashed rgba(255,255,255,0.03);font-size:13px}
+    .timeline{height:220px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:8px;padding:10px;display:flex;flex-direction:column}
+    svg{width:100%;height:160px}
+    .bars{display:flex;gap:10px;align-items:end;height:160px;padding:8px}
+    .bar{flex:1;border-radius:6px;background:linear-gradient(180deg,#ffe8a1,#f59e0b);display:flex;align-items:flex-end;justify-content:center;color:#08111a;font-weight:700}
+    .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .chip{background:var(--glass);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:12px}
+    .controls{display:flex;gap:8px;align-items:center}
+    footer{margin-top:18px;color:var(--muted);font-size:12px;text-align:center}
+    .row{display:flex;gap:12px}
+    .gauge{display:flex;flex-direction:column;gap:8px;align-items:center}
+    .gauge .dial{width:140px;height:86px}
+    .toggle{background:rgba(255,255,255,0.03);padding:8px;border-radius:8px;font-size:13px}
+    .toggle button{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:6px 10px;border-radius:8px}
+    .node-list{max-height:260px;overflow:auto}
+    .note{color:var(--muted);font-size:13px;margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>EMx Diagnostics — Aztec Sun Cycle (visual)</h1>
+        <div class="meta">Model: Aztec_SolarCycle_v1.0 · Run ID: <strong>SC-A5-Δrot-2025-12-08</strong> · Duration: <strong>14,772 T-states</strong></div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="small">Rendered: <strong>2025‑12‑08</strong></div>
+        <div class="small">Interactive: hover bars / click traces</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small">Primordial Basin</div>
+              <div class="kpi"><div class="val" id="primNull">0.764</div><div class="small">null_load</div></div>
+            </div>
+            <div style="text-align:right">
+              <div class="small">Active Sun</div>
+              <div class="val" id="activeSun">none</div>
+            </div>
+          </div>
+
+          <hr style="border:none;height:10px">
+
+          <div style="display:flex;gap:12px">
+            <div class="card" style="flex:1;padding:12px;background:transparent;border:0">
+              <div class="small">Ages simulated</div>
+              <div class="val" id="ageCount">5</div>
+            </div>
+            <div class="card" style="flex:1;padding:12px;background:transparent;border:0">
+              <div class="small">NoClone violations</div>
+              <div class="val" id="noClone">0</div>
+            </div>
+            <div class="card" style="flex:1;padding:12px;background:transparent;border:0">
+              <div class="small">Max Closure Error</div>
+              <div class="val" id="closureErr">0.014</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px" class="small">Notes: capacity gate violations triggered self-correcting catastrophic resets in ages 3 & 5.</div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Operator Firings (summary)</strong></div>
+            <div class="small">Total operator events: <span id="totalOps">3,620</span></div>
+          </div>
+
+          <div class="bars" id="opBars" aria-hidden>
+            <!-- bars painted by JS -->
+          </div>
+          <div class="legend">
+            <div class="chip">Δ (Delta)</div>
+            <div class="chip">∇ (Gradient)</div>
+            <div class="chip">rot (Rotation)</div>
+            <div class="chip">∮ (Closure)</div>
+            <div class="chip">𝓝 (Normalize)</div>
+            <div class="chip">𝓢 (Exchange)</div>
+            <div class="chip">𝓘 (NoClone)</div>
+            <div class="chip">Σ (Integrate)</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Timeline — Age Events</strong></div>
+            <div class="small">Hover to highlight age segment</div>
+          </div>
+          <div class="timeline">
+            <svg id="timelineSvg" viewBox="0 0 1000 160" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="note">Key: ignition (sun creation) = gold star · catastrophe = red burst · delta records annotated.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <aside>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Nodes Snapshot</strong></div>
+            <div class="small">sample</div>
+          </div>
+          <div style="margin-top:10px" class="node-list">
+            <table>
+              <thead><tr><th>Node</th><th>null_load</th><th>phase</th></tr></thead>
+              <tbody id="nodeTable"></tbody>
+            </table>
+          </div>
+          <div class="note">Click a node to see its trace.</div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Event Summary</strong></div>
+            <div class="small">Top events</div>
+          </div>
+          <ul style="margin-top:10px">
+            <li class="small">Ignitions: 5</li>
+            <li class="small">Catastrophes: 5</li>
+            <li class="small">Major population losses: Ages 1–5</li>
+            <li class="small">Moon variants created: 1</li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div><strong>Controls</strong></div>
+          <div style="margin-top:8px" class="toggle">
+            <button id="btnReplay">Replay Timeline</button>
+            <button id="btnExport">Export JSON</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>EMx Diagnostics Visual — Aztec Sun Cycle · Generated by EMx mapping tool</footer>
+  </div>
+
+  <script>
+    // ----- data model (extracted from diagnostics) -----
+    const run = {
+      runId: 'SC-A5-Δrot-2025-12-08',
+      durationStates: 14772,
+      primordial_null: 0.764,
+      activeSun: null,
+      ageCount: 5,
+      noCloneViolations: 0,
+      closureErrMax: 0.014,
+      totalOps: 3620,
+      operators: {
+        Delta: 420,
+        Gradient: 780,
+        Rotation: 920,
+        Closure: 210,
+        Normalize: 360,
+        Exchange: 540,
+        NoClone: 30,
+        Integrate: 360
+      },
+      nodes: [
+        {id:'primordial_null',label:'Primordial Null',null_load:0.764,phase:0.00},
+        {id:'Nanahuatzin',label:'Nanahuatzin',null_load:0.048,phase:0.62},
+        {id:'Tecciztecatl',label:'Tecciztecatl',null_load:0.102,phase:0.25},
+        {id:'sun_age_1',label:'Sun Age 1',null_load:0.063,phase:3.88},
+        {id:'sun_age_2',label:'Sun Age 2',null_load:0.085,phase:4.41},
+        {id:'moon_variant_1',label:'Moon Variant 1',null_load:0.11,phase:0.44},
+        {id:'human_pool',label:'Human Pool',null_load:0.81,phase:0.00}
+      ],
+      timeline: [
+        {age:1,start:312,ignite:339,catastrophe:3223,deltaRecord:3224},
+        {age:2,start:4011,ignite:4211,catastrophe:7705,deltaRecord:7706},
+        {age:3,start:7800,ignite:7902,catastrophe:10200,deltaRecord:10201},
+        {age:4,start:10250,ignite:10310,catastrophe:11850,deltaRecord:11851},
+        {age:5,start:11900,ignite:11990,catastrophe:14700,deltaRecord:14701}
+      ]
+    };
+
+    // set KPIs
+    document.getElementById('primNull').textContent = run.primordial_null.toFixed(3);
+    document.getElementById('activeSun').textContent = run.activeSun || 'none';
+    document.getElementById('ageCount').textContent = run.ageCount;
+    document.getElementById('noClone').textContent = run.noCloneViolations;
+    document.getElementById('closureErr').textContent = run.closureErrMax.toFixed(3);
+    document.getElementById('totalOps').textContent = run.totalOps.toLocaleString();
+
+    // render operator bars
+    (function renderOpBars(){
+      const container = document.getElementById('opBars');
+      const names = Object.keys(run.operators);
+      const max = Math.max(...Object.values(run.operators));
+      names.forEach(n=>{
+        const value = run.operators[n];
+        const el = document.createElement('div');
+        el.className = 'bar';
+        el.style.height = (20 + (value/max)*120) + 'px';
+        el.title = `${n}: ${value}`;
+        el.textContent = value;
+        container.appendChild(el);
+      });
+    })();
+
+    // populate node table
+    (function populateNodes(){
+      const tbody = document.getElementById('nodeTable');
+      run.nodes.forEach(node=>{
+        const tr = document.createElement('tr');
+        const td1 = document.createElement('td'); td1.textContent = node.label;
+        const td2 = document.createElement('td'); td2.textContent = node.null_load.toFixed(3);
+        const td3 = document.createElement('td'); td3.textContent = node.phase.toFixed(2);
+        tr.appendChild(td1);tr.appendChild(td2);tr.appendChild(td3);
+        tr.style.cursor='pointer';
+        tr.onclick = ()=>{ alert(`${node.label}\nnull_load: ${node.null_load}\nphase: ${node.phase}`); };
+        tbody.appendChild(tr);
+      })
+    })();
+
+    // draw simple timeline svg
+    (function drawTimeline(){
+      const svg = document.getElementById('timelineSvg');
+      const w = 1000, h = 160; svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+      const pad = 40; const usable = w - pad*2;
+      const totalMax = run.timeline[run.timeline.length-1].catastrophe + 100;
+
+      // baseline axis
+      const ns = 'http://www.w3.org/2000/svg';
+      const axis = document.createElementNS(ns,'line');
+      axis.setAttribute('x1',pad);axis.setAttribute('y1',h-30);axis.setAttribute('x2',w-pad);axis.setAttribute('y2',h-30);
+      axis.setAttribute('stroke','rgba(255,255,255,0.06)');axis.setAttribute('stroke-width','2');svg.appendChild(axis);
+
+      // ages
+      run.timeline.forEach(seg=>{
+        const xStart = pad + (seg.start/totalMax)*usable;
+        const xIgn = pad + (seg.ignite/totalMax)*usable;
+        const xCat = pad + (seg.catastrophe/totalMax)*usable;
+        // age span
+        const rect = document.createElementNS(ns,'rect');
+        rect.setAttribute('x',xStart);rect.setAttribute('y',30);rect.setAttribute('width',Math.max(4,xCat-xStart));rect.setAttribute('height',70);
+        rect.setAttribute('fill','rgba(245,158,11,0.06)');rect.setAttribute('stroke','rgba(245,158,11,0.06)');svg.appendChild(rect);
+        // ignite star
+        const star = document.createElementNS(ns,'polygon');
+        const cx = xIgn, cy = 60; const r=8;
+        let pts=[]; for(let i=0;i<5;i++){ const ang = (i*2*Math.PI/5)-Math.PI/2; const x = cx + Math.cos(ang)*r; const y = cy + Math.sin(ang)*r; pts.push(x+','+y);} star.setAttribute('points',pts.join(' '));
+        star.setAttribute('fill', 'gold'); star.setAttribute('stroke','rgba(0,0,0,0.2)'); svg.appendChild(star);
+        // catastrophe burst (circle)
+        const burst = document.createElementNS(ns,'circle');
+        burst.setAttribute('cx',xCat); burst.setAttribute('cy',60); burst.setAttribute('r','6'); burst.setAttribute('fill','crimson'); svg.appendChild(burst);
+        // labels
+        const t = document.createElementNS(ns,'text'); t.setAttribute('x',xStart+4); t.setAttribute('y',125); t.setAttribute('font-size',11); t.setAttribute('fill','rgba(255,255,255,0.7)'); t.textContent = `Age ${seg.age}`; svg.appendChild(t);
+
+        // interaction
+        rect.addEventListener('mouseenter',()=>{ rect.setAttribute('fill','rgba(245,158,11,0.14)'); });
+        rect.addEventListener('mouseleave',()=>{ rect.setAttribute('fill','rgba(245,158,11,0.06)'); });
+      });
+
+      // time ruler ticks
+      for(let i=0;i<=10;i++){ const x = pad + (i/10)*usable; const tick = document.createElementNS(ns,'line'); tick.setAttribute('x1',x);tick.setAttribute('y1',h-34);tick.setAttribute('x2',x);tick.setAttribute('y2',h-26);tick.setAttribute('stroke','rgba(255,255,255,0.04)'); svg.appendChild(tick); }
+    })();
+
+    // controls
+    document.getElementById('btnExport').onclick = ()=>{
+      const data = JSON.stringify(run,null,2);
+      const blob = new Blob([data],{type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'emx_aztec_diagnostics.json'; a.click(); URL.revokeObjectURL(url);
+    }
+    document.getElementById('btnReplay').onclick = ()=>{ alert('Replay: step-through not implemented in this static preview. Use timeline interactions.'); }
+
+  </script>
+</body>
+</html>

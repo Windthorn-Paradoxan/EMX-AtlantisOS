@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EMx · Atlantis · Voynich · Data Alignment</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #111;
+    color: #eee;
+    margin: 0;
+    padding: 20px;
+  }
+  h1, h2 {
+    text-align: center;
+    color: #f4d03f;
+  }
+  .container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .panel {
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    overflow-y: auto;
+    max-height: 80vh;
+  }
+  .panel h3 {
+    color: #f39c12;
+    margin-top: 0;
+  }
+  .panel table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .panel table, th, td {
+    border: 1px solid #666;
+  }
+  th, td {
+    padding: 4px;
+    font-size: 0.85em;
+    text-align: center;
+  }
+  th {
+    background: #2c2c2c;
+    color: #f39c12;
+  }
+  td {
+    color: #ddd;
+  }
+  .highlight {
+    color: #2ecc71;
+    font-weight: bold;
+  }
+  .subnote {
+    font-size: 0.75em;
+    color: #888;
+  }
+</style>
+</head>
+<body>
+
+<h1>EMx · Atlantis · Voynich · Additional Data Alignment</h1>
+
+<div class="container">
+
+  <!-- EMx Panel -->
+  <div class="panel">
+    <h3>EMx Diagnostics</h3>
+    <p class="subnote">27-state lattice, null measures, ∅₀ ≈ 0.22, 96-tick cycle</p>
+    <table>
+      <tr><th>Operator</th><th>Value</th><th>Phase</th><th>Gate</th></tr>
+      <tr><td>O₁</td><td>-1.0 → 1.0</td><td>φ=0.14 → 1.46</td><td>pass/hold</td></tr>
+      <tr><td>O₂</td><td>-1.0 → +1.0</td><td>φ=0.56 → 1.23</td><td>pass</td></tr>
+      <tr><td>O₃</td><td>0.0</td><td>φ=1.23</td><td>hold</td></tr>
+      <tr><td>O₄</td><td>central pillar closure</td><td>NA</td><td>force</td></tr>
+      <tr><td>O₆</td><td>normalize</td><td>NA</td><td>forced</td></tr>
+      <tr><td>O₇</td><td>symmetry/exchange</td><td>NA</td><td>hold</td></tr>
+      <tr><td>O₉</td><td>no-clone</td><td>NA</td><td>hold</td></tr>
+      <tr><td>O₁₀</td><td>Σ integrator</td><td>NA</td><td>log</td></tr>
+    </table>
+    <p class="subnote">Emergent loops: null_phase_product, energy_null_ratio, state_distance_product, phase_modulo_12</p>
+  </div>
+
+  <!-- Atlantis Panel -->
+  <div class="panel">
+    <h3>Atlantis System</h3>
+    <p class="subnote">27-stadia lattice, 10 kings/operators, 5-6 duty cycle</p>
+    <table>
+      <tr><th>King/Operator</th><th>Function</th><th>Region</th><th>Action</th></tr>
+      <tr><td>Atlas / O₁</td><td>Foundation</td><td>Central palace</td><td>Initialize</td></tr>
+      <tr><td>Gadeiros / O₂</td><td>Boundary</td><td>Ring 2</td><td>∇ flux</td></tr>
+      <tr><td>Ampheres / O₃</td><td>Dual control</td><td>Ring 3</td><td>Rotation</td></tr>
+      <tr><td>Evaemon / O₄</td><td>Closure</td><td>Pillar</td><td>Gate</td></tr>
+      <tr><td>Mneseus / O₅</td><td>Memory</td><td>Archives</td><td>Projection</td></tr>
+      <tr><td>Autochthon / O₆</td><td>Normalize</td><td>Canal</td><td>System reset</td></tr>
+      <tr><td>Elasippus / O₇</td><td>Symmetry</td><td>Bridges</td><td>Exchange</td></tr>
+      <tr><td>Mestor / O₈</td><td>Counsel</td><td>Palace network</td><td>Routing</td></tr>
+      <tr><td>Azaes / O₉</td><td>No-clone</td><td>Kingdoms</td><td>Integrity</td></tr>
+      <tr><td>Diaprepes / O₁₀</td><td>Integrator</td><td>City</td><td>Σ calculation</td></tr>
+    </table>
+    <p class="subnote">Concentric rings: N0 center → N3 outer (high curvature), water = null, land = manifested</p>
+  </div>
+
+  <!-- Voynich Panel -->
+  <div class="panel">
+    <h3>Voynich Encoding</h3>
+    <p class="subnote">8-fold panels, calendar, stellar, navigation, operational instructions</p>
+    <table>
+      <tr><th>Folio / Panel</th><th>Atlantis Layer</th><th>Function</th><th>Interpretation</th></tr>
+      <tr><td>f67r1</td><td>Time / Calendar</td><td>12 states (N2)</td><td>Two harvests, time coordination</td></tr>
+      <tr><td>f67r2</td><td>Space / Navigation</td><td>7 operators</td><td>Trade routes, 12 regions</td></tr>
+      <tr><td>f67v1</td><td>Energy / Agriculture</td><td>Solar distribution</td><td>Two crops, resource flow</td></tr>
+      <tr><td>f67v2</td><td>Direction / Bridges</td><td>4 cardinal + 4 diagonal</td><td>Transport topology</td></tr>
+      <tr><td>f68r1</td><td>Solar / Time</td><td>Lunar/solar cycle</td><td>Primary seasonal clock</td></tr>
+      <tr><td>f68r2</td><td>Lunar / Ritual</td><td>5/6 cycle</td><td>Sacrifice/normalize</td></tr>
+      <tr><td>f68r3</td><td>Stellar / Navigation</td><td>7 stars, 8 sectors</td><td>Wayfinding constants</td></tr>
+      <tr><td>f68v3</td><td>Trade / Network</td><td>8 major routes</td><td>Spiral outward topology</td></tr>
+    </table>
+  </div>
+
+  <!-- Additional Data Panel -->
+  <div class="panel">
+    <h3>Enhanced Data / Diagnostics</h3>
+    <p class="subnote">From EMx logs and JSON</p>
+    <table>
+      <tr><th>Property</th><th>Value / Tick</th><th>Interpretation</th></tr>
+      <tr><td>Null measurement</td><td>0.333 → 0.449</td><td>∅ convergence, system buffer</td></tr>
+      <tr><td>Phase (mod 24)</td><td>1.455</td><td>Alignment vs reference 17.918</td></tr>
+      <tr><td>Gate events</td><td>Pass 18, Hold 342, Fail 0</td><td>System transitions</td></tr>
+      <tr><td>Lyapunov estimate</td><td>0.4068</td><td>System stability measure</td></tr>
+      <tr><td>Emergent loops</td><td>15 loops (null_phase_product etc.)</td><td>Patterns detected in state machine</td></tr>
+      <tr><td>Compression / Expansion</td><td>58 / 112 cycles</td><td>Flow dynamics</td></tr>
+      <tr><td>Trajectory length</td><td>360 ticks</td><td>Full orbit through lattice</td></tr>
+      <tr><td>Flow ratios</td><td>Compression 40, Expansion 0</td><td>Operational balance</td></tr>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

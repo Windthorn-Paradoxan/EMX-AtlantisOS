@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Emx Voynich-Atlantis Diagnostic Visual</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+  }
+  h1, h2 {
+    text-align: center;
+    margin: 20px 0;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .panel {
+    display: flex;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .voynich, .atlantis {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .voynich {
+    background-color: #f0e6ff;
+    border-right: 2px solid #c6b3ff;
+  }
+  .atlantis {
+    background-color: #e6fff2;
+  }
+  .panel-header {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  .panel-content {
+    font-size: 0.95em;
+    line-height: 1.5em;
+  }
+  .panel-content ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .note {
+    margin-top: 10px;
+    font-size: 0.85em;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+
+<h1>Emx Voynich-Atlantis Diagnostic Visual</h1>
+<h2>Side-by-side Pattern Alignment</h2>
+
+<div class="container">
+
+  <!-- Panel 1 -->
+  <div class="panel">
+    <div class="voynich">
+      <div class="panel-header">f67r1 Time - 12-pointed Star</div>
+      <div class="panel-content">
+        <ul>
+          <li>Calendar system: two harvests yearly</li>
+          <li>Voynich symbols: stars and cycles</li>
+          <li>Temporal coordination encoded</li>
+        </ul>
+      </div>
+    </div>
+    <div class="atlantis">
+      <div class="panel-header">Atlantis System Mapping</div>
+      <div class="panel-content">
+        <ul>
+          <li>N2 lattice: 12 balanced states</li>
+          <li>Coordination of agricultural and tribute cycles</li>
+          <li>Two harvests → system abundance (γ ≈ 1)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 2 -->
+  <div class="panel">
+    <div class="voynich">
+      <div class="panel-header">f67r2 Space - 7 Planets / 12 Zodiac</div>
+      <div class="panel-content">
+        <ul>
+          <li>Voynich shows planetary and zodiac glyphs</li>
+          <li>Spatial navigation encoded</li>
+          <li>Trade and sea route mapping</li>
+        </ul>
+      </div>
+    </div>
+    <div class="atlantis">
+      <div class="panel-header">Atlantis System Mapping</div>
+      <div class="panel-content">
+        <ul>
+          <li>7 operators active across 12 regions</li>
+          <li>Ships navigate the canal network</li>
+          <li>Represents network routing and trade control</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 3 -->
+  <div class="panel">
+    <div class="voynich">
+      <div class="panel-header">f67v1 Energy - 18-ray Sun</div>
+      <div class="panel-content">
+        <ul>
+          <li>Voynich imagery: radiant sun, rays</li>
+          <li>Focus on solar cycles and energy distribution</li>
+        </ul>
+      </div>
+    </div>
+    <div class="atlantis">
+      <div class="panel-header">Atlantis System Mapping</div>
+      <div class="panel-content">
+        <ul>
+          <li>Agricultural abundance modeled</li>
+          <li>Two crops yearly, solar energy flows → system output</li>
+          <li>Operator flows ensure productivity</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 4 -->
+  <div class="panel">
+    <div class="voynich">
+      <div class="panel-header">f67v2 Direction - 4x4 Cross</div>
+      <div class="panel-content">
+        <ul>
+          <li>Voynich shows directional glyphs / crosses</li>
+          <li>Cardinal points and orientation marked</li>
+        </ul>
+      </div>
+    </div>
+    <div class="atlantis">
+      <div class="panel-header">Atlantis System Mapping</div>
+      <div class="panel-content">
+        <ul>
+          <li>Four bridges at cardinal points</li>
+          <li>8 pathways: 4 cardinal + 4 diagonals</li>
+          <li>Control of crossings → state transitions between rings</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 5 -->
+  <div class="panel">
+    <div class="voynich">
+      <div class="panel-header">f68r1 Solar - 29 Stars</div>
+      <div class="panel-content">
+        <ul>
+          <li>Voynich depicts solar/lunar tracking</li>
+          <li>Primary calendar encoding</li>
+        </ul>
+      </div>
+    </div>
+    <div class="atlantis">
+      <div class="panel-header">Atlantis System Mapping</div>
+      <div class="panel-content">
+        <ul>
+          <li>Solar calendar for seasons</li>
+          <li>29-day lunar month governed by solar cycles</li>
+          <li>System time standard maintained for agriculture and tribute</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 6 -->
+  <div class="panel">
+    <div class="voynich">
+      <div class="panel-header">f68r2 Lunar - 59 Stars</div>
+      <div class="panel-content">
+        <ul>
+          <li>Voynich lunar glyphs</li>
+          <li>Ritual cycles, 5th and 6th year marked</li>
+        </ul>
+      </div>
+    </div>
+    <div class="atlantis">
+      <div class="panel-header">Atlantis System Mapping</div>
+      <div class="panel-content">
+        <ul>
+          <li>Ritual timing encoded</li>
+          <li>5/6 duty cycle → normalize & verify operations</li>
+          <li>Central pillar sacrifices mapped</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 7 -->
+  <div class="panel">
+    <div class="voynich">
+      <div class="panel-header">f68r3 Pleiades - 7 Stars / 8 Sectors</div>
+      <div class="panel-content">
+        <ul>
+          <li>Stellar navigation markers</li>
+          <li>Voynich emphasizes wayfinding</li>
+        </ul>
+      </div>
+    </div>
+    <div class="atlantis">
+      <div class="panel-header">Atlantis System Mapping</div>
+      <div class="panel-content">
+        <ul>
+          <li>Universal navigation constants</li>
+          <li>Ships sail along pre-defined channels</li>
+          <li>Phase-space coordinates for safe trade</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 8 -->
+  <div class="panel">
+    <div class="voynich">
+      <div class="panel-header">f68v3 Spiral - 8 Arms</div>
+      <div class="panel-content">
+        <ul>
+          <li>Voynich spiral diagram</li>
+          <li>Trade network radial layout</li>
+        </ul>
+      </div>
+    </div>
+    <div class="atlantis">
+      <div class="panel-header">Atlantis System Mapping</div>
+      <div class="panel-content">
+        <ul>
+          <li>8 major trade routes spiraling outward</li>
+          <li>Canals as operator pathways</li>
+          <li>Network topology aligned with state lattice</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

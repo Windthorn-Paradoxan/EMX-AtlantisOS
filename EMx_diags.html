@@ -1,0 +1,249 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EMx — Full Loop Diagnostics Visual</title>
+  <style>
+    :root{--bg:#071021;--card:#071827;--muted:#9fb0c8;--accent:#38bdf8;--gold:#f59e0b}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#021026 0%, #071827 100%);color:#e6eef6;font-family:Inter,system-ui,Segoe UI,Arial}
+    .wrap{max-width:1200px;margin:22px auto;padding:20px}
+    header{display:flex;gap:12px;align-items:center}
+    h1{margin:0;font-size:20px}
+    .meta{color:var(--muted);font-size:13px}
+    .layout{display:grid;grid-template-columns:1fr 380px;gap:18px;margin-top:16px}
+    .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 8px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .kpi{display:flex;gap:10px;align-items:baseline}
+    .kpi .num{font-size:22px;font-weight:700}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th{font-size:12px;color:var(--muted);text-align:left;padding:8px}
+    td{padding:8px;border-top:1px dashed rgba(255,255,255,0.03);font-size:13px}
+    .bars{display:flex;gap:8px;align-items:end;height:150px;padding:8px}
+    .bar{flex:1;border-radius:6px;background:linear-gradient(180deg,#7dd3fc,#0284c7);display:flex;align-items:flex-end;justify-content:center;color:#042027;font-weight:700}
+    .timeline{height:220px;border-radius:8px;padding:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
+    svg{width:100%;height:160px}
+    .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .chip{background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:12px}
+    .controls{display:flex;gap:8px;align-items:center}
+    .node-list{max-height:260px;overflow:auto;margin-top:8px}
+    footer{margin-top:18px;color:var(--muted);font-size:12px;text-align:center}
+    .small{font-size:13px;color:var(--muted)}
+    button{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:8px 10px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>EMx — Full Loop Diagnostics Visual</h1>
+        <div class="meta">Model: EMx_Canonical_Loop_v1.0 · Run ID: <strong>EMx-FullLoop-2025-12-08</strong> · Ticks: <strong>360</strong></div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="small">Generated: 2025‑12‑08</div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <main>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small">Execution summary</div>
+              <div class="kpi"><div class="num" id="totalTicks">360</div><div class="small">ticks executed</div></div>
+            </div>
+            <div style="text-align:right">
+              <div class="small">Mean null (∅)</div>
+              <div class="num" id="meanNull">0.449</div>
+            </div>
+          </div>
+
+          <hr style="border:none;height:12px">
+
+          <div style="display:flex;gap:12px">
+            <div style="flex:1">
+              <div class="small">Lyapunov estimate</div>
+              <div class="num" id="lyap">0.4068</div>
+            </div>
+            <div style="flex:1">
+              <div class="small">Attractors detected</div>
+              <div class="num" id="attCount">21</div>
+            </div>
+            <div style="flex:1">
+              <div class="small">Emergent loops</div>
+              <div class="num" id="loops">15</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Operator profile</strong></div>
+            <div class="small">Total ops: <strong id="opTotal">2536</strong></div>
+          </div>
+
+          <div class="bars" id="opBars"></div>
+          <div class="legend">
+            <div class="chip">Δ (Δ) — O1</div>
+            <div class="chip">∇ (∇) — O2</div>
+            <div class="chip">rot (O3)</div>
+            <div class="chip">∮ (Closure)</div>
+            <div class="chip">𝓝 (Normalize)</div>
+            <div class="chip">𝓢 (Exchange)</div>
+            <div class="chip">𝓘 (NoClone)</div>
+            <div class="chip">Σ (Integrate)</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Timeline — canonical loop (360 ticks)</strong></div>
+            <div class="small">Markers: Ω-collapse (blue), Ψ-expand (green), Saddle (yellow)</div>
+          </div>
+          <div class="timeline">
+            <svg id="timelineSvg" viewBox="0 0 1000 160" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+        </div>
+
+      </main>
+
+      <aside>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Node snapshot</strong></div>
+            <div class="small">visits</div>
+          </div>
+          <div class="node-list">
+            <table>
+              <thead><tr><th>Node</th><th>visits</th><th>role</th></tr></thead>
+              <tbody id="nodeTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div><strong>Gate stats</strong></div>
+          <table style="margin-top:8px">
+            <tbody>
+              <tr><td>Pass</td><td id="gPass">18</td></tr>
+              <tr><td>Hold</td><td id="gHold">342</td></tr>
+              <tr><td>Fail</td><td id="gFail">0</td></tr>
+              <tr><td>Capacity violations</td><td id="gCap">2</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div><strong>Top events</strong></div>
+          <ul style="margin-top:8px">
+            <li class="small">Ω-collapses: <strong id="omegaCount">60</strong></li>
+            <li class="small">Ψ-expansions: <strong id="psiCount">100</strong></li>
+            <li class="small">Wormhole transits: <strong id="whCount">100</strong></li>
+            <li class="small">Saddle points: ticks 287, 337</li>
+          </ul>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div><strong>Controls</strong></div>
+          <div style="margin-top:8px" class="controls">
+            <button id="btnExport">Export JSON</button>
+            <button id="btnDownload">Download HTML</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>EMx Core Kernel — Canonical loop visualization · Produced by EMx diagnostics tool</footer>
+  </div>
+
+  <script>
+    const run = {
+      runId: 'EMx-FullLoop-2025-12-08',
+      ticks:360,
+      totalOps:2536,
+      meanNull:0.4491,
+      lyapunov:0.4068,
+      attractors:21,
+      emergentLoops:15,
+      operators:{O1:312,O2:428,O3:390,O4:180,O6:210,O7:256,O9:36,O10:214},
+      nodes:[{id:'EMx_Lattice_Core',visits:245,role:'core'},{id:'Echo_Null',visits:95,role:'echo'},{id:'Navier_Stokes',visits:20,role:'aux'}],
+      events:{omega:60,psi:100,worm:100,saddles:[287,337],capacityViolations:2},
+      timelineMarkers:[
+        {tick:2,type:'Ω',label:'omega'},
+        {tick:3,type:'Ψ',label:'psi'},
+        {tick:287,type:'saddle',label:'saddle'},
+        {tick:337,type:'saddle',label:'saddle'},
+        {tick:100,type:'spawn',label:'emergent_loop'},
+        {tick:360,type:'end',label:'end'}
+      ]
+    };
+
+    document.getElementById('totalTicks').textContent = run.ticks;
+    document.getElementById('meanNull').textContent = run.meanNull.toFixed(3);
+    document.getElementById('lyap').textContent = run.lyapunov;
+    document.getElementById('attCount').textContent = run.attractors;
+    document.getElementById('loops').textContent = run.emergentLoops;
+    document.getElementById('opTotal').textContent = run.totalOps;
+    document.getElementById('omegaCount').textContent = run.events.omega;
+    document.getElementById('psiCount').textContent = run.events.psi;
+    document.getElementById('whCount').textContent = run.events.worm;
+    document.getElementById('gPass').textContent = 18; document.getElementById('gHold').textContent = 342; document.getElementById('gFail').textContent = 0; document.getElementById('gCap').textContent = run.events.capacityViolations;
+
+    // render operator bars
+    (function renderOpBars(){
+      const container = document.getElementById('opBars');
+      const keys = Object.keys(run.operators);
+      const max = Math.max(...Object.values(run.operators));
+      keys.forEach(k=>{
+        const v = run.operators[k];
+        const el = document.createElement('div'); el.className='bar'; el.style.height=(18 + (v/max)*120)+'px'; el.title=`${k}: ${v}`; el.textContent=v; container.appendChild(el);
+      });
+    })();
+
+    // populate node table
+    (function populateNodes(){
+      const tbody = document.getElementById('nodeTable');
+      run.nodes.forEach(n=>{
+        const tr = document.createElement('tr');
+        const td1 = document.createElement('td'); td1.textContent = n.id;
+        const td2 = document.createElement('td'); td2.textContent = n.visits;
+        const td3 = document.createElement('td'); td3.textContent = n.role;
+        tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3);
+        tr.style.cursor='pointer'; tr.onclick = ()=> alert(`${n.id}\nvisits: ${n.visits}\nrole: ${n.role}`);
+        tbody.appendChild(tr);
+      });
+    })();
+
+    // draw timeline svg
+    (function drawTimeline(){
+      const svg = document.getElementById('timelineSvg'); const ns='http://www.w3.org/2000/svg';
+      const w=1000,h=160; svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+      const pad=30, usable=w-pad*2; const total=run.ticks;
+      // baseline
+      const axis = document.createElementNS(ns,'line'); axis.setAttribute('x1',pad);axis.setAttribute('y1',h-30);axis.setAttribute('x2',w-pad);axis.setAttribute('y2',h-30); axis.setAttribute('stroke','rgba(255,255,255,0.06)'); axis.setAttribute('stroke-width','2'); svg.appendChild(axis);
+      // draw markers
+      run.timelineMarkers.forEach(m=>{
+        const x = pad + (m.tick/total)*usable;
+        if(m.type==='Ω'){
+          const rect = document.createElementNS(ns,'rect'); rect.setAttribute('x',x-4);rect.setAttribute('y',40);rect.setAttribute('width',8);rect.setAttribute('height',40);rect.setAttribute('fill','#60a5fa');svg.appendChild(rect);
+        } else if(m.type==='Ψ'){
+          const circ = document.createElementNS(ns,'circle'); circ.setAttribute('cx',x);circ.setAttribute('cy',60);circ.setAttribute('r',6);circ.setAttribute('fill','#34d399');svg.appendChild(circ);
+        } else if(m.type==='saddle'){
+          const tri = document.createElementNS(ns,'polygon'); const pts=`${x},44 ${x-7},64 ${x+7},64`; tri.setAttribute('points',pts); tri.setAttribute('fill','#fbbf24'); svg.appendChild(tri);
+        } else if(m.type==='spawn'){
+          const star = document.createElementNS(ns,'polygon'); let pts=[]; const cx=x,cy=60,r=7; for(let i=0;i<5;i++){ const a=(i*2*Math.PI/5)-Math.PI/2; pts.push(`${cx+Math.cos(a)*r},${cy+Math.sin(a)*r}`);} star.setAttribute('points',pts.join(' ')); star.setAttribute('fill','gold'); svg.appendChild(star);
+        } else if(m.type==='end'){
+          const txt = document.createElementNS(ns,'text'); txt.setAttribute('x',x+6); txt.setAttribute('y',74); txt.setAttribute('fill','rgba(255,255,255,0.7)'); txt.setAttribute('font-size',11); txt.textContent='end'; svg.appendChild(txt);
+        }
+      });
+      // small ticks
+      for(let i=0;i<=12;i++){ const x=pad+(i/12)*usable; const t=document.createElementNS(ns,'line'); t.setAttribute('x1',x);t.setAttribute('y1',h-34);t.setAttribute('x2',x);t.setAttribute('y2',h-26); t.setAttribute('stroke','rgba(255,255,255,0.04)'); svg.appendChild(t); }
+    })();
+
+    // export
+    document.getElementById('btnExport').onclick = ()=>{
+      const data = JSON.stringify(run,null,2); const blob=new Blob([data],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='emx_fullloop_diagnostics.json'; a.click(); URL.revokeObjectURL(url);
+    };
+    document.getElementById('btnDownload').onclick = ()=>{ alert('This preview runs in the canvas. Use the editor export to download the file.'); };
+  </script>
+</body>
+</html>
