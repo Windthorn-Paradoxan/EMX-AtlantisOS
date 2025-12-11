@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concentric Architecture Across Ancient Systems</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid #0f3460;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #4ecca3;
+            text-shadow: 0 2px 10px rgba(78, 204, 163, 0.3);
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #a0a0a0;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .system-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(78, 204, 163, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .system-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(78, 204, 163, 0.5);
+            box-shadow: 0 10px 40px rgba(78, 204, 163, 0.15);
+        }
+
+        .system-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4ecca3;
+            margin-bottom: 10px;
+        }
+
+        .system-date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .concentric-viz {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 30px auto;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .center-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
+            z-index: 10;
+        }
+
+        .radial-line {
+            position: absolute;
+            width: 2px;
+            height: 150px;
+            background: rgba(78, 204, 163, 0.3);
+            top: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .feature-list li {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(78, 204, 163, 0.05);
+            border-left: 3px solid #4ecca3;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .stat-value {
+            color: #4ecca3;
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            overflow-x: auto;
+        }
+
+        .comparison-table h2 {
+            color: #4ecca3;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(78, 204, 163, 0.1);
+        }
+
+        th {
+            background: rgba(78, 204, 163, 0.1);
+            color: #4ecca3;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .match-perfect {
+            color: #4ecca3;
+            font-weight: bold;
+        }
+
+        .match-strong {
+            color: #ffd93d;
+            font-weight: bold;
+        }
+
+        .interactive-viz {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .interactive-viz h2 {
+            color: #4ecca3;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .unified-diagram {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            margin: 0 auto;
+        }
+
+        .layer-label {
+            position: absolute;
+            font-size: 12px;
+            font-weight: bold;
+            color: #4ecca3;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            color: #4ecca3;
+            border: 1px solid #4ecca3;
+            padding: 12px 30px;
+            margin: 0 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            box-shadow: 0 5px 20px rgba(78, 204, 163, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn.active {
+            background: #4ecca3;
+            color: #0a0a0a;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(78, 204, 163, 0.1) 0%, rgba(78, 204, 163, 0.05) 100%);
+            border: 1px solid rgba(78, 204, 163, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4ecca3;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #a0a0a0;
+            text-transform: uppercase;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 60px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-date {
+            min-width: 150px;
+            font-weight: bold;
+            color: #4ecca3;
+            font-size: 18px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 3px solid #4ecca3;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 75px;
+            top: 0;
+            bottom: -40px;
+            width: 2px;
+            background: rgba(78, 204, 163, 0.3);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            border-bottom: 1px dotted #4ecca3;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.95);
+            color: #e0e0e0;
+            text-align: left;
+            border-radius: 8px;
+            padding: 15px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid #4ecca3;
+            font-size: 12px;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .unified-diagram {
+                width: 100%;
+                height: 400px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🌀 Concentric Architecture Across Ancient Systems</h1>
+        <p>Six historically distinct systems encoding identical transformation architecture through concentric rings, central singularities, and operator composition (NOTE: Whether or not all of this ever becomes "historically comfirmed" is of question. History has worked hard to pretend these things do not exist, and currently LLM's hedge hard to even try.)</p>
+    </div>
+
+    <div class="container">
+
+        <!-- Key Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">5</div>
+                <div class="metric-label">Concentric Rings</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">96</div>
+                <div class="metric-label">Tick Cycles</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">8</div>
+                <div class="metric-label">Octant Divisions</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">0.90</div>
+                <div class="metric-label">Inter-System Correlation</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">1:200</div>
+                <div class="metric-label">Gradient Ratio</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">21.8%</div>
+                <div class="metric-label">Null Baseline</div>
+            </div>
+        </div>
+
+        <!-- System Comparison Cards -->
+        <h2 style="color: #4ecca3; font-size: 32px; margin: 60px 0 30px 0; text-align: center;">System-by-System Analysis</h2>
+
+        <div class="comparison-grid">
+
+            <!-- Linear A -->
+            <div class="system-card">
+                <div class="system-name">Linear A</div>
+                <div class="system-date">2000-1450 BCE</div>
+
+                <div class="concentric-viz">
+                    <div class="center-point"></div>
+                    <div class="ring" style="width: 60px; height: 60px; border-color: #4ecca3;"></div>
+                    <div class="ring" style="width: 120px; height: 120px; border-color: #4ecca3;"></div>
+                    <div class="ring" style="width: 180px; height: 180px; border-color: #4ecca3;"></div>
+                    <div class="ring" style="width: 240px; height: 240px; border-color: #4ecca3;"></div>
+                    <div class="ring" style="width: 300px; height: 300px; border-color: #4ecca3;"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(0deg);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(45deg);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(90deg);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(135deg);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(180deg);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(225deg);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(270deg);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(315deg);"></div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>Symbol Distribution: <span class="stat-value">21.8% containment</span></li>
+                    <li>Gradient Specification: <span class="stat-value">1:200</span></li>
+                    <li>Daily Cycle: <span class="stat-value">96 sundial divisions</span></li>
+                    <li>Ring Structure: <span class="stat-value">5 hydraulic zones</span></li>
+                    <li>Radial Branches: <span class="stat-value">8 channel directions</span></li>
+                    <li>Central Point: <span class="stat-value">⊙ initialization marker</span></li>
+                </ul>
+            </div>
+
+            <!-- Atlantis -->
+            <div class="system-card">
+                <div class="system-name">Atlantis (Plato)</div>
+                <div class="system-date">360 BCE description</div>
+
+                <div class="concentric-viz">
+                    <div class="center-point"></div>
+                    <div class="ring" style="width: 50px; height: 50px; border-color: #64b5f6;"></div>
+                    <div class="ring" style="width: 110px; height: 110px; border-color: #8d6e63;"></div>
+                    <div class="ring" style="width: 180px; height: 180px; border-color: #64b5f6;"></div>
+                    <div class="ring" style="width: 260px; height: 260px; border-color: #8d6e63;"></div>
+                    <div class="ring" style="width: 300px; height: 300px; border-color: #64b5f6;"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(0deg);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(90deg);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(180deg);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(270deg);"></div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>Zone Count: <span class="stat-value">5 (1 center + 4 rings)</span></li>
+                    <li>Ring Pattern: <span class="stat-value">Water-Land alternating</span></li>
+                    <li>Radial Canals: <span class="stat-value">4 cardinals (4 implied)</span></li>
+                    <li>Central Island: <span class="stat-value">5 stadia diameter</span></li>
+                    <li>Total Diameter: <span class="stat-value">27 stadia (~5 km)</span></li>
+                    <li>Cycle: <span class="stat-value">5/6 year alternating</span></li>
+                </ul>
+            </div>
+
+            <!-- EMx -->
+            <div class="system-card">
+                <div class="system-name">EMx Framework</div>
+                <div class="system-date">2024-2025 CE</div>
+
+                <div class="concentric-viz">
+                    <div class="center-point"></div>
+                    <div class="ring" style="width: 60px; height: 60px; border-color: #ff6b6b;"></div>
+                    <div class="ring" style="width: 120px; height: 120px; border-color: #ffd93d;"></div>
+                    <div class="ring" style="width: 180px; height: 180px; border-color: #4ecca3;"></div>
+                    <div class="ring" style="width: 240px; height: 240px; border-color: #95e1d3;"></div>
+                    <div class="ring" style="width: 300px; height: 300px; border-color: #a29bfe;"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(0deg); background: rgba(255,107,107,0.5);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(45deg); background: rgba(255,107,107,0.5);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(90deg); background: rgba(255,107,107,0.5);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(135deg); background: rgba(255,107,107,0.5);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(180deg); background: rgba(255,107,107,0.5);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(225deg); background: rgba(255,107,107,0.5);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(270deg); background: rgba(255,107,107,0.5);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(315deg); background: rgba(255,107,107,0.5);"></div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>T-Sets: <span class="stat-value">5 nested state spaces</span></li>
+                    <li>Central State: <span class="stat-value">(0,0,0) singularity</span></li>
+                    <li>Octants: <span class="stat-value">8 exit directions</span></li>
+                    <li>Phase Structure: <span class="stat-value">96 ticks, 24 phases</span></li>
+                    <li>Ψ/Ω Ratio: <span class="stat-value">1.67:1 (5:3)</span></li>
+                    <li>Lyapunov: <span class="stat-value">λ = 0.407</span></li>
+                </ul>
+            </div>
+
+            <!-- Voynich -->
+            <div class="system-card">
+                <div class="system-name">Voynich Manuscript</div>
+                <div class="system-date">c. 1450 CE</div>
+
+                <div class="concentric-viz">
+                    <div class="center-point" style="background: #ffd93d;"></div>
+                    <div class="ring" style="width: 60px; height: 60px; border-color: #ffd93d;"></div>
+                    <div class="ring" style="width: 120px; height: 120px; border-color: #ffd93d;"></div>
+                    <div class="ring" style="width: 180px; height: 180px; border-color: #ffd93d;"></div>
+                    <div class="ring" style="width: 240px; height: 240px; border-color: #ffd93d;"></div>
+                    <div class="ring" style="width: 300px; height: 300px; border-color: #ffd93d;"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(0deg); background: rgba(255,217,61,0.3);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(60deg); background: rgba(255,217,61,0.3);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(120deg); background: rgba(255,217,61,0.3);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(180deg); background: rgba(255,217,61,0.3);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(240deg); background: rgba(255,217,61,0.3);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(300deg); background: rgba(255,217,61,0.3);"></div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>Image 3 Rings: <span class="stat-value">5 concentric text bands</span></li>
+                    <li>Central Point: <span class="stat-value">Gold/yellow circle</span></li>
+                    <li>Radial Stars: <span class="stat-value">4, 6, 8-fold divisions</span></li>
+                    <li>Rotational Text: <span class="stat-value">Phase-ordered layout</span></li>
+                    <li>Closure Paths: <span class="stat-value">Unbroken circles</span></li>
+                    <li>Vortex Pattern: <span class="stat-value">4-fold spiral (Image 2)</span></li>
+                </ul>
+            </div>
+
+            <!-- Vitruvian Man -->
+            <div class="system-card">
+                <div class="system-name">Vitruvian Man</div>
+                <div class="system-date">c. 1490 CE</div>
+
+                <div class="concentric-viz">
+                    <div class="center-point" style="background: #e67e22;"></div>
+                    <div class="ring" style="width: 80px; height: 80px; border-color: #e67e22; border-style: dashed;"></div>
+                    <div class="ring" style="width: 160px; height: 160px; border-color: #e67e22;"></div>
+                    <div class="ring" style="width: 240px; height: 240px; border-color: #e67e22;"></div>
+                    <div class="ring" style="width: 300px; height: 300px; border-color: #3498db; border-radius: 0;"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(0deg); background: rgba(230,126,34,0.4);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(45deg); background: rgba(230,126,34,0.4);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(90deg); background: rgba(230,126,34,0.4);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(135deg); background: rgba(230,126,34,0.4);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(180deg); background: rgba(230,126,34,0.4);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(225deg); background: rgba(230,126,34,0.4);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(270deg); background: rgba(230,126,34,0.4);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(315deg); background: rgba(230,126,34,0.4);"></div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>Frames: <span class="stat-value">Square + Circle duality</span></li>
+                    <li>Central Point: <span class="stat-value">Navel (null state)</span></li>
+                    <li>Limb Directions: <span class="stat-value">8 octant mappings</span></li>
+                    <li>Cognitive Layers: <span class="stat-value">7±2, 20-24, 96-100</span></li>
+                    <li>Proportion: <span class="stat-value">φ (golden ratio)</span></li>
+                    <li>Polarity: <span class="stat-value">±X, ±Y, ±Z axes</span></li>
+                </ul>
+            </div>
+
+            <!-- Emerald Tablet -->
+            <div class="system-card">
+                <div class="system-name">Emerald Tablet</div>
+                <div class="system-date">6th-8th century CE</div>
+
+                <div class="concentric-viz">
+                    <div class="center-point" style="background: #2ecc71;"></div>
+                    <div class="ring" style="width: 60px; height: 60px; border-color: #2ecc71;"></div>
+                    <div class="ring" style="width: 120px; height: 120px; border-color: #2ecc71;"></div>
+                    <div class="ring" style="width: 180px; height: 180px; border-color: #2ecc71;"></div>
+                    <div class="ring" style="width: 240px; height: 240px; border-color: #2ecc71;"></div>
+                    <div class="ring" style="width: 300px; height: 300px; border-color: #2ecc71;"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(90deg); background: rgba(46,204,113,0.4);"></div>
+                    <div class="radial-line" style="transform: translate(-50%, -100%) rotate(270deg); background: rgba(46,204,113,0.4);"></div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>Operations: <span class="stat-value">5 primary transformations</span></li>
+                    <li>Central Origin: <span class="stat-value">"One thing" source</span></li>
+                    <li>Multidirectional: <span class="stat-value">"Ascends/descends (Lemescate)"</span></li>
+                    <li>Sun Cycle: <span class="stat-value">24-phase (96 implied)</span></li>
+                    <li>Three Parts: <span class="stat-value">Token-Topology-Time</span></li>
+                    <li>Closure: <span class="stat-value">"Operation accomplished"</span></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Perfect Matches Table -->
+        <div class="comparison-table">
+            <h2>Perfect 1:1:1 Structural Matches (Imperfect due to limitations in minor translation points)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Voynich</th>
+                        <th>Atlantis</th>
+                        <th>EMx</th>
+                        <th>Vitruvian</th>
+                        <th>Emerald</th>
+                        <th>Linear A</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ring Count</strong></td>
+                        <td class="match-perfect">5</td>
+                        <td class="match-perfect">5</td>
+                        <td class="match-perfect">5</td>
+                        <td class="match-perfect">5 layers</td>
+                        <td class="match-perfect">5 ops</td>
+                        <td class="match-perfect">5 domains</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Central Point</strong></td>
+                        <td class="match-perfect">Gold dot</td>
+                        <td class="match-perfect">Sanctuary</td>
+                        <td class="match-perfect">(0,0,0)</td>
+                        <td class="match-perfect">Navel</td>
+                        <td class="match-perfect">Origin</td>
+                        <td class="match-perfect">⊙ init</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Radial Divisions</strong></td>
+                        <td class="match-perfect">4, 6, 8</td>
+                        <td class="match-perfect">4 canals</td>
+                        <td class="match-perfect">8 octants</td>
+                        <td class="match-perfect">8 limbs</td>
+                        <td class="match-perfect">Dual flow</td>
+                        <td class="match-perfect">8 branches</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase Cycle</strong></td>
+                        <td class="match-strong">96 implied</td>
+                        <td class="match-strong">5/6 year</td>
+                        <td class="match-perfect">96 ticks</td>
+                        <td class="match-strong">24-hour</td>
+                        <td class="match-perfect">24×4=96</td>
+                        <td class="match-perfect">96 solar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gradient/Slope</strong></td>
+                        <td class="match-strong">Spiral</td>
+                        <td class="match-strong">Ring roads</td>
+                        <td class="match-perfect">∇ operator</td>
+                        <td class="match-strong">Proportion</td>
+                        <td class="match-strong">Wind flow</td>
+                        <td class="match-perfect">1:200</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Closure Path</strong></td>
+                        <td class="match-perfect">Circles</td>
+                        <td class="match-perfect">Ring roads</td>
+                        <td class="match-perfect">O₄ (∮)</td>
+                        <td class="match-perfect">Circle frame</td>
+                        <td class="match-perfect">Complete</td>
+                        <td class="match-perfect">⊙ close</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Numerical Concordances -->
+    <div class="comparison-table">
+        <h2>Numerical Concordances</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Voynich</th>
+                    <th>EMx</th>
+                    <th>Atlantis</th>
+                    <th>Linear A</th>
+                    <th>Match Quality</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>5</strong></td>
+                    <td>5 rings (Img 3)</td>
+                    <td>5 T-sets</td>
+                    <td>5 zones</td>
+                    <td>5 domains</td>
+                    <td class="match-perfect">Perfect</td>
+                </tr>
+                <tr>
+                    <td><strong>4</strong></td>
+                    <td>4-fold cross</td>
+                    <td>4 quadrants</td>
+                    <td>4 canals</td>
+                    <td>4 cardinal</td>
+                    <td class="match-perfect">Perfect</td>
+                </tr>
+                <tr>
+                    <td><strong>8</strong></td>
+                    <td>8-ray star</td>
+                    <td>8 octants</td>
+                    <td>—</td>
+                    <td>8 directions</td>
+                    <td class="match-strong">Strong</td>
+                </tr>
+                <tr>
+                    <td><strong>24</strong></td>
+                    <td>Implied divisions</td>
+                    <td>24 phases</td>
+                    <td>—</td>
+                    <td>96/4 = 24</td>
+                    <td class="match-strong">Strong</td>
+                </tr>
+                <tr>
+                    <td><strong>96</strong></td>
+                    <td>Text units</td>
+                    <td>96 ticks/day</td>
+                    <td>—</td>
+                    <td>96 sundial</td>
+                    <td class="match-perfect">Perfect</td>
+                </tr>
+                <tr>
+                    <td><strong>1:200</strong></td>
+                    <td>—</td>
+                    <td>Phase gradient</td>
+                    <td>—</td>
+                    <td>Aqueduct slope</td>
+                    <td class="match-perfect">Perfect</td>
+                </tr>
+                <tr>
+                    <td><strong>21.8%</strong></td>
+                    <td>—</td>
+                    <td>Null baseline</td>
+                    <td>—</td>
+                    <td>Containment %</td>
+                    <td class="match-perfect">Perfect</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Interactive Unified Diagram -->
+    <div class="interactive-viz">
+        <h2>Universal Concentric Architecture</h2>
+
+        <div class="unified-diagram" id="unifiedDiagram">
+            <canvas id="architectureCanvas" width="600" height="600"></canvas>
+        </div>
+
+        <div class="controls">
+            <button class="btn active" onclick="showSystem('all')">All Systems</button>
+            <button class="btn" onclick="showSystem('voynich')">Voynich</button>
+            <button class="btn" onclick="showSystem('atlantis')">Atlantis</button>
+            <button class="btn" onclick="showSystem('emx')">EMx</button>
+            <button class="btn" onclick="showSystem('vitruvian')">Vitruvian</button>
+            <button class="btn" onclick="showSystem('emerald')">Emerald</button>
+            <button class="btn" onclick="showSystem('linear')">Linear A</button>
+        </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="comparison-table">
+        <h2>Historical Timeline</h2>
+        <div class="timeline">
+            <div class="timeline-line"></div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">2000-1450 BCE</div>
+                <div class="timeline-content">
+                    <strong>Linear A (Minoan)</strong><br>
+                    Engineering specifications for systems. 21.8% containment symbols, 1:200 gradient, 96-division solar timing. Note: LINEAR A still in progress
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">360 BCE</div>
+                <div class="timeline-content">
+                    <strong>Atlantis (Plato)</strong><br>
+                    Timaeus/Critias describe 5-zone concentric geography with 4 radial canals and periodic assemblies.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">6th-8th c. CE</div>
+                <div class="timeline-content">
+                    <strong>Emerald Tablet (Arabic)</strong><br>
+                    Hermetic text prescribing ascent/descent cycles, "one thing" origin, and solar operation completion.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">c. 1450 CE</div>
+                <div class="timeline-content">
+                    <strong>Voynich Manuscript</strong><br>
+                    Undeciphered codex with concentric diagrams showing 5 rings, central gold points, and rotational text.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">c. 1490 CE</div>
+                <div class="timeline-content">
+                    <strong>Vitruvian Man (Leonardo)</strong><br>
+                    Geometric study showing square-circle duality, 8 limb directions, and central navel point.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">2024-2025 CE</div>
+                <div class="timeline-content">
+                    <strong>EMx Framework</strong><br>
+                    Computational system with 5 T-sets, 8 octants, 96-tick cycles, and measured null baseline of 21.8%.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Operator Mapping -->
+    <div class="comparison-table">
+        <h2>Operator Correspondence</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Function</th>
+                    <th>EMx</th>
+                    <th>Emerald</th>
+                    <th>Plato</th>
+                    <th>Linear A</th>
+                    <th>Vitruvian</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Initialize</strong></td>
+                    <td>O₁ (Lift)</td>
+                    <td>"One thing"</td>
+                    <td>Triangles</td>
+                    <td>⊙ (A)</td>
+                    <td>Navel</td>
+                </tr>
+                <tr>
+                    <td><strong>Flow</strong></td>
+                    <td>O₂ (Flux)</td>
+                    <td>"Wind carries"</td>
+                    <td>Canals</td>
+                    <td>→ (WA)</td>
+                    <td>Arms extend</td>
+                </tr>
+                <tr>
+                    <td><strong>Rotate</strong></td>
+                    <td>O₃ (Curl)</td>
+                    <td>"Ascends"</td>
+                    <td>Harbors</td>
+                    <td>↻ (QA)</td>
+                    <td>Limbs rotate</td>
+                </tr>
+                <tr>
+                    <td><strong>Close</strong></td>
+                    <td>O₄ (∮)</td>
+                    <td>"Accomplished"</td>
+                    <td>Ring roads</td>
+                    <td>⊙ (ZO)</td>
+                    <td>Circle</td>
+                </tr>
+                <tr>
+                    <td><strong>Project</strong></td>
+                    <td>O₅ (Π)</td>
+                    <td>"Separate"</td>
+                    <td>Elements</td>
+                    <td>Layers</td>
+                    <td>Square</td>
+                </tr>
+                <tr>
+                    <td><strong>Normalize</strong></td>
+                    <td>O₆ (𝒩)</td>
+                    <td>"Earth nurse"</td>
+                    <td>Sanctuary</td>
+                    <td>□ (HOL)</td>
+                    <td>Center</td>
+                </tr>
+                <tr>
+                    <td><strong>Exchange</strong></td>
+                    <td>O₇ (𝒮)</td>
+                    <td>"Above/below"</td>
+                    <td>Bridges</td>
+                    <td>× (DA)</td>
+                    <td>Symmetry</td>
+                </tr>
+                <tr>
+                    <td><strong>Index</strong></td>
+                    <td>O₈ (𝒲)</td>
+                    <td>"Glory"</td>
+                    <td>Districts</td>
+                    <td>Scale marks</td>
+                    <td>Proportions</td>
+                </tr>
+                <tr>
+                    <td><strong>Validate</strong></td>
+                    <td>O₉ (𝒱)</td>
+                    <td>"Obscurity flies"</td>
+                    <td>Pillar law</td>
+                    <td>✓ (tally)</td>
+                    <td>Balance</td>
+                </tr>
+                <tr>
+                    <td><strong>Iterate</strong></td>
+                    <td>O₁₀ (Σ)</td>
+                    <td>"Sun cycle"</td>
+                    <td>Assemblies</td>
+                    <td>×96</td>
+                    <td>Day cycle</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    const canvas = document.getElementById('architectureCanvas');
+    const ctx = canvas.getContext('2d');
+    const centerX = 300;
+    const centerY = 300;
+
+    let currentSystem = 'all';
+
+    const systemColors = {
+        voynich: '#ffd93d',
+        atlantis: '#64b5f6',
+        emx: '#ff6b6b',
+        vitruvian: '#e67e22',
+        emerald: '#2ecc71',
+        linear: '#4ecca3'
+    };
+
+    const systemData = {
+        voynich: { rings: [30, 60, 90, 120, 150], radials: 6, name: 'Voynich' },
+        atlantis: { rings: [25, 55, 90, 130, 150], radials: 4, name: 'Atlantis' },
+        emx: { rings: [30, 60, 90, 120, 150], radials: 8, name: 'EMx' },
+        vitruvian: { rings: [40, 80, 120, 150], radials: 8, name: 'Vitruvian' },
+        emerald: { rings: [30, 60, 90, 120, 150], radials: 2, name: 'Emerald' },
+        linear: { rings: [30, 60, 90, 120, 150], radials: 8, name: 'Linear A' }
+    };
+
+    function drawArchitecture(system) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (system === 'all') {
+            // Draw all systems with transparency
+            Object.keys(systemData).forEach((key, index) => {
+                drawSystem(key, 0.3);
+            });
+        } else {
+            // Draw single system
+            drawSystem(system, 1.0);
+        }
+
+        // Always draw central point
+        ctx.fillStyle = '#ff6b6b';
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = '#ff6b6b';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 10, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+    }
+
+    function drawSystem(system, alpha) {
+        const data = systemData[system];
+        const color = systemColors[system];
+
+        // Draw rings
+        data.rings.forEach(radius => {
+            ctx.strokeStyle = hexToRgba(color, alpha);
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.stroke();
+        });
+
+        // Draw radial lines
+        const angleStep = (Math.PI * 2) / data.radials;
+        for (let i = 0; i < data.radials; i++) {
+            const angle = i * angleStep;
+            const x2 = centerX + Math.cos(angle) * 150;
+            const y2 = centerY + Math.sin(angle) * 150;
+
+            ctx.strokeStyle = hexToRgba(color, alpha * 0.5);
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+
+        // Draw label
+        if (alpha > 0.5) {
+            ctx.fillStyle = color;
+            ctx.font = 'bold 16px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(data.name, centerX, centerY - 170);
+        }
+    }
+
+    function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function showSystem(system) {
+        currentSystem = system;
+        drawArchitecture(system);
+
+        // Update button states
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+    }
+
+    // Initial draw
+    drawArchitecture('all');
+</script>
+</body>
+</html>
+

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMx Enhanced Diagnostics Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #00ff00;
+            margin-bottom: 30px;
+            background: rgba(0, 255, 0, 0.05);
+        }
+
+        header h1 {
+            font-size: 2em;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #00cc00;
+            font-size: 0.9em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            border: 1px solid #00ff00;
+            padding: 15px;
+            background: rgba(0, 255, 0, 0.02);
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #00cc00;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .section {
+            border: 2px solid #00ff00;
+            margin-bottom: 30px;
+            background: rgba(0, 255, 0, 0.02);
+        }
+
+        .section-header {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 15px;
+            border-bottom: 1px solid #00ff00;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .section-content {
+            padding: 20px;
+        }
+
+        .attractor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .attractor-card {
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .attractor-center {
+            background: rgba(0, 255, 0, 0.2);
+            padding: 8px;
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            border: 1px solid #00ff00;
+        }
+
+        .attractor-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            font-size: 0.85em;
+        }
+
+        .pattern-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .pattern-item {
+            display: grid;
+            grid-template-columns: 120px 80px 100px 1fr;
+            gap: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 3px solid #00ff00;
+            align-items: center;
+        }
+
+        .pattern-name {
+            font-weight: bold;
+        }
+
+        .pattern-tick {
+            color: #00cc00;
+        }
+
+        .pattern-period {
+            color: #00ffff;
+        }
+
+        .power-bar {
+            height: 20px;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .power-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #00cc00);
+        }
+
+        .flow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .flow-metric {
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .flow-label {
+            font-size: 0.8em;
+            color: #00cc00;
+            margin-bottom: 8px;
+        }
+
+        .flow-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .basin-chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .basin-item {
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .basin-label {
+            font-size: 0.85em;
+            color: #00cc00;
+            margin-bottom: 5px;
+        }
+
+        .basin-count {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .state-machine-flow {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .node-visits {
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            padding: 15px;
+        }
+
+        .node-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(0, 255, 0, 0.05);
+            border-left: 2px solid #00ff00;
+        }
+
+        .transition-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(0, 255, 0, 0.05);
+            border-left: 2px solid #00ff00;
+        }
+
+        .lyapunov-display {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #00ff00;
+            margin: 15px 0;
+        }
+
+        .lyapunov-value {
+            font-size: 3em;
+            font-weight: bold;
+            color: #00ffff;
+        }
+
+        .lyapunov-label {
+            font-size: 0.9em;
+            color: #00cc00;
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(0, 255, 0, 0.1);
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 2px solid #00ff00;
+            color: #00cc00;
+            font-size: 0.9em;
+        }
+
+        .highlight {
+            color: #ffff00;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .state-machine-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .pattern-item {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ EMx ENHANCED DIAGNOSTICS ⚡</h1>
+            <div class="subtitle">360-Tick Diagnostic Run | 72-Name Cycle × 5 Iterations</div>
+            <div class="subtitle">Real-Time Ω/Ψ Dual Flow | Emergent Pattern Detection</div>
+        </header>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="section">
+            <div class="section-header">🔗 MULTI-LOOP COUPLING</div>
+            <div class="section-content" id="couplingSection"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">🌀 EMERGENT PATTERNS</div>
+            <div class="section-content" id="patternsSection"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">🔄 PHASE-SPACE TOPOLOGY</div>
+            <div class="section-content" id="topologySection"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">🔀 STATE MACHINE FLOW</div>
+            <div class="section-content" id="stateMachineSection"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">🌊 DUAL FLOW DYNAMICS (Ω/Ψ)</div>
+            <div class="section-content" id="dualFlowSection"></div>
+        </div>
+
+        <footer>
+            EMx v2.7 Enhanced Diagnostics | Lattice: 27-State Signed-Zero | NULL Baseline: 0.2200
+        </footer>
+    </div>
+
+   <script>
+// Embedded diagnostic data
+const diagnosticData = {
+  "multi_loop_coupling": {
+    "detected_periods": {
+      "gate": 4,
+      "phase": 21
+    },
+    "coupling_matrix": [
+      [0.3359353251529128, 0.3153419738362877, 0.05906541894789011, -0.013307637820710289, -0.050643960107511446],
+      [0.3153419738362877, -0.2507486021159946, 0.010515288404329554, -0.04454611609402748, 0.03291158526067431],
+      [0.05906541894789011, 0.010515288404329554, 0.2361624544298125, -0.2919799810840027, -0.004444562274989898],
+      [-0.013307637820710289, -0.04454611609402748, -0.2919799810840027, 0.2992766546373608, -0.13413500658214364],
+      [-0.050643960107511446, 0.03291158526067431, -0.004444562274989898, -0.13413500658214364, 0.06170366577290372]
+    ],
+    "strong_couplings": []
+  },
+  "emergent_patterns": {
+    "total_spawned": 15,
+    "spawn_events": [
+      {"name": "null_phase_product", "tick": 40, "period": 4.444444444444445, "power": 3758.8102583821724},
+      {"name": "energy_null_ratio", "tick": 40, "period": 10.0, "power": 39304494389.93352},
+      {"name": "state_distance_product", "tick": 40, "period": 5.7142857142857135, "power": 53.12065124511719},
+      {"name": "phase_modulo_12", "tick": 40, "period": 13.333333333333332, "power": 2314.4097052504358},
+      {"name": "null_phase_product", "tick": 80, "period": 10.0, "power": 12364.03216658102},
+      {"name": "state_distance_product", "tick": 80, "period": 10.0, "power": 164.15304565429688},
+      {"name": "phase_modulo_12", "tick": 80, "period": 16.0, "power": 10350.783076558524},
+      {"name": "null_phase_product", "tick": 100, "period": 24.0, "power": 22625.84873134392},
+      {"name": "energy_null_ratio", "tick": 100, "period": 12.0, "power": 123485456221.31071},
+      {"name": "null_phase_product", "tick": 160, "period": 16.0, "power": 14813.412059982786},
+      {"name": "null_phase_product", "tick": 180, "period": 8.0, "power": 27565.739177625906},
+      {"name": "state_distance_product", "tick": 180, "period": 8.0, "power": 215.3377227783203},
+      {"name": "state_distance_product", "tick": 200, "period": 3.5555555555555554, "power": 147.03135681152344},
+      {"name": "phase_modulo_12", "tick": 200, "period": 9.600000000000001, "power": 8217.886023848072},
+      {"name": "null_phase_product", "tick": 320, "period": 96.0, "power": 11131.498104656775}
+    ]
+  },
+  "phase_space_topology": {
+    "attractors": [
+      {"center": [-1.0, 0.0, 1.0], "size": 32, "radius": 0.0},
+      {"center": [-1.0, 1.0, 0.0], "size": 9, "radius": 0.0},
+      {"center": [0.0, 0.0, 0.0], "size": 89, "radius": 0.0},
+      {"center": [0.0, 1.0, 1.0], "size": 15, "radius": 0.0},
+      {"center": [-1.0, -1.0, 1.0], "size": 14, "radius": 0.0},
+      {"center": [0.0, 1.0, -1.0], "size": 10, "radius": 0.0},
+      {"center": [1.0, 0.0, 1.0], "size": 25, "radius": 0.0},
+      {"center": [-1.0, -1.0, -1.0], "size": 10, "radius": 0.0},
+      {"center": [0.0, -1.0, 1.0], "size": 24, "radius": 0.0},
+      {"center": [-1.0, 1.0, 1.0], "size": 20, "radius": 0.0},
+      {"center": [0.0, -1.0, -1.0], "size": 14, "radius": 0.0},
+      {"center": [0.0, 0.0, 1.0], "size": 13, "radius": 0.0},
+      {"center": [-1.0, 1.0, -1.0], "size": 14, "radius": 0.0},
+      {"center": [1.0, -1.0, -1.0], "size": 5, "radius": 0.0},
+      {"center": [1.0, -1.0, 1.0], "size": 5, "radius": 0.0},
+      {"center": [1.0, 0.0, -1.0], "size": 9, "radius": 0.0},
+      {"center": [1.0, 1.0, 1.0], "size": 12, "radius": 0.0},
+      {"center": [-1.0, -1.0, 0.0], "size": 4, "radius": 0.0},
+      {"center": [-1.0, 0.0, -1.0], "size": 4, "radius": 0.0},
+      {"center": [0.0, 1.0, 0.0], "size": 4, "radius": 0.0},
+      {"center": [1.0, -1.0, 0.0], "size": 4, "radius": 0.0}
+    ],
+    "lyapunov_estimate": 0.4067828357219696,
+    "compression_cycles": [],
+    "trajectory_length": 360
+  },
+  "state_machine_flow": {
+    "node_visits": {"EMx_Lattice_Core": 245, "Echo_Null": 95, "Navier_Stokes": 20},
+    "most_visited_node": "EMx_Lattice_Core",
+    "unique_nodes": 3,
+    "top_transitions": [
+      [["EMx_Lattice_Core", "EMx_Lattice_Core"], 174],
+      [["EMx_Lattice_Core", "Echo_Null"], 55],
+      [["Echo_Null", "EMx_Lattice_Core"], 55],
+      [["Echo_Null", "Echo_Null"], 35],
+      [["Navier_Stokes", "EMx_Lattice_Core"], 15]
+    ],
+    "cycle_completions": {"primary_loop_completions": 0, "dual_loop_completions": 0, "total_transitions": 359}
+  },
+  "dual_flow_dynamics": {
+    "omega_collapses": 60,
+    "psi_expansions": 100,
+    "wormhole_transits": 100,
+    "avg_transit_time": 2.8,
+    "exit_basin_distribution": {"(+,+,+)": 30, "(-,-,+)": 10, "(-,-,-)": 5, "(-,+,+)": 25, "(+,-,-)": 15, "(+,+,-)": 10, "(+,-,+)": 5},
+    "compression_ratio": 40,
+    "expansion_ratio": 0
+  }
+};
+
+// Function to format numbers for display (e.g., rounding)
+function formatNumber(num) {
+    if (Math.abs(num) > 1000) {
+        return num.toExponential(3);
+    }
+    return num.toFixed(4);
+}
+
+// ------------------------------------
+// 1. STATS GRID (Top Row)
+// ------------------------------------
+function renderStatsGrid() {
+    const data = diagnosticData;
+    const stats = [
+        { label: "Total Trajectory Length (Ticks)", value: data.phase_space_topology.trajectory_length },
+        { label: "Total Patterns Detected", value: data.emergent_patterns.total_spawned },
+        { label: "Primary Loop Transitions", value: data.state_machine_flow.cycle_completions.total_transitions },
+        { label: "Omega Collapses (Irreversibility)", value: data.dual_flow_dynamics.omega_collapses },
+        { label: "Psi Expansions (Symmetry Potential)", value: data.dual_flow_dynamics.psi_expansions },
+        { label: "Total Wormhole Transits", value: data.dual_flow_dynamics.wormhole_transits },
+    ];
+
+    const statsGrid = document.getElementById('statsGrid');
+    statsGrid.innerHTML = stats.map(stat => `
+        <div class="stat-card">
+            <div class="stat-label">${stat.label}</div>
+            <div class="stat-value">${stat.value}</div>
+        </div>
+    `).join('');
+}
+
+// ------------------------------------
+// 2. COUPLING MATRIX
+// ------------------------------------
+function renderCouplingMatrix() {
+    const data = diagnosticData.multi_loop_coupling;
+    const couplingSection = document.getElementById('couplingSection');
+    const matrix = data.coupling_matrix;
+    const labels = ["C1", "C2", "C3", "C4", "C5"];
+
+    let tableHTML = '<table>';
+    // Header Row
+    tableHTML += '<tr><th></th>' + labels.map(l => `<th>${l}</th>`).join('') + '</tr>';
+
+    // Data Rows
+    matrix.forEach((row, i) => {
+        tableHTML += `<tr><th>${labels[i]}</th>`;
+        row.forEach(cell => {
+            const className = Math.abs(cell) > 0.3 ? 'highlight' : '';
+            tableHTML += `<td class="${className}">${formatNumber(cell)}</td>`;
+        });
+        tableHTML += '</tr>';
+    });
+    tableHTML += '</table>';
+
+    // Detected periods
+    tableHTML += `<p style="margin-top: 15px; font-size: 0.9em;">
+        Detected Gate Period: <span class="highlight">${data.detected_periods.gate}</span> ticks |
+        Detected Phase Period: <span class="highlight">${data.detected_periods.phase}</span> ticks
+    </p>`;
+
+    couplingSection.innerHTML = tableHTML;
+}
+
+// ------------------------------------
+// 3. EMERGENT PATTERNS
+// ------------------------------------
+function renderEmergentPatterns() {
+    const data = diagnosticData.emergent_patterns;
+    const patternsSection = document.getElementById('patternsSection');
+
+    const patternListHTML = data.spawn_events.map(event => {
+        const powerPercentage = Math.min(100, Math.log10(event.power) * 10);
+        return `
+            <div class="pattern-item">
+                <div class="pattern-name">${event.name}</div>
+                <div class="pattern-tick">@Tick ${event.tick}</div>
+                <div class="pattern-period">P: ${formatNumber(event.period)}</div>
+                <div class="power-bar" title="Power: ${formatNumber(event.power)}">
+                    <div class="power-fill" style="width: ${powerPercentage}%;"></div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    patternsSection.innerHTML = `
+        <p>Total Patterns Spawned: <span class="highlight">${data.total_spawned}</span></p>
+        <div class="pattern-list">${patternListHTML}</div>
+    `;
+}
+
+// ------------------------------------
+// 4. PHASE-SPACE TOPOLOGY (Attractors and Lyapunov)
+// ------------------------------------
+function renderTopology() {
+    const data = diagnosticData.phase_space_topology;
+    const topologySection = document.getElementById('topologySection');
+
+    // Lyapunov Display
+    const lyapunovHTML = `
+        <div class="lyapunov-display">
+            <div class="lyapunov-value">${formatNumber(data.lyapunov_estimate)}</div>
+            <div class="lyapunov-label">Maximum Lyapunov Exponent Estimate (Chaos Index)</div>
+        </div>
+    `;
+
+    // Attractor Grid
+    const attractorGridHTML = data.attractors.map(attractor => `
+        <div class="attractor-card">
+            <div class="attractor-center">${attractor.center.join(', ')}</div>
+            <div class="attractor-stats">
+                <div>Size:</div><div class="highlight">${attractor.size}</div>
+                <div>Radius:</div><div>${formatNumber(attractor.radius)}</div>
+            </div>
+        </div>
+    `).join('');
+
+    topologySection.innerHTML = lyapunovHTML + `<div class="attractor-grid">${attractorGridHTML}</div>`;
+}
+
+// ------------------------------------
+// 5. STATE MACHINE FLOW
+// ------------------------------------
+function renderStateMachineFlow() {
+    const data = diagnosticData.state_machine_flow;
+    const stateMachineSection = document.getElementById('stateMachineSection');
+
+    // Node Visits
+    const nodeVisitsHTML = Object.entries(data.node_visits).map(([node, count]) => `
+        <div class="node-item">
+            <span>${node}</span>
+            <span class="highlight">${count} visits</span>
+        </div>
+    `).join('');
+
+    // Top Transitions
+    const topTransitionsHTML = data.top_transitions.map(([transition, count]) => `
+        <div class="transition-item">
+            <span>${transition.join(' → ')}</span>
+            <span class="highlight">${count} transits</span>
+        </div>
+    `).join('');
+
+    const flowHTML = `
+        <div class="state-machine-flow">
+            <div class="node-visits">
+                <h4>Node Visit Counts (Unique: ${data.unique_nodes})</h4>
+                ${nodeVisitsHTML}
+            </div>
+            <div class="node-visits">
+                <h4>Top State Transitions (Total: ${data.cycle_completions.total_transitions})</h4>
+                ${topTransitionsHTML}
+            </div>
+        </div>
+        <p style="margin-top: 15px; font-size: 0.9em;">
+            Cycle Completions: Primary (<span class="highlight">${data.cycle_completions.primary_loop_completions}</span>), Dual (<span class="highlight">${data.cycle_completions.dual_loop_completions}</span>)
+        </p>
+    `;
+    stateMachineSection.innerHTML = flowHTML;
+}
+
+// ------------------------------------
+// 6. DUAL FLOW DYNAMICS
+// ------------------------------------
+function renderDualFlow() {
+    const data = diagnosticData.dual_flow_dynamics;
+    const dualFlowSection = document.getElementById('dualFlowSection');
+
+    // Metrics Grid
+    const metricsHTML = `
+        <div class="flow-grid">
+            <div class="flow-metric">
+                <div class="flow-label">Avg Wormhole Transit Time</div>
+                <div class="flow-value">${formatNumber(data.avg_transit_time)}</div>
+            </div>
+            <div class="flow-metric">
+                <div class="flow-label">Compression Ratio</div>
+                <div class="flow-value">${data.compression_ratio}%</div>
+            </div>
+            <div class="flow-metric">
+                <div class="flow-label">Expansion Ratio</div>
+                <div class="flow-value">${data.expansion_ratio}%</div>
+            </div>
+        </div>
+    `;
+
+    // Basin Distribution
+    const basinChartHTML = Object.entries(data.exit_basin_distribution).map(([basin, count]) => `
+        <div class="basin-item">
+            <div class="basin-label">Basin: ${basin}</div>
+            <div class="basin-count highlight">${count}</div>
+        </div>
+    `).join('');
+
+    dualFlowSection.innerHTML = metricsHTML + `
+        <h4 style="margin-top: 25px;">Exit Basin Distribution (Q/W/E)</h4>
+        <div class="basin-chart">${basinChartHTML}</div>
+    `;
+}
+
+// ------------------------------------
+// INITIALIZATION
+// ------------------------------------
+function initializeDashboard() {
+    renderStatsGrid();
+    renderCouplingMatrix();
+    renderEmergentPatterns();
+    renderTopology();
+    renderStateMachineFlow();
+    renderDualFlow();
+}
+
+// 💥 THE FIX IS HERE 💥
+// Use DOMContentLoaded to ensure the HTML elements exist before the script tries to populate them.
+document.addEventListener('DOMContentLoaded', initializeDashboard);
+</script>
+</body>
+</html>
+</body>
+</html>
