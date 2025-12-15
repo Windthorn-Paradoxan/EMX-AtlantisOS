@@ -66,17 +66,18 @@ It suggests we are not to hide behind any one power as a shield for our agenda
 It does not suggests there is no greater power
 It does suggest if there is, we are responsible for ourselves anyway
 
-0 = 1
+0 = 1  
 Live in the LOOP
-If you ever wondered what came first, the chicken or the egg...
-Why does 0, look like an egg?
-And did someone spill coffe on the memo that said...
 
-We found math
-And the smear said "myth"
+If you ever wondered what came first, the chicken or the egg...  
+Why does 0, look like an egg?  
+And did someone spill coffe on the memo that said...  
+
+We found math  
+And the smear said "myth"  
 
 Question everything
 
-Don't Panic! ;)
-Hello World!
-Everything, is DATA!
+Don't Panic! ;)  
+Hello World!  
+Everything, is DATA!  
