@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voynich Taurus Folios - Complete Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a0f2e 0%, #2e1a3e 50%, #1a0f2e 100%);
+            color: #00ff88;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 40px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 3px solid #00ff88;
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+        }
+        
+        h1 {
+            font-size: 3em;
+            text-shadow: 0 0 30px #00ff88;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+        }
+        
+        .subtitle {
+            color: #00cc66;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        
+        .folio-selector {
+            margin: 30px 0;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+        }
+        
+        .folio-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .folio-btn {
+            padding: 20px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #00aa44 0%, #00ff88 100%);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+        
+        .folio-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
+        }
+        
+        .folio-btn.active {
+            background: linear-gradient(135deg, #ff6600 0%, #ffaa00 100%);
+            box-shadow: 0 0 30px rgba(255, 170, 0, 0.6);
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .folio-panel {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+        
+        .folio-panel.light {
+            border-color: #ffaa00;
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.2);
+        }
+        
+        .folio-panel.dark {
+            border-color: #6600ff;
+            box-shadow: 0 0 20px rgba(102, 0, 255, 0.2);
+        }
+        
+        .panel-title {
+            font-size: 2em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid;
+            text-shadow: 0 0 15px currentColor;
+        }
+        
+        .light .panel-title {
+            color: #ffaa00;
+            border-bottom-color: #ffaa00;
+        }
+        
+        .dark .panel-title {
+            color: #aa66ff;
+            border-bottom-color: #aa66ff;
+        }
+        
+        .stat-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 20px;
+            margin: 15px 0;
+            padding: 12px;
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid #00ff88;
+            border-radius: 5px;
+        }
+        
+        .stat-label {
+            color: #00cc66;
+            font-weight: bold;
+        }
+        
+        .stat-value {
+            color: #00ff88;
+        }
+        
+        .highlight-critical {
+            color: #ff6666;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff6666;
+        }
+        
+        .highlight-watcher {
+            color: #ff8844;
+            font-weight: bold;
+        }
+        
+        .layer-analysis {
+            margin-top: 40px;
+        }
+        
+        .layer-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .layer-tab {
+            padding: 15px 25px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00ff88;
+            color: #00cc66;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+        
+        .layer-tab:hover {
+            background: rgba(0, 255, 136, 0.15);
+            color: #00ff88;
+        }
+        
+        .layer-tab.active {
+            background: rgba(0, 255, 136, 0.25);
+            color: #00ff88;
+            border-color: #00ffaa;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+        
+        .layer-content {
+            display: none;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            min-height: 400px;
+        }
+        
+        .layer-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .word-card {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .word-card:hover {
+            background: rgba(0, 255, 136, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.3);
+        }
+        
+        .word-text {
+            font-size: 1.5em;
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .word-meaning {
+            color: #00cc66;
+            margin-bottom: 8px;
+        }
+        
+        .word-position {
+            color: #888;
+            font-size: 0.9em;
+        }
+        
+        .ring-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid #00ff88;
+            border-radius: 5px;
+        }
+        
+        .ring-title {
+            font-size: 1.6em;
+            color: #00ff88;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ff88;
+        }
+        
+        .comparison-box {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 25px;
+            border: 2px solid #ff8844;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .difference-highlight {
+            background: rgba(255, 100, 100, 0.2);
+            padding: 15px;
+            border-left: 4px solid #ff6666;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .equation-box {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border: 1px solid #00ff88;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .nymph-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .nymph-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00ff88;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .nymph-card.naked {
+            border-color: #ff6666;
+            background: rgba(255, 100, 100, 0.1);
+        }
+        
+        .nymph-number {
+            font-size: 1.2em;
+            color: #ffaa00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: #00ff88;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #00cc66;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .sixteenth-highlight {
+            background: rgba(255, 0, 255, 0.2);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 1200px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>♉ VOYNICH TAURUS FOLIOS ♉</h1>
+            <div class="subtitle">Complete Light/Dark Analysis: f71v & f72r1</div>
+            <div style="margin-top: 15px; color: #00aa66;">
+                12-Layer Interpretation: Bronze Age | Computational | Physical | Cognitive | Biochemical | Genetic | Cellular | Endocrine | Neurological | Quantum | Elemental | Thermodynamic
+            </div>
+        </header>
+
+        <div class="folio-selector">
+            <h2 style="color: #00ff88; text-align: center; margin-bottom: 20px; font-size: 1.8em;">SELECT ANALYSIS MODE</h2>
+            <div class="folio-buttons">
+                <button class="folio-btn active" onclick="showComparison()">⚖️ LIGHT vs DARK COMPARISON</button>
+                <button class="folio-btn" onclick="showFolio('light')">☀️ f71v TAURUS LIGHT</button>
+                <button class="folio-btn" onclick="showFolio('dark')">🌙 f72r1 TAURUS DARK</button>
+                <button class="folio-btn" onclick="showLayers()">🔬 12-LAYER ANALYSIS</button>
+            </div>
+        </div>
+
+        <!-- COMPARISON VIEW -->
+        <div id="comparison-view">
+            <div class="comparison-grid">
+                <div class="folio-panel light">
+                    <div class="panel-title">☀️ f71v TAURUS LIGHT</div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Total Nymphs:</span>
+                        <span class="stat-value">15 (10 outer, 5 inner)</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Naked Nymphs:</span>
+                        <span class="stat-value">3 total (20%)</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Barrels:</span>
+                        <span class="stat-value">All upright, 1 ribbed at 00:00</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Watchers (aiin/daiin):</span>
+                        <span class="stat-value highlight-watcher">7 total appearances</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Fire Markers (sh-):</span>
+                        <span class="stat-value">5 occurrences</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Central Figure:</span>
+                        <span class="stat-value">Light brown bull feeding from manger</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">State:</span>
+                        <span class="stat-value">Steady-state operation, exploitation mode</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Computational:</span>
+                        <span class="stat-value">Normal execution, high cache utilization</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Physical:</span>
+                        <span class="stat-value">Equilibrium, dissipative structures</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Cognitive:</span>
+                        <span class="stat-value">Habitual behavior, procedural memory</span>
+                    </div>
+                </div>
+
+                <div class="folio-panel dark">
+                    <div class="panel-title">🌙 f72r1 TAURUS DARK</div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Total Nymphs:</span>
+                        <span class="stat-value highlight-critical">16 (10 outer NO BARRELS, 6 inner)</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Naked Nymphs:</span>
+                        <span class="stat-value highlight-critical">ALL 16 (100%!)</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Barrels:</span>
+                        <span class="stat-value highlight-critical">Outer 10: NONE | Inner 6: YES</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Watchers (aiin/daiin):</span>
+                        <span class="stat-value highlight-critical">17+ total (67% MORE!)</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Fire Markers (sh-):</span>
+                        <span class="stat-value">Similar count but SEALED</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Central Figure:</span>
+                        <span class="stat-value">Dark red bull (deoxyhemoglobin state)</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">State:</span>
+                        <span class="stat-value highlight-critical">Batch processing, unconscious processes</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Computational:</span>
+                        <span class="stat-value">Nighttime background jobs, intensive logging</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Physical:</span>
+                        <span class="stat-value">Dark matter/energy, reductive metabolism</span>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <span class="stat-label">Cognitive:</span>
+                        <span class="stat-value">Sleep, dreams, memory consolidation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-box">
+                <h2 style="color: #ff8844; margin-bottom: 20px; font-size: 1.8em;">🔑 CRITICAL DIFFERENCES</h2>
+                
+                <div class="difference-highlight">
+                    <div style="font-size: 1.3em; color: #ff6666; margin-bottom: 10px;">
+                        <strong>16TH NYMPH - THE SHADOW NUMBER</strong>
+                    </div>
+                    <div style="color: #ffaa88;">
+                        • Light: 15 nymphs (orderly, conscious, contained)<br>
+                        • Dark: 16 nymphs (chaotic, unconscious, OVERFLOW)<br>
+                        • 16 = 2⁴ (binary overflow)<br>
+                        • 16 = Z=16 Sulfur (transformation element)<br>
+                        • 16 = 16 dinucleotides (4² DNA pairs)<br>
+                        • 16 = Overflow/anomaly across ALL layers<br>
+                        • "Added last minute" - the unconscious surplus
+                    </div>
+                </div>
+                
+                <div class="difference-highlight">
+                    <div style="font-size: 1.3em; color: #ff6666; margin-bottom: 10px;">
+                        <strong>NO BARRELS (Outer 10) - DISSOLUTION OF BOUNDARIES</strong>
+                    </div>
+                    <div style="color: #ffaa88;">
+                        • Light: All barrels upright (contained, structured)<br>
+                        • Dark: NO outer barrels (uncontained, formless)<br>
+                        • Computational: No VMs (bare metal execution)<br>
+                        • Physical: No EM interaction (dark matter)<br>
+                        • Cellular: Membrane dissolution (autophagy)<br>
+                        • Cognitive: Ego boundaries dissolve (unconscious)
+                    </div>
+                </div>
+                
+                <div class="difference-highlight">
+                    <div style="font-size: 1.3em; color: #ff6666; margin-bottom: 10px;">
+                        <strong>ALL NAKED - TOTAL EXPOSURE</strong>
+                    </div>
+                    <div style="color: #ffaa88;">
+                        • Light: 3 naked (20% - selective exposure)<br>
+                        • Dark: 16 naked (100% - EVERYTHING revealed)<br>
+                        • Dreams expose unconscious contents<br>
+                        • Shadow aspects made visible<br>
+                        • Hidden processes no longer hidden
+                    </div>
+                </div>
+                
+                <div class="difference-highlight">
+                    <div style="font-size: 1.3em; color: #ff6666; margin-bottom: 10px;">
+                        <strong>67% MORE WATCHERS - INCREASED VIGILANCE</strong>
+                    </div>
+                    <div style="color: #ffaa88;">
+                        • Light: 7 Watchers (normal monitoring)<br>
+                        • Dark: 17+ Watchers (intensive surveillance)<br>
+                        • MORE vigilance needed in darkness<br>
+                        • Error checking during unconscious processes<br>
+                        • Guarding against nighttime anomalies
+                    </div>
+                </div>
+                
+                <div class="difference-highlight">
+                    <div style="font-size: 1.3em; color: #ff6666; margin-bottom: 10px;">
+                        <strong>TRIPLE WATER SEALING - UNCONSCIOUS CONTAINMENT</strong>
+                    </div>
+                    <div style="color: #ffaa88;">
+                        • otam + otam + chotam = 3× sealed waters<br>
+                        • Water = unconscious, emotions, chaos<br>
+                        • Must be TRIPLE SEALED at night<br>
+                        • Prevents flooding of consciousness<br>
+                        • Dream containment mechanism
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; padding: 30px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff88; border-radius: 10px;">
+                <h2 style="color: #00ff88; margin-bottom: 25px; font-size: 2em;">📊 UNIFIED INTERPRETATION</h2>
+                
+                <div class="equation-box">
+                    <strong style="color: #00ff88;">LIGHT TAURUS = DAY PHASE</strong><br>
+                    • Consciousness: AWAKE, conscious, rational<br>
+                    • Computation: Interactive mode, user applications<br>
+                    • Metabolism: Aerobic (O₂-dependent), catabolic<br>
+                    • Hormones: Cortisol peak, adrenaline active<br>
+                    • Physics: Visible matter, electromagnetic<br>
+                    • Memory: Working memory, explicit access<br>
+                    • Container: 15 = completion, order, containment
+                </div>
+                
+                <div class="equation-box">
+                    <strong style="color: #aa66ff;">DARK TAURUS = NIGHT PHASE</strong><br>
+                    • Consciousness: ASLEEP, unconscious, dream<br>
+                    • Computation: Batch mode, background jobs<br>
+                    • Metabolism: Anaerobic, reductive, anabolic<br>
+                    • Hormones: Melatonin, growth hormone, prolactin<br>
+                    • Physics: Dark matter/energy, gravitational only<br>
+                    • Memory: Consolidation, implicit processing<br>
+                    • Container: 16 = overflow, chaos, SHADOW
+                </div>
+                
+                <div style="margin-top: 25px; padding: 20px; background: rgba(255, 0, 255, 0.1); border: 2px solid #ff00ff; border-radius: 10px;">
+                    <strong style="color: #ff00ff; font-size: 1.3em;">THE SIXTEENTH NYMPH IS THE KEY</strong><br><br>
+                    <span style="color: #ffaaff;">
+                        She represents the UNCONSCIOUS SURPLUS that cannot be contained in the orderly 15-fold structure.<br><br>
+                        Across all 12 layers, she appears as:<br>
+                        • Computational: Exception handler<br>
+                        • Physical: Dark energy (cosmological constant Λ)<br>
+                        • Genetic: Aneuploidy / mitochondrial DNA<br>
+                        • Cellular: Autophagosome overflow<br>
+                        • Endocrine: Cortisol awakening response<br>
+                        • Neurological: Hypnagogic hallucination<br>
+                        • Quantum: Decoherence event<br>
+                        • Elemental: Sulfur (Z=16) - the transformer<br>
+                        • Thermodynamic: Entropy overflow<br>
+                        • Cognitive: Shadow archetype<br>
+                        • Biochemical: 16th dinucleotide (DNA overflow)<br>
+                        • Linguistic: The unspoken, ineffable<br><br>
+                        16 = THE SHADOW NUMBER
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- LIGHT FOLIO DETAIL -->
+        <div id="light-view" style="display: none;">
+            <div class="folio-panel light full-width">
+                <div class="panel-title">☀️ f71v TAURUS LIGHT - COMPLETE ANALYSIS</div>
+                
+                <div class="ring-section">
+                    <div class="ring-title">OUTER RING (R1) - The Circle of Stability</div>
+                    
+                    <div class="word-grid" id="light-outer-words"></div>
+                    
+                    <div style="margin-top: 25px; padding: 20px; background: rgba(0, 0, 0, 0.5); border-left: 3px solid #ffaa00; border-radius: 5px;">
+                        <strong style="color: #ffaa00;">Bronze Age Translation:</strong><br><br>
+                        <span style="color: #ffcc66;">
+                        "Vision of fire's double-sight. Action of DOUBLED first wisdom (the same doubling as Aries!).
+                        Sealed TRIPLE-VISION gateway of first sight grows—the Watchers appear. The gateway of first vision 
+                        growing stands TWICE WITNESSED (not four times as in Aries—Taurus is stable, not transitioning).
+                        Living DOUBLE-ACTION living-action (the hands work repeatedly—Taurus is the sign of LABOR and BUILDING!)."
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="ring-section">
+                    <div class="ring-title">MIDDLE RING (R2) - The Working Circle</div>
+                    <div class="word-grid" id="light-middle-words"></div>
+                    
+                    <div style="margin-top: 25px; padding: 20px; background: rgba(0, 0, 0, 0.5); border-left: 3px solid #ffaa00; border-radius: 5px;">
+                        <strong style="color: #ffaa00;">Key Findings:</strong><br><br>
+                        <span style="color: #ffcc66;">
+                        • Fire appears 5× (reduced from Aries 7×)<br>
+                        • Triple vision appears 2× (less dominant)<br>
+                        • Phosphorus markers (chal, otal) = ATP energy<br>
+                        • Position 23 catalyst (otchr) = vanadium<br>
+                        • This is MAINTENANCE MODE after initialization
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="ring-section">
+                    <div class="ring-title">INNER RING (R3) - The Core Stability</div>
+                    <div class="word-grid" id="light-inner-words"></div>
+                    
+                    <div style="margin-top: 25px; padding: 20px; background: rgba(0, 0, 0, 0.5); border-left: 3px solid #ffaa00; border-radius: 5px;">
+                        <strong style="color: #ffaa00;">Core Interpretation:</strong><br><br>
+                        <span style="color: #ffcc66;">
+                        • Watchers appear 3× (triple witness)<br>
+                        • Shift from triple to DOUBLE vision<br>
+                        • Emphasis on POWER (okal, okaiin, okchor)<br>
+                        • Gateway of first wisdom (dar) = foundation<br>
+                        • Taurus core = SOLID FOUNDATION
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="ring-section">
+                    <div class="ring-title">15 NYMPHS - Star Bearers</div>
+                    <div class="nymph-grid" id="light-nymphs"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DARK FOLIO DETAIL -->
+        <div id="dark-view" style="display: none;">
+            <div class="folio-panel dark full-width">
+                <div class="panel-title">🌙 f72r1 TAURUS DARK - COMPLETE ANALYSIS</div>
+                
+                <div class="sixteenth-highlight">
+                    <h3 style="color: #ff00ff; font-size: 1.6em; margin-bottom: 15px;">⚠️ THE SIXTEENTH NYMPH ANOMALY ⚠️</h3>
+                    <div style="color: #ffaaff;">
+                        Position: 08:30 (peeking from behind barrel)<br>
+                        Description: "Added last minute" - small, partially hidden<br>
+                        Significance: THE OVERFLOW, THE SHADOW, THE UNCONSCIOUS SURPLUS<br><br>
+                        16 = 2⁴ (perfect binary, hexadecimal limit)<br>
+                        16 = Z=16 Sulfur (transformation element)<br>
+                        16 = 16 dinucleotides (4² DNA base pairs)<br>
+                        16 = The number that breaks the pattern
+                    </div>
+                </div>
+                
+                <div class="ring-section">
+                    <div class="ring-title">OUTER RING (R1) - The Circle of Night</div>
+                    
+                    <div class="word-grid" id="dark-outer-words"></div>
+                    
+                    <div style="margin-top: 25px; padding: 20px; background: rgba(0, 0, 0, 0.5); border-left: 3px solid #aa66ff; border-radius: 5px;">
+                        <strong style="color: #aa66ff;">Bronze Age Translation:</strong><br><br>
+                        <span style="color: #ccaaff;">
+                        "Vision of power's double-sight grows in the opening darkness. The WATCHERS appear FIVE TIMES 
+                        (vs three in light)—MORE surveillance needed when vision is limited. Waters are sealed THRICE 
+                        (otam, otam, chotam)—the unconscious must be CONTAINED during sleep. First wisdom is confirmed 
+                        THRICE (ar, ar, ar)—fundamental truths must be triple-verified in darkness where illusions proliferate."
+                        </span>
+                    </div>
+                    
+                    <div class="difference-highlight">
+                        <strong>Key Difference:</strong> 67% MORE Watchers (5 vs 3) = increased vigilance in darkness
+                    </div>
+                </div>
+                
+                <div class="ring-section">
+                    <div class="ring-title">MIDDLE RING (R2) - The Shadow Work</div>
+                    <div class="word-grid" id="dark-middle-words"></div>
+                    
+                    <div style="margin-top: 25px; padding: 20px; background: rgba(0, 0, 0, 0.5); border-left: 3px solid #aa66ff; border-radius: 5px;">
+                        <strong style="color: #aa66ff;">Shadow Work Findings:</strong><br><br>
+                        <span style="color: #ccaaff;">
+                        • Watchers appear 7× in middle ring<br>
+                        • TRIPLE VISION in darkness (oteo-teeody)<br>
+                        • SACRED marker (qokar) = divine knowledge<br>
+                        • This is INITIATIC WORK, mysteries in darkness
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="ring-section">
+                    <div class="ring-title">INNER RING (R3) - The Dark Core</div>
+                    <div class="word-grid" id="dark-inner-words"></div>
+                    
+                    <div style="margin-top: 25px; padding: 20px; background: rgba(0, 0, 0, 0.5); border-left: 3px solid #aa66ff; border-radius: 5px;">
+                        <strong style="color: #aa66ff;">Dark Core Interpretation:</strong><br><br>
+                        <span style="color: #ccaaff;">
+                        • TRIPLE VISION at core (oteeols - 3 eyes)<br>
+                        • Watchers appear 3× at deepest layer<br>
+                        • Energy (P15) and catalyst (V23) markers present<br>
+                        • DOUBLE-LIFE DOUBLE-ACTION (chckhy) = quadratic amplification<br>
+                        • Nocturnal processes are MORE INTENSE than daytime
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="ring-section">
+                    <div class="ring-title">16 NYMPHS - Shadow Manifestation</div>
+                    <div class="nymph-grid" id="dark-nymphs"></div>
+                    
+                    <div class="difference-highlight">
+                        <strong>Critical:</strong> ALL 16 nymphs are NAKED (100% exposure)<br>
+                        Outer 10 have NO BARRELS (no containment)<br>
+                        Inner 6 retain barrels (some core structure)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12-LAYER ANALYSIS -->
+        <div id="layers-view" style="display: none;">
+            <div class="layer-analysis">
+                <h2 style="color: #00ff88; text-align: center; font-size: 2.2em; margin-bottom: 30px;">
+                    🔬 12-LAYER ANALYSIS: LIGHT vs DARK 🔬
+                </h2>
+                
+                <div class="layer-tabs">
+                    <button class="layer-tab active" onclick="showLayer('bronze')">1️⃣ Bronze Age</button>
+                    <button class="layer-tab" onclick="showLayer('astronomical')">2️⃣ Astronomical</button>
+                    <button class="layer-tab" onclick="showLayer('computational')">3️⃣ Computational</button>
+                    <button class="layer-tab" onclick="showLayer('physical')">4️⃣ Physical</button>
+                    <button class="layer-tab" onclick="showLayer('biochemical')">5️⃣ Biochemical</button>
+                    <button class="layer-tab" onclick="showLayer('genetic')">6️⃣ Genetic</button>
+                    <button class="layer-tab" onclick="showLayer('cellular')">7️⃣ Cellular</button>
+                    <button class="layer-tab" onclick="showLayer('endocrine')">8️⃣ Endocrine</button>
+                    <button class="layer-tab" onclick="showLayer('neurological')">9️⃣ Neurological</button>
+                    <button class="layer-tab" onclick="showLayer('quantum')">🔟 Quantum</button>
+                    <button class="layer-tab" onclick="showLayer('elemental')">1️⃣1️⃣ Elemental</button>
+                    <button class="layer-tab" onclick="showLayer('thermodynamic')">1️⃣2️⃣ Thermodynamic</button>
+                </div>
+                
+                <div id="layer-content-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== DATA STRUCTURES ====================
+        
+        const LIGHT_OUTER_WORDS = [
+            {word: 'parar', meaning: 'Doubled first wisdom (CONTINUES from Aries)', position: 'Variable', frequency: 'HIGH'},
+            {word: 'oteeodaiin', meaning: 'Sealed TRIPLE-VISION gateway + WATCHERS', position: 'Multiple', frequency: 'CRITICAL'},
+            {word: 'daiin', meaning: 'Gateway-WATCHERS (2× in outer)', position: 9, frequency: 'HIGH'},
+            {word: 'chpchy', meaning: 'Living DOUBLE-ACTION (manual labor!)', position: 'Variable', frequency: 'HIGH'},
+            {word: 'aiin', meaning: 'The Watchers (1× in outer)', position: 17, frequency: 'MEDIUM'},
+            {word: 'teeey', meaning: 'Sealed TRIPLE EYES (2× in outer)', position: 'Variable', frequency: 'HIGH'}
+        ];
+        
+        const DARK_OUTER_WORDS = [
+            {word: 'okoiin', meaning: 'Vision-power double-sight growing', position: 'Variable', frequency: 'HIGH'},
+            {word: 'aiin', meaning: 'THE WATCHERS (5× in outer!)', position: 17, frequency: 'VERY HIGH'},
+            {word: 'otam', meaning: 'Sealed waters (2× - DOUBLE SEALED)', position: 13, frequency: 'CRITICAL'},
+            {word: 'chotam', meaning: 'Living sealed waters (3rd sealing)', position: 19, frequency: 'CRITICAL'},
+            {word: 'ar', meaning: 'First wisdom (3× in succession!)', position: 1, frequency: 'CRITICAL'},
+            {word: 'otar', meaning: 'Sealed first wisdom', position: 21, frequency: 'HIGH'}
+        ];
+        
+        const LIGHT_NYMPHS = [
+            {num: 1, text: 'char.orom', meaning: 'Living wisdom + water vision', pos: '10:00', naked: false, note: 'Position 23 (Vanadium FIRE)'},
+            {num: 2, text: 'chfaly', meaning: 'Living action-teaching', pos: '11:00', naked: false, note: 'Manual work emphasis'},
+            {num: 6, text: 'otaiin', meaning: 'Sealed WATCHERS', pos: '03:00', naked: false, note: 'Watchers in label'},
+            {num: 7, text: 'okaraiin', meaning: 'Power-wisdom-WATCHERS', pos: '05:00', naked: true, note: 'NAKED Watcher'},
+            {num: 8, text: 'okar.ar.aly', meaning: 'Triple wisdom statement', pos: '06:00', naked: true, note: 'NAKED unveiled wisdom'}
+        ];
+        
+        const DARK_NYMPHS = [
+            {num: 3, text: 'oaiin.ar.ary', meaning: 'WATCHERS + wisdom', pos: '02:00', naked: true, note: 'MALE FRONTAL figure'},
+            {num: 6, text: 'char.alf', meaning: 'FIRE + Aleph', pos: '05:00', naked: true, note: 'Position 23 (V) + first letter'},
+            {num: 8, text: 'otaiin.otain', meaning: 'DOUBLE WATCHERS', pos: '07:00', naked: true, note: 'Watchers watching watchers'},
+            {num: 16, text: '[No label]', meaning: 'THE OVERFLOW ANOMALY', pos: '08:30', naked: true, note: '16th nymph - SHADOW NUMBER'}
+        ];
+        
+        const LAYERS_DATA = {
+            bronze: {
+                title: 'Bronze Age Symbolic/Mythological',
+                light: 'Steady-state operation. Doubled wisdom continues. Manual labor (chpchy). Watchers reduced (7 vs 11 in Aries). Triple eyes confirmed. Feeding from manger = sustained consumption.',
+                dark: 'Night vigilance increased. Watchers 67% more (17+ vs 7). Triple water sealing. Triple wisdom confirmation. All naked = total exposure. 16th nymph = Shadow surplus.'
+            },
+            astronomical: {
+                title: 'Astronomical/Zodiacal Timing',
+                light: 'Taurus ♉ (April 20-May 20). Venus daytime rulership. Mid-spring. Earth element. Fixed quality. Bull = strength, fertility. Steady-state season.',
+                dark: 'Taurus ♉ DARK PHASE (nighttime). Venus nocturnal rulership. Night-sky observation. Same zodiac but shadow aspect. Dark matter/dark sky. 16 = overflow beyond 15 zodiac degrees.'
+            },
+            computational: {
+                title: 'Computational/Algorithmic',
+                light: 'Normal execution mode. Application processes running. High cache utilization (3 naked = L1/L2/L3). Nested loops (double action). Predictable branches. Steady throughput.',
+                dark: 'Batch processing mode. Background jobs (CRON). No VMs (no barrels = bare metal). Intensive logging (17+ watchers). Exception handling (16th process). Database maintenance.'
+            },
+            physical: {
+                title: 'Physical/Thermodynamic',
+                light: 'Equilibrium state. Dissipative structures maintained. dX/dt = 0. Five dissipation channels. Steady-state entropy production. Visible matter interactions.',
+                dark: 'Dark matter (23%). Dark energy (73%). No EM interaction (no barrels). Gravitational only. Reductive metabolism. 16 = dark particle species. Entropy overflow.'
+            },
+            biochemical: {
+                title: 'Biochemical/Molecular',
+                light: 'Aerobic respiration. ATP synthesis (chal = P15). Oxidative phosphorylation. Krebs cycle. Electron transport chain. 30-32 ATP per glucose. Catabolic pathways.',
+                dark: 'Anaerobic metabolism. Glycolysis only (2 ATP). Fermentation. No O₂ needed. 16 enzymes in pathway. Reductive processes. Autophagy peaks. Cellular recycling.'
+            },
+            genetic: {
+                title: 'Genetic/DNA-RNA',
+                light: 'Normal transcription. RNA pol active. Gene expression for daytime proteins. mRNA processing. 15 = phosphorus (DNA backbone). Histone acetylation (gene activation).',
+                dark: 'DNA replication (S-phase). 16 dinucleotides (4²). Cell division at night. Chromatin unraveled (no barrels). Sister chromatid formation. 16th = aneuploidy/overflow.'
+            },
+            cellular: {
+                title: 'Cellular/Organellar',
+                light: 'Mitochondria active. Normal oxidative phosphorylation. Peroxisomes functional. ER protein synthesis. Golgi processing. Lysosomes degrading (contained).',
+                dark: 'Autophagy (16 selective pathways). Membrane dissolution (no barrels). Mitophagy (damaged mitochondria). ER-phagy. Lipophagy. Organelle recycling. Lysosome overflow.'
+            },
+            endocrine: {
+                title: 'Endocrine/Hormonal',
+                light: 'Cortisol peak (8-9 AM). Adrenaline active. Insulin responsive. Thyroid hormone T3/T4. Growth hormone low. Melatonin suppressed. Serotonin dominant.',
+                dark: 'Melatonin peak. Growth hormone surge (1-2 AM). Prolactin high. Leptin peak. Cortisol nadir. 16 nocturnal hormones. Testosterone peaks (4-8 AM). Circadian reversal.'
+            },
+            neurological: {
+                title: 'Neurological/Neural Networks',
+                light: 'Prefrontal cortex active. Working memory maintained. Attention focused. Conscious processing. Executive function. Synaptic potentiation. Awake EEG (beta/gamma).',
+                dark: 'Sleep stages (NREM/REM). Memory consolidation. Prefrontal offline (no barrels = disinhibition). Dreams. Default mode network. Hippocampal replay. 16 sleep cycles possible.'
+            },
+            quantum: {
+                title: 'Quantum Biology',
+                light: 'Photons cause decoherence. Short coherence times. Quantum tunneling in enzymes (visible). Cryptochrome function (light-dependent). Wavefunction collapse frequent.',
+                dark: 'Darkness preserves coherence. 16-qubit register possible. Longer coherence times. Magnetoreception enhanced. Microtubule quantum computing. Fewer measurements = more entanglement.'
+            },
+            elemental: {
+                title: 'Elemental/Periodic Table',
+                light: 'Light elements (C, N, O). Aerobic metals (Fe³⁺, Cu²⁺). Oxidized states. Mg²⁺ in chlorophyll. Position 23 (V) catalyst. Visible spectrum elements.',
+                dark: 'Heavy metals. Dark compounds (FeS, PbS). Reduced states (Fe²⁺). Sulfur (Z=16)! Vanadium in dark compounds. 16 essential metals. Hemoglobin dark red (deoxygenated).'
+            },
+            thermodynamic: {
+                title: 'Thermodynamic/Energy Flow',
+                light: 'Oxidative metabolism. Electron loss. O₂ as acceptor. Exergonic reactions. ΔG < 0. Energy release. Heat dissipation (5 channels). Steady-state flow.',
+                dark: 'Reductive metabolism. Electron gain. Organic acceptors. Endergonic in parts. Energy storage. Heat retention. 16 redox couples. Anabolic (building up).'
+            }
+        };
+        
+        // ==================== VIEW MANAGEMENT ====================
+        
+        function showComparison() {
+            hideAllViews();
+            document.getElementById('comparison-view').style.display = 'block';
+            updateActiveButton(0);
+        }
+        
+        function showFolio(type) {
+            hideAllViews();
+            if (type === 'light') {
+                document.getElementById('light-view').style.display = 'block';
+                populateLightWords();
+                updateActiveButton(1);
+            } else {
+                document.getElementById('dark-view').style.display = 'block';
+                populateDarkWords();
+                updateActiveButton(2);
+            }
+        }
+        
+        function showLayers() {
+            hideAllViews();
+            document.getElementById('layers-view').style.display = 'block';
+            populateLayers();
+            showLayer('bronze');
+            updateActiveButton(3);
+        }
+        
+        function hideAllViews() {
+            document.getElementById('comparison-view').style.display = 'none';
+            document.getElementById('light-view').style.display = 'none';
+            document.getElementById('dark-view').style.display = 'none';
+            document.getElementById('layers-view').style.display = 'none';
+        }
+        
+        function updateActiveButton(index) {
+            const buttons = document.querySelectorAll('.folio-btn');
+            buttons.forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+        }
+        
+        // ==================== POPULATION FUNCTIONS ====================
+        
+        function populateLightWords() {
+            populateWordGrid('light-outer-words', LIGHT_OUTER_WORDS);
+            populateNymphGrid('light-nymphs', LIGHT_NYMPHS);
+        }
+        
+        function populateDarkWords() {
+            populateWordGrid('dark-outer-words', DARK_OUTER_WORDS);
+            populateNymphGrid('dark-nymphs', DARK_NYMPHS);
+        }
+        
+        function populateWordGrid(containerId, words) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            words.forEach(word => {
+                const card = document.createElement('div');
+                card.className = 'word-card';
+                card.innerHTML = `
+                    <div class="word-text">${word.word}</div>
+                    <div class="word-meaning">${word.meaning}</div>
+                    <div class="word-position">Position: ${word.position} | ${word.frequency}</div>
+                    ${word.note ? `<div style="color: #888; margin-top: 8px; font-style: italic;">${word.note}</div>` : ''}
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function populateNymphGrid(containerId, nymphs) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            nymphs.forEach(nymph => {
+                const card = document.createElement('div');
+                card.className = `nymph-card ${nymph.naked ? 'naked' : ''}`;
+                card.innerHTML = `
+                    <div class="nymph-number">Nymph #${nymph.num} ${nymph.pos}</div>
+                    <div style="color: #00ff88; margin-bottom: 8px;">${nymph.text}</div>
+                    <div style="color: #00cc66; margin-bottom: 8px;">${nymph.meaning}</div>
+                    ${nymph.naked ? '<div style="color: #ff6666; font-weight: bold;">NAKED</div>' : ''}
+                    <div style="color: #888; margin-top: 8px; font-size: 0.9em;">${nymph.note}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function populateLayers() {
+            // Layers are populated when showLayer() is called
+        }
+        
+        function showLayer(layerId) {
+            // Update tabs
+            document.querySelectorAll('.layer-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show content
+            const container = document.getElementById('layer-content-container');
+            const layerData = LAYERS_DATA[layerId];
+            
+            container.innerHTML = `
+                <div class="layer-content active">
+                    <h3 style="color: #00ff88; font-size: 1.8em; margin-bottom: 25px;">${layerData.title}</h3>
+                    
+                    <div class="comparison-grid">
+                        <div style="background: rgba(255, 170, 0, 0.1); padding: 25px; border: 2px solid #ffaa00; border-radius: 10px;">
+                            <h4 style="color: #ffaa00; font-size: 1.4em; margin-bottom: 15px;">☀️ LIGHT TAURUS</h4>
+                            <p style="color: #ffcc66; line-height: 1.6;">${layerData.light}</p>
+                        </div>
+                        
+                        <div style="background: rgba(170, 102, 255, 0.1); padding: 25px; border: 2px solid #aa66ff; border-radius: 10px;">
+                            <h4 style="color: #aa66ff; font-size: 1.4em; margin-bottom: 15px;">🌙 DARK TAURUS</h4>
+                            <p style="color: #ccaaff; line-height: 1.6;">${layerData.dark}</p>
+                        </div>
+                    </div>
+                    
+                    ${layerId === 'genetic' ? `
+                        <div class="sixteenth-highlight" style="margin-top: 30px;">
+                            <h4 style="color: #ff00ff; margin-bottom: 15px;">🧬 GENETIC LAYER: THE 16 DINUCLEOTIDES</h4>
+                            <div style="color: #ffaaff;">
+                                4 bases (A, T, G, C) × 4 bases = 16 dinucleotide pairs:<br><br>
+                                AA, AT, AG, AC<br>
+                                TA, TT, TG, TC<br>
+                                GA, GT, GG, GC<br>
+                                CA, CT, CG, CC<br><br>
+                                Each of the 16 nymphs represents ONE dinucleotide step in DNA sequence.<br>
+                                The 16th nymph = the overflow beyond the standard genetic code.
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${layerId === 'elemental' ? `
+                        <div class="sixteenth-highlight" style="margin-top: 30px;">
+                            <h4 style="color: #ff00ff; margin-bottom: 15px;">⚗️ ELEMENTAL LAYER: Z=16 SULFUR</h4>
+                            <div style="color: #ffaaff;">
+                                Sulfur (Z=16) is THE TRANSFORMATION ELEMENT:<br><br>
+                                • Variable oxidation states: -2, 0, +2, +4, +6<br>
+                                • Forms dark compounds: FeS (iron sulfide - black)<br>
+                                • Brimstone (biblical transformation)<br>
+                                • Vulcanization (rubber transformation)<br>
+                                • Disulfide bridges (protein structure)<br>
+                                • Iron-sulfur clusters (electron transport)<br><br>
+                                The 16th nymph IS Sulfur—the element of metamorphosis and shadow.
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+        
+        // ==================== INITIALIZE ====================
+        
+        window.onload = function() {
+            showComparison();
+        };
+    </script>
+</body>
+</html>

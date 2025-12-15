@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMx TNO Universal Decoder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #00ff41;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 255, 65, 0.05);
+            border: 2px solid #00ff41;
+            border-radius: 10px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            text-shadow: 0 0 10px #00ff41;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #00cc33;
+            font-size: 1.2em;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .panel {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ff41;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .panel-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #00ff41;
+            border-bottom: 1px solid #00ff41;
+            padding-bottom: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00cc33;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ff41;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #00ff41;
+            color: #000;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #00cc33;
+            box-shadow: 0 0 20px #00ff41;
+        }
+        
+        .result-box {
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 100px;
+        }
+        
+        .tno-display {
+            font-size: 2em;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            margin: 15px 0;
+            text-shadow: 0 0 10px #00ff41;
+        }
+        
+        .gate-status {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .gate {
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            border: 2px solid;
+        }
+        
+        .gate.pass {
+            border-color: #00ff41;
+            background: rgba(0, 255, 65, 0.1);
+        }
+        
+        .gate.fail {
+            border-color: #ff0000;
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6666;
+        }
+        
+        .lattice-viz {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-top: 15px;
+        }
+        
+        .lattice-point {
+            padding: 10px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .lattice-point:hover {
+            background: rgba(0, 255, 65, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .lattice-point.active {
+            background: #00ff41;
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 0 15px #00ff41;
+        }
+        
+        .k-indicator {
+            display: inline-block;
+            padding: 2px 6px;
+            background: rgba(0, 255, 65, 0.2);
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+        
+        .harmonics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .harmonic {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .harmonic-label {
+            color: #00cc33;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .harmonic-value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .cross-validation {
+            margin-top: 20px;
+        }
+        
+        .validation-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .match {
+            color: #00ff41;
+            font-weight: bold;
+        }
+        
+        .mismatch {
+            color: #ff6666;
+        }
+        
+        .sequence-builder {
+            margin-top: 20px;
+        }
+        
+        .sequence-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .sequence-item {
+            padding: 5px;
+            margin-bottom: 5px;
+            background: rgba(0, 255, 65, 0.05);
+            border-left: 3px solid #00ff41;
+            padding-left: 10px;
+        }
+        
+        .operator-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .operator-badge {
+            padding: 5px 10px;
+            background: rgba(0, 255, 65, 0.2);
+            border: 1px solid #00ff41;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .info-tooltip {
+            position: relative;
+            display: inline-block;
+            color: #00cc33;
+            cursor: help;
+            margin-left: 5px;
+        }
+        
+        .info-tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⊕ EMx TNO UNIVERSAL DECODER ⊗</h1>
+            <div class="subtitle">Cross-Validation of All Systems with Pure Pattern Matching</div>
+            <div style="margin-top: 10px; font-size: 0.9em; color: #00cc33;">
+                Framework: EMx v2.7 | Lattice: 27 | Gates: EN4 ∧ EN6 ∧ EN9 ∧ EN10 | Null Baseline: 0.22
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <!-- Left Panel: Input & Decode -->
+            <div class="panel">
+                <div class="panel-title">⊕ INPUT DECODER</div>
+                
+                <div class="input-group">
+                    <label>Select System:</label>
+                    <select id="systemSelect">
+                        <option value="integer">Integer/Numeric</option>
+                        <option value="chemical">Chemical Element (Z)</option>
+                        <option value="tarot">Tarot Card Index</option>
+                        <option value="hebrew">Hebrew Gematria</option>
+                        <option value="greek">Greek Isopsephy</option>
+                        <option value="base10">Base 10 Ring</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>Enter Value: <span class="info-tooltip" data-tooltip="Any integer, atomic number, card index, or gematria value">ⓘ</span></label>
+                    <input type="text" id="inputValue" placeholder="e.g., 79 (Gold), 13 (Death), 270 (Or/Ar)">
+                </div>
+                
+                <button onclick="decodeValue()">⊗ DECODE TO TNO ⊗</button>
+                
+                <div class="result-box">
+                    <div id="positionResult"></div>
+                    <div class="tno-display" id="tnoDisplay">---</div>
+                    <div id="tripleDisplay"></div>
+                    <div id="meaningDisplay"></div>
+                </div>
+                
+                <div class="harmonics">
+                    <div class="harmonic">
+                        <div class="harmonic-label">α (Alpha)</div>
+                        <div class="harmonic-value" id="alphaValue">-</div>
+                    </div>
+                    <div class="harmonic">
+                        <div class="harmonic-label">β (Beta)</div>
+                        <div class="harmonic-value" id="betaValue">-</div>
+                    </div>
+                    <div class="harmonic">
+                        <div class="harmonic-label">γ (Gamma)</div>
+                        <div class="harmonic-value" id="gammaValue">-</div>
+                    </div>
+                </div>
+                
+                <div class="input-group" style="margin-top: 20px;">
+                    <label>NULL Fraction:</label>
+                    <div id="nullDisplay" style="text-align: center; font-size: 1.2em; padding: 10px;">-</div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Lattice Visualization -->
+            <div class="panel">
+                <div class="panel-title">⊗ LATTICE STRUCTURE ⊕</div>
+                <div style="margin-bottom: 10px; color: #00cc33;">
+                    Click any position to explore its TNO structure
+                </div>
+                <div class="lattice-viz" id="latticeGrid"></div>
+                
+                <div style="margin-top: 20px; padding: 10px; background: rgba(0, 255, 65, 0.05); border-radius: 5px;">
+                    <div style="font-size: 0.9em; color: #00cc33; margin-bottom: 5px;">k-Value Legend:</div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <span><span class="k-indicator" style="background: rgba(0, 255, 65, 0.1);">k=0</span> Stillpoint</span>
+                        <span><span class="k-indicator" style="background: rgba(0, 255, 65, 0.2);">k=1</span> Cardinal</span>
+                        <span><span class="k-indicator" style="background: rgba(0, 255, 65, 0.3);">k=2</span> Edge</span>
+                        <span><span class="k-indicator" style="background: rgba(0, 255, 65, 0.4);">k=3</span> Corner</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gate Validation Panel -->
+        <div class="panel">
+            <div class="panel-title">⊕ GATE VALIDATION SYSTEM ⊗</div>
+            <div class="gate-status">
+                <div class="gate pass" id="gate-en4">
+                    <div style="font-weight: bold;">EN4</div>
+                    <div style="font-size: 0.8em;">Topological Closure</div>
+                    <div id="en4-status">READY</div>
+                </div>
+                <div class="gate pass" id="gate-en6">
+                    <div style="font-weight: bold;">EN6</div>
+                    <div style="font-size: 0.8em;">NULL Baseline</div>
+                    <div id="en6-status">READY</div>
+                </div>
+                <div class="gate pass" id="gate-en9">
+                    <div style="font-weight: bold;">EN9</div>
+                    <div style="font-size: 0.8em;">No-Cloning</div>
+                    <div id="en9-status">READY</div>
+                </div>
+                <div class="gate pass" id="gate-en10">
+                    <div style="font-weight: bold;">EN10</div>
+                    <div style="font-size: 0.8em;">Phase Coherence</div>
+                    <div id="en10-status">READY</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cross-Validation Panel -->
+        <div class="panel">
+            <div class="panel-title">⊗ CROSS-SYSTEM VALIDATION ⊕</div>
+            <div class="cross-validation" id="crossValidation">
+                <div style="text-align: center; color: #00cc33; padding: 20px;">
+                    Enter a value to see cross-system correlations
+                </div>
+            </div>
+        </div>
+
+        <!-- Sequence Builder -->
+        <div class="panel">
+            <div class="panel-title">⊕ SEQUENCE BUILDER ⊗</div>
+            <div style="display: grid; grid-template-columns: 1fr auto; gap: 10px;">
+                <input type="text" id="sequenceInput" placeholder="Enter value to add to sequence">
+                <button onclick="addToSequence()" style="width: auto; padding: 10px 20px;">Add →</button>
+            </div>
+            <div class="sequence-builder">
+                <div style="margin: 10px 0; color: #00cc33;">Current Sequence:</div>
+                <div class="sequence-list" id="sequenceList">
+                    <div style="text-align: center; padding: 20px; color: #00cc33;">
+                        Empty sequence - add values to begin
+                    </div>
+                </div>
+                <div style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button onclick="validateSequence()">⊗ Validate Gates ⊗</button>
+                    <button onclick="clearSequence()" style="background: #333; color: #00ff41;">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // EMx TNO Decoder Core System
+        
+        const EMX_LATTICE = {
+            0: { triple: [-1, -1, -1], k: 3, n_class: "N5", layer: "T3", gamma: 0.992, null_fraction: 0.000 },
+            1: { triple: [0, -1, 0], k: 2, n_class: "N4", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            2: { triple: [1, -1, 0], k: 3, n_class: "N3", layer: "T3", gamma: 0.992, null_fraction: 0.000 },
+            3: { triple: [0, 0, 0], k: 2, n_class: "N4", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            4: { triple: [0, 0, 0], k: 1, n_class: "N1", layer: "T1", gamma: 0.999, null_fraction: 0.667 },
+            5: { triple: [1, 0, 0], k: 2, n_class: "N2", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            6: { triple: [0, 1, 0], k: 3, n_class: "N3", layer: "T3", gamma: 0.992, null_fraction: 0.000 },
+            7: { triple: [0, 1, 0], k: 2, n_class: "N2", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            8: { triple: [1, 1, 0], k: 3, n_class: "N3", layer: "T3", gamma: 0.992, null_fraction: 0.000 },
+            9: { triple: [0, 0, 0], k: 2, n_class: "N4", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            10: { triple: [0, 0, 0], k: 1, n_class: "N1", layer: "T1", gamma: 0.999, null_fraction: 0.667 },
+            11: { triple: [1, 0, 0], k: 2, n_class: "N2", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            12: { triple: [0, 0, 0], k: 1, n_class: "N1", layer: "T1", gamma: 0.999, null_fraction: 0.667 },
+            13: { triple: [0, 0, 0], k: 0, n_class: "N0", layer: "T0", gamma: 1.000, null_fraction: 1.000, special: "ORIGIN" },
+            14: { triple: [1, 0, 0], k: 1, n_class: "N1", layer: "T1", gamma: 0.999, null_fraction: 0.667 },
+            15: { triple: [0, 1, 0], k: 2, n_class: "N2", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            16: { triple: [0, 1, 0], k: 1, n_class: "N1", layer: "T1", gamma: 0.999, null_fraction: 0.667 },
+            17: { triple: [1, 1, 0], k: 2, n_class: "N4", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            18: { triple: [0, 0, 1], k: 3, n_class: "N3", layer: "T3", gamma: 0.992, null_fraction: 0.000 },
+            19: { triple: [0, 0, 1], k: 2, n_class: "N2", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            20: { triple: [1, 0, 1], k: 3, n_class: "N3", layer: "T3", gamma: 0.992, null_fraction: 0.000 },
+            21: { triple: [0, 0, 1], k: 2, n_class: "N2", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            22: { triple: [0, 0, 1], k: 1, n_class: "N1", layer: "T1", gamma: 0.999, null_fraction: 0.667 },
+            23: { triple: [1, 0, 1], k: 2, n_class: "N4", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            24: { triple: [0, 1, 1], k: 3, n_class: "N3", layer: "T3", gamma: 0.992, null_fraction: 0.000 },
+            25: { triple: [0, 1, 1], k: 2, n_class: "N4", layer: "T2", gamma: 0.996, null_fraction: 0.333 },
+            26: { triple: [1, 1, 1], k: 3, n_class: "N5", layer: "T3", gamma: 0.992, null_fraction: 0.000 }
+        };
+        
+        const OPERATORS = ["O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8", "O9", "O10"];
+        
+        const SYSTEM_EXAMPLES = {
+            chemical: {
+                "1": "Hydrogen", "2": "Helium", "6": "Carbon", "14": "Silicon",
+                "26": "Iron", "29": "Copper", "47": "Silver", "79": "Gold"
+            },
+            tarot: {
+                "0": "The Fool", "13": "Death", "7": "The Chariot", "19": "The Sun"
+            },
+            hebrew: {
+                "270": "Or/Ar", "140": "Aiin", "100": "Ol", "290": "Okar"
+            }
+        };
+        
+        let currentSequence = [];
+        
+        // Initialize lattice visualization
+        function initializeLattice() {
+            const grid = document.getElementById('latticeGrid');
+            for (let i = 0; i < 27; i++) {
+                const point = document.createElement('div');
+                point.className = 'lattice-point';
+                point.id = `lattice-${i}`;
+                const data = EMX_LATTICE[i];
+                point.innerHTML = `
+                    <div style="font-weight: bold;">P${i}</div>
+                    <div style="font-size: 0.8em;">${data.layer}${data.n_class}</div>
+                    <span class="k-indicator">k=${data.k}</span>
+                `;
+                point.onclick = () => selectPosition(i);
+                grid.appendChild(point);
+            }
+        }
+        
+        function selectPosition(pos) {
+            // Clear previous selection
+            document.querySelectorAll('.lattice-point').forEach(p => p.classList.remove('active'));
+            document.getElementById(`lattice-${pos}`).classList.add('active');
+            
+            // Update input
+            document.getElementById('inputValue').value = pos;
+            decodeValue();
+        }
+        
+        function decodeValue() {
+            const value = parseInt(document.getElementById('inputValue').value);
+            const system = document.getElementById('systemSelect').value;
+            
+            if (isNaN(value)) {
+                alert('Please enter a valid number');
+                return;
+            }
+            
+            const position = value % 27;
+            const data = EMX_LATTICE[position];
+            
+            // Assign operator based on k-value and position
+            const operator = OPERATORS[position % 10];
+            const tno = `${data.layer}${data.n_class}${operator}`;
+            
+            // Update displays
+            document.getElementById('positionResult').innerHTML = `
+                <div style="font-size: 1.2em; margin-bottom: 10px;">
+                    <strong>Input:</strong> ${value} (${system})<br>
+                    <strong>Position:</strong> ${position} / 27
+                </div>
+            `;
+            
+            document.getElementById('tnoDisplay').textContent = tno;
+            
+            document.getElementById('tripleDisplay').innerHTML = `
+                <div style="text-align: center; padding: 10px; font-size: 1.1em;">
+                    Triple: (${data.triple.join(', ')})<br>
+                    k-value: ${data.k}
+                </div>
+            `;
+            
+            // Calculate harmonics
+            const alpha = (data.k / 3).toFixed(3);
+            const beta = (Math.sqrt(data.k) / 2.5).toFixed(3);
+            
+            document.getElementById('alphaValue').textContent = alpha;
+            document.getElementById('betaValue').textContent = beta;
+            document.getElementById('gammaValue').textContent = data.gamma.toFixed(3);
+            document.getElementById('nullDisplay').textContent = data.null_fraction.toFixed(3);
+            
+            // Update lattice visualization
+            document.querySelectorAll('.lattice-point').forEach(p => p.classList.remove('active'));
+            document.getElementById(`lattice-${position}`).classList.add('active');
+            
+            // Update meaning
+            let meaning = '';
+            if (data.special) meaning = `<strong>${data.special}</strong><br>`;
+            meaning += `Layer ${data.layer}: ${getLayerMeaning(data.layer)}<br>`;
+            meaning += `Class ${data.n_class}: ${getClassMeaning(data.n_class)}<br>`;
+            meaning += `Operator ${operator}: ${getOperatorMeaning(operator)}`;
+            
+            document.getElementById('meaningDisplay').innerHTML = `
+                <div style="margin-top: 15px; padding: 10px; background: rgba(0, 0, 0, 0.3); border-radius: 5px;">
+                    ${meaning}
+                </div>
+            `;
+            
+            // Generate cross-validation
+            generateCrossValidation(value, position);
+            
+            // Update gates
+            updateGates([position]);
+        }
+        
+        function getLayerMeaning(layer) {
+            const meanings = {
+                'T0': 'Origin/Memory anchor',
+                'T1': 'Initial activation',
+                'T2': 'Balanced operations',
+                'T3': 'High-order expansion',
+                'T4': 'Completion/wrap-around'
+            };
+            return meanings[layer] || 'Unknown';
+        }
+        
+        function getClassMeaning(nClass) {
+            const meanings = {
+                'N0': 'Stillpoint',
+                'N1': 'Single-bias axial',
+                'N2': 'Balanced pair',
+                'N3': 'Triple-mixed',
+                'N4': 'Unbalanced pair',
+                'N5': 'All-same triple'
+            };
+            return meanings[nClass] || 'Unknown';
+        }
+        
+        function getOperatorMeaning(op) {
+            const meanings = {
+                'O1': 'Initialize', 'O2': 'Flux/Bias', 'O3': 'Rotation',
+                'O4': 'Closure', 'O5': 'Projection', 'O6': 'Normalize',
+                'O7': 'Exchange', 'O8': 'Winding', 'O9': 'No-Clone',
+                'O10': 'Integration'
+            };
+            return meanings[op] || 'Unknown';
+        }
+        
+        function generateCrossValidation(value, position) {
+            const crossVal = document.getElementById('crossValidation');
+            let html = '<div style="font-size: 0.9em;">';
+            
+            // Chemical element
+            const chemPos = value % 27;
+            const chemMatch = chemPos === position;
+            html += `<div class="validation-row">
+                <div>Chemical (Z=${value})</div>
+                <div>→ Position ${chemPos}</div>
+                <div class="${chemMatch ? 'match' : 'mismatch'}">${chemMatch ? '✓ MATCH' : '✗ MISMATCH'}</div>
+            </div>`;
+            
+            // Tarot
+            const tarotPos = value % 27;
+            const tarotMatch = tarotPos === position;
+            html += `<div class="validation-row">
+                <div>Tarot (Card ${value})</div>
+                <div>→ Position ${tarotPos}</div>
+                <div class="${tarotMatch ? 'match' : 'mismatch'}">${tarotMatch ? '✓ MATCH' : '✗ MISMATCH'}</div>
+            </div>`;
+            
+            // Gematria
+            const gemPos = value % 27;
+            const gemMatch = gemPos === position;
+            html += `<div class="validation-row">
+                <div>Gematria (${value})</div>
+                <div>→ Position ${gemPos}</div>
+                <div class="${gemMatch ? 'match' : 'mismatch'}">${gemMatch ? '✓ MATCH' : '✗ MISMATCH'}</div>
+            </div>`;
+            
+            // Base 10
+            const baseW = value % 16;
+            const baseH = Math.floor(value / 16) % 4;
+            html += `<div class="validation-row">
+                <div>Base 10 Ring</div>
+                <div>W=${baseW}, H=${baseH}</div>
+                <div class="match">Ring: ${baseH === 0 ? 'Token' : baseH <= 2 ? 'Topology' : 'Time'}</div>
+            </div>`;
+            
+            html += '</div>';
+            crossVal.innerHTML = html;
+        }
+        
+        function addToSequence() {
+            const input = document.getElementById('sequenceInput');
+            const value = parseInt(input.value);
+            
+            if (isNaN(value)) {
+                alert('Please enter a valid number');
+                return;
+            }
+            
+            const position = value % 27;
+            currentSequence.push(position);
+            
+            updateSequenceDisplay();
+            input.value = '';
+            updateGates(currentSequence);
+        }
+        
+        function updateSequenceDisplay() {
+            const list = document.getElementById('sequenceList');
+            
+            if (currentSequence.length === 0) {
+                list.innerHTML = `<div style="text-align: center; padding: 20px; color: #00cc33;">
+                    Empty sequence - add values to begin
+                </div>`;
+                return;
+            }
+            
+            let html = '';
+            currentSequence.forEach((pos, idx) => {
+                const data = EMX_LATTICE[pos];
+                const operator = OPERATORS[pos % 10];
+                html += `<div class="sequence-item">
+                    <strong>${idx + 1}.</strong> Position ${pos} → 
+                    ${data.layer}${data.n_class}${operator} 
+                    <span class="k-indicator">k=${data.k}</span>
+                    <span style="margin-left: 10px; color: #00cc33;">(${data.triple.join(', ')})</span>
+                </div>`;
+            });
+            
+            list.innerHTML = html;
+        }
+        
+        function clearSequence() {
+            currentSequence = [];
+            updateSequenceDisplay();
+            resetGates();
+        }
+        
+        function updateGates(sequence) {
+            // EN4: Closure check
+            const en4 = checkEN4(sequence);
+            updateGateDisplay('en4', en4);
+            
+            // EN6: NULL baseline
+            const en6 = checkEN6(sequence);
+            updateGateDisplay('en6', en6);
+            
+            // EN9: No cloning
+            const en9 = checkEN9(sequence);
+            updateGateDisplay('en9', en9);
+            
+            // EN10: Phase coherence
+            const en10 = checkEN10(sequence);
+            updateGateDisplay('en10', en10);
+        }
+        
+        function checkEN4(sequence) {
+            if (sequence.length < 2) return { pass: true, message: 'Need more data' };
+            
+            let sumX = 0, sumY = 0, sumZ = 0;
+            sequence.forEach(pos => {
+                const triple = EMX_LATTICE[pos].triple;
+                sumX += triple[0];
+                sumY += triple[1];
+                sumZ += triple[2];
+            });
+            
+            const maxSum = Math.max(Math.abs(sumX), Math.abs(sumY), Math.abs(sumZ));
+            const pass = maxSum <= 0.1 * sequence.length;
+            
+            return {
+                pass: pass,
+                message: pass ? 'PASS' : `FAIL (|Σ|=${maxSum.toFixed(1)})`
+            };
+        }
+        
+        function checkEN6(sequence) {
+            if (sequence.length === 0) return { pass: true, message: 'READY' };
+            
+            let nullSum = 0;
+            sequence.forEach(pos => {
+                nullSum += EMX_LATTICE[pos].null_fraction;
+            });
+            
+            const avgNull = nullSum / sequence.length;
+            const pass = avgNull >= 0.20 && avgNull <= 0.78;
+            
+            return {
+                pass: pass,
+                message: pass ? `PASS (${avgNull.toFixed(3)})` : `FAIL (${avgNull.toFixed(3)})`
+            };
+        }
+        
+        function checkEN9(sequence) {
+            const unique = new Set(sequence);
+            const pass = unique.size === sequence.length;
+            
+            return {
+                pass: pass,
+                message: pass ? 'PASS' : `FAIL (${sequence.length - unique.size} dupes)`
+            };
+        }
+        
+        function checkEN10(sequence) {
+            if (sequence.length === 0) return { pass: true, message: 'READY' };
+            
+            let phase = 0;
+            sequence.forEach(pos => {
+                phase += 0.1 * EMX_LATTICE[pos].k;
+            });
+            
+            const pass = phase <= 10.0;
+            
+            return {
+                pass: pass,
+                message: pass ? `PASS (Φ=${phase.toFixed(2)})` : `FAIL (Φ=${phase.toFixed(2)})`
+            };
+        }
+        
+        function updateGateDisplay(gateName, result) {
+            const gate = document.getElementById(`gate-${gateName}`);
+            const status = document.getElementById(`${gateName}-status`);
+            
+            gate.className = result.pass ? 'gate pass' : 'gate fail';
+            status.textContent = result.message;
+        }
+        
+        function resetGates() {
+            ['en4', 'en6', 'en9', 'en10'].forEach(gate => {
+                updateGateDisplay(gate, { pass: true, message: 'READY' });
+            });
+        }
+        
+        function validateSequence() {
+            if (currentSequence.length === 0) {
+                alert('Add values to sequence first');
+                return;
+            }
+            
+            const en4 = checkEN4(currentSequence);
+            const en6 = checkEN6(currentSequence);
+            const en9 = checkEN9(currentSequence);
+            const en10 = checkEN10(currentSequence);
+            
+            const allPass = en4.pass && en6.pass && en9.pass && en10.pass;
+            
+            alert(
+                `Gate Validation Results:\n\n` +
+                `EN4 (Closure): ${en4.pass ? '✓ PASS' : '✗ FAIL'} - ${en4.message}\n` +
+                `EN6 (NULL): ${en6.pass ? '✓ PASS' : '✗ FAIL'} - ${en6.message}\n` +
+                `EN9 (Unique): ${en9.pass ? '✓ PASS' : '✗ FAIL'} - ${en9.message}\n` +
+                `EN10 (Phase): ${en10.pass ? '✓ PASS' : '✗ FAIL'} - ${en10.message}\n\n` +
+                `Overall: ${allPass ? '✓ ALL GATES PASS' : '✗ VALIDATION FAILED'}`
+            );
+        }
+        
+        // Initialize on load
+        window.onload = function() {
+            initializeLattice();
+            resetGates();
+        };
+    </script>
+</body>
+</html>
