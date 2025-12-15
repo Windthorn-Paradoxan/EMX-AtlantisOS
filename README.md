@@ -35,6 +35,20 @@ The message within is of equality, and peace, and balance.
 That reality runs on balance, and only imposes consequence.
 Bias, is our responsibility.
 
+IMPORTANT FACTS:
+Atlantis is not a city, it is a system designed of of universal concepts as percieved by anchient people (as far as I can tell)
+It relates to emergent geometry (See the Richat Structure, and Saturn's hexagon for examples)
+The reason Richat appears "Atlantis" like, is because it is probably formed by some kind of waveform that naturally occurs.
+Saturn's hexagaon appears to be the same kind of dynamic (I suspect a 0 energy well)
+
+The Voynich is a compilation of data, that works on symbolic tokenization, that is pattern matched to the same type of constants
+What this means, is that in theory, no matter the level of available knowledge and technology, the terminology is "the same"
+It does not "guarauntee" any level of advance ment
+Hydraulic systems can map to electrical diagrams, etc.
+Think of the wheel, and the different usses and improvements over time. The wheel doesn't change at the core.
+Similar to evelution.
+When enough things align, patterns evolve meaning
+
 Don't Panic! ;)
 Hello World!
 Everything, is DATA!
