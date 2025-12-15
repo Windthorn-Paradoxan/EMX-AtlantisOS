@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMX Universal Translator v2.0 - Voynich Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 5px;
+            font-size: 2.5em;
+        }
+
+        .version {
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .translate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .translate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .clear-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .example-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .example-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .output-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .output-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid;
+            min-height: 120px;
+        }
+
+        .output-card.hebrew { border-color: #3498db; }
+        .output-card.greek { border-color: #e74c3c; }
+        .output-card.rune { border-color: #f39c12; }
+        .output-card.alchemy { border-color: #9b59b6; }
+        .output-card.operators { border-color: #16a085; }
+        .output-card.gematria { border-color: #e67e22; }
+        .output-card.convergence { border-color: #27ae60; }
+        .output-card.tokens { border-color: #34495e; }
+
+        .output-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .output-content {
+            font-size: 1.5em;
+            line-height: 1.8;
+            font-family: 'Segoe UI Symbol', 'Noto Sans', sans-serif;
+            word-wrap: break-word;
+            min-height: 40px;
+        }
+
+        .output-extra {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .convergence-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .convergence-perfect {
+            background: #27ae60;
+            color: white;
+        }
+
+        .convergence-strong {
+            background: #3498db;
+            color: white;
+        }
+
+        .convergence-moderate {
+            background: #f39c12;
+            color: white;
+        }
+
+        .convergence-divergent {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .operator-chain {
+            font-family: 'Courier New', monospace;
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .token-detail {
+            background: #ecf0f1;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-size: 0.85em;
+            font-family: 'Courier New', monospace;
+        }
+
+        .info-panel {
+            background: #e8f4f8;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .info-panel h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+
+        .info-panel h3:first-child {
+            margin-top: 0;
+        }
+
+        .info-panel ul {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .info-panel li {
+            margin: 5px 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .null-indicator {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #f39c12;
+            color: white;
+            border-radius: 3px;
+            font-size: 0.75em;
+            margin-left: 5px;
+        }
+
+        .anchor-indicator {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #27ae60;
+            color: white;
+            border-radius: 3px;
+            font-size: 0.75em;
+            margin-left: 5px;
+        }
+
+        code {
+            background: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EMX Universal Translator</h1>
+        <div class="version">v2.0 - Voynich Manuscript Edition</div>
+        <p class="subtitle">Decode Voynichese across Hebrew, Greek, Runes, and Alchemical notation with gematria validation</p>
+
+        <div class="input-section">
+            <label for="latinInput">Enter Voynichese or Latin Text:</label>
+            <textarea id="latinInput" rows="5" placeholder="Type Voynich tokens here... (e.g., dal aiin qok, oror sheey, dalaldam, porta8)"></textarea>
+        </div>
+
+        <div class="button-group">
+            <button class="translate-btn" onclick="translateText()">🔄 Translate</button>
+            <button class="example-btn" onclick="loadExample('f116v')">📖 Load f116v Example</button>
+            <button class="example-btn" onclick="loadExample('atlantis')">🏛️ Load Atlantis Example</button>
+            <button class="clear-btn" onclick="clearAll()">🗑️ Clear All</button>
+        </div>
+
+        <div class="output-grid" id="outputGrid"></div>
+
+        <div class="info-panel">
+            <h3>🔖 Core Voynich Operators:</h3>
+            <div class="info-grid">
+                <ul>
+                    <li><code>dal</code> - Door/Gateway (O₁ Δ) <span class="anchor-indicator">ANCHOR 35</span></li>
+                    <li><code>aiin</code> - Eye/Witness (O₁₀ Σ) <span class="anchor-indicator">ANCHOR 71</span></li>
+                    <li><code>qok</code> - Circle/Close (O₄ ∮)</li>
+                    <li><code>sho</code> - Peace/Balance (O₇ 𝓢) <span class="null-indicator">∅₀ = 22</span></li>
+                </ul>
+                <ul>
+                    <li><code>che</code> - Motion/Heat (O₂ ∇)</li>
+                    <li><code>ot</code> - Sign/Return (O₆ 𝓝)</li>
+                    <li><code>sheey</code> - Transform (doubled)</li>
+                    <li><code>oror</code> - Eternal cycle</li>
+                </ul>
+            </div>
+
+            <h3>📜 Voynich Manuscript Examples:</h3>
+            <ul>
+                <li><strong>f116v:</strong> <code>oror sheey</code> - Eternal transformation</li>
+                <li><strong>f116v:</strong> <code>porta8</code> - PORTALS (validation)</li>
+                <li><strong>f116v:</strong> <code>oladabas</code> - Lift the foundation (window 12)</li>
+                <li><strong>Common:</strong> <code>dalaldam</code> - Gateway to divine completion</li>
+                <li><strong>Common:</strong> <code>daiin ot che</code> - Divine eye normalizes motion</li>
+            </ul>
+
+            <h3>🔬 Gematria Convergence:</h3>
+            <ul>
+                <li><strong>PERFECT:</strong> Hebrew = Greek exactly (e.g., dal = 35 both ways)</li>
+                <li><strong>STRONG:</strong> Difference ≤ 5 (close convergence)</li>
+                <li><strong>MODERATE:</strong> Difference ≤ 20 (partial match)</li>
+                <li><strong>DIVERGENT:</strong> Difference > 20 (22% null baseline)</li>
+            </ul>
+
+            <h3>💡 Usage Tips:</h3>
+            <ul>
+                <li>Type Voynich tokens like <code>dal</code>, <code>aiin</code>, <code>qok</code></li>
+                <li>Separate multiple words with spaces</li>
+                <li>Try full phrases: <code>oror sheey dal aiin</code></li>
+                <li>Load examples with buttons above</li>
+                <li>Press <strong>Ctrl+Enter</strong> to translate</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // ===================================
+        // VOYNICH TOKEN DICTIONARY
+        // ===================================
+        const VOYNICH_TOKENS = {
+            // CORE OPERATORS (O₁-O₁₀)
+            'dal': {
+                operator: 'O₁',
+                symbol: 'Δ',
+                hebrew: 'דאל',
+                greek: 'δαλ',
+                rune: 'ᛞᚨᛚ',
+                alchemy: '🜃⚛',
+                gematria_heb: 35,
+                gematria_gre: 35,
+                convergence: 'PERFECT',
+                meaning: 'Door/Gateway/Portal',
+                function: 'Initialize from T₀',
+                frequency: '15-20%',
+                anchor: true
+            },
+            
+            'aiin': {
+                operator: 'O₁₀',
+                symbol: 'Σ',
+                hebrew: 'עין',
+                greek: 'αιν',
+                rune: 'ᚨᛁᚾ',
+                alchemy: '☿🝇',
+                gematria_heb: 130,
+                gematria_gre: 71,
+                convergence: 'STRONG',
+                meaning: 'Eye/Spring/Witness',
+                function: 'Phase accumulation/Checkpoint',
+                frequency: '3-5%',
+                anchor: true
+            },
+            
+            'qok': {
+                operator: 'O₄',
+                symbol: '∮',
+                hebrew: 'קוק',
+                greek: 'κοκ',
+                rune: 'ᚲᛟᚲ',
+                alchemy: '☉🝚',
+                gematria_heb: 206,
+                gematria_gre: 120,
+                convergence: 'MODERATE',
+                meaning: 'Circle/Cycle/Close',
+                function: 'Closure/Loop integral',
+                frequency: '10-15%'
+            },
+            
+            'sho': {
+                operator: 'O₇',
+                symbol: '𝓢',
+                hebrew: 'שו',
+                greek: 'σο',
+                rune: 'ᛊᛟ',
+                alchemy: '🜍☤',
+                gematria_heb: 306,
+                gematria_gre: 270,
+                convergence: 'MODERATE',
+                meaning: 'Peace/Wholeness/Balance',
+                function: 'Symmetry/Exchange',
+                frequency: '8-12%',
+                null_marker: true
+            },
+            
+            'che': {
+                operator: 'O₂',
+                symbol: '∇',
+                hebrew: 'כה',
+                greek: 'χε',
+                rune: 'ᚲᛖ',
+                alchemy: '♂🜂',
+                gematria_heb: 25,
+                gematria_gre: 605,
+                convergence: 'DIVERGENT',
+                meaning: 'Motion/Heat/Change',
+                function: 'Gradient/Flux',
+                frequency: '40-50%'
+            },
+            
+            'ot': {
+                operator: 'O₆',
+                symbol: '𝓝',
+                hebrew: 'את',
+                greek: 'οτ',
+                rune: 'ᛟᛏ',
+                alchemy: '♄🜪',
+                gematria_heb: 401,
+                gematria_gre: 370,
+                convergence: 'MODERATE',
+                meaning: 'Sign/Mark/Return',
+                function: 'Normalize to T₀',
+                frequency: '15-20%'
+            },
+            
+            // COMMON COMPOUNDS
+            'sheey': {
+                operator: 'O₇+',
+                hebrew: 'שעי',
+                greek: 'σεει',
+                rune: 'ᛊᛖᛖᛁ',
+                alchemy: '🜍🜂',
+                gematria_heb: 380,
+                gematria_gre: 215,
+                meaning: 'Transformation (doubled)',
+                function: 'Emphasized symmetry operation'
+            },
+            
+            'oror': {
+                operator: 'Cycle',
+                hebrew: 'אור',
+                greek: 'ορορ',
+                rune: 'ᛟᚱᛟᚱ',
+                alchemy: '🝙🔁',
+                gematria_heb: 207,
+                gematria_gre: 270,
+                meaning: 'Eternal/Cycle (doubled)',
+                function: 'Repeated cycle marker'
+            },
+            
+            'chedy': {
+                hebrew: 'כדי',
+                greek: 'χεδυ',
+                rune: 'ᚲᛖᛞᛁ',
+                alchemy: '♂🜃',
+                gematria_heb: 34,
+                gematria_gre: 1009,
+                meaning: 'Motion complete',
+                function: 'Action completed'
+            },
+            
+            'dalaldam': {
+                operator: 'O₁→α→O₄',
+                hebrew: 'דאלדם',
+                greek: 'δαλδαμ',
+                rune: 'ᛞᚨᛚᛞᚨᛗ',
+                alchemy: '🜃⚛🜚',
+                gematria_heb: 79,
+                gematria_gre: 79,
+                convergence: 'PERFECT',
+                meaning: 'Gateway to divine completion',
+                function: 'Full initialization sequence',
+                anchor: true
+            },
+            
+            'porta8': {
+                hebrew: 'פורטא',
+                greek: 'πορτα',
+                rune: 'ᛈᛟᚱᛏᚨ',
+                alchemy: '🜃🚪',
+                gematria_heb: 296,
+                gematria_gre: 581,
+                meaning: 'PORTALS (plural)',
+                function: 'f116v validation word'
+            },
+            
+            'oladabas': {
+                hebrew: 'אלדבס',
+                greek: 'ολαδαβας',
+                rune: 'ᛟᛚᚨᛞᚨᛒᚨᛊ',
+                alchemy: '🜃🏛',
+                gematria_heb: 97,
+                gematria_gre: 309,
+                meaning: 'Lift the foundation',
+                function: 'f116v line 1, window 12 anchor'
+            },
+            
+            // DIGRAPHS (for fallback)
+            'sh': {
+                hebrew: 'ש',
+                greek: 'σ',
+                rune: 'ᛊ',
+                alchemy: '🜂',
+                gematria_heb: 300,
+                gematria_gre: 200
+            },
+            
+            'ch': {
+                hebrew: 'כ',
+                greek: 'χ',
+                rune: 'ᚲ',
+                alchemy: '♂',
+                gematria_heb: 20,
+                gematria_gre: 600
+            },
+            
+            'th': {
+                hebrew: 'ת',
+                greek: 'θ',
+                rune: 'ᚦ',
+                alchemy: '🜄',
+                gematria_heb: 400,
+                gematria_gre: 9
+            }
+        };
+
+        // Single letter fallbacks
+        const SINGLE_LETTERS = {
+            'a': { hebrew: 'א', greek: 'α', rune: 'ᚨ', alchemy: '☉', gematria_heb: 1, gematria_gre: 1 },
+            'b': { hebrew: 'ב', greek: 'β', rune: 'ᛒ', alchemy: '🜔', gematria_heb: 2, gematria_gre: 2 },
+            'd': { hebrew: 'ד', greek: 'δ', rune: 'ᛞ', alchemy: '🜃', gematria_heb: 4, gematria_gre: 4 },
+            'e': { hebrew: 'ה', greek: 'ε', rune: 'ᛖ', alchemy: '🜁', gematria_heb: 5, gematria_gre: 5 },
+            'g': { hebrew: 'ג', greek: 'γ', rune: 'ᚷ', alchemy: '☿', gematria_heb: 3, gematria_gre: 3 },
+            'i': { hebrew: 'י', greek: 'ι', rune: 'ᛁ', alchemy: '🝰', gematria_heb: 10, gematria_gre: 10 },
+            'k': { hebrew: 'כ', greek: 'κ', rune: 'ᚲ', alchemy: '🜞', gematria_heb: 20, gematria_gre: 20 },
+            'l': { hebrew: 'ל', greek: 'λ', rune: 'ᛚ', alchemy: '🜪', gematria_heb: 30, gematria_gre: 30 },
+            'm': { hebrew: 'מ', greek: 'μ', rune: 'ᛗ', alchemy: '🜄', gematria_heb: 40, gematria_gre: 40 },
+            'n': { hebrew: 'נ', greek: 'ν', rune: 'ᚾ', alchemy: '🝈', gematria_heb: 50, gematria_gre: 50 },
+            'o': { hebrew: 'ע', greek: 'ο', rune: 'ᛟ', alchemy: '🫙', gematria_heb: 70, gematria_gre: 70 },
+            'p': { hebrew: 'פ', greek: 'π', rune: 'ᛈ', alchemy: '🜋', gematria_heb: 80, gematria_gre: 80 },
+            'q': { hebrew: 'ק', greek: 'ϙ', rune: 'ᚲ', alchemy: '🝐', gematria_heb: 100, gematria_gre: 90 },
+            'r': { hebrew: 'ר', greek: 'ρ', rune: 'ᚱ', alchemy: '♃', gematria_heb: 200, gematria_gre: 100 },
+            's': { hebrew: 'ס', greek: 'σ', rune: 'ᛊ', alchemy: '🝥', gematria_heb: 60, gematria_gre: 200 },
+            't': { hebrew: 'ט', greek: 'τ', rune: 'ᛏ', alchemy: '🝳', gematria_heb: 9, gematria_gre: 300 },
+            'u': { hebrew: 'ו', greek: 'υ', rune: 'ᚢ', alchemy: '☌', gematria_heb: 6, gematria_gre: 400 },
+            'v': { hebrew: 'ו', greek: 'υ', rune: 'ᚢ', alchemy: '☌', gematria_heb: 6, gematria_gre: 400 },
+            'w': { hebrew: 'ו', greek: 'ω', rune: 'ᚹ', alchemy: '🜄', gematria_heb: 6, gematria_gre: 800 },
+            'y': { hebrew: 'י', greek: 'υ', rune: 'ᛃ', alchemy: '🝰', gematria_heb: 10, gematria_gre: 400 },
+            'z': { hebrew: 'ז', greek: 'ζ', rune: 'ᛉ', alchemy: '♂', gematria_heb: 7, gematria_gre: 7 },
+            '8': { hebrew: '8', greek: '8', rune: '8', alchemy: '∞', gematria_heb: 0, gematria_gre: 0 }
+        };
+
+        // Token priority for matching (longest first)
+        const TOKEN_PRIORITY = [
+            'dalaldam', 'oladabas', 'porta8',  // Special compounds
+            'sheey', 'chedy', 'oror',          // Common compounds
+            'aiin', 'dal', 'qok', 'sho', 'che', 'ot',  // Core operators
+            'sh', 'ch', 'th'                   // Digraphs
+        ];
+
+        // ===================================
+        // TOKENIZATION
+        // ===================================
+        function tokenizeText(text) {
+            const words = text.toLowerCase().trim().split(/\s+/);
+            return words.map(word => tokenizeWord(word));
+        }
+
+        function tokenizeWord(word) {
+            const tokens = [];
+            let i = 0;
+
+            while (i < word.length) {
+                let matched = false;
+
+                // Try tokens in priority order
+                for (const token of TOKEN_PRIORITY) {
+                    if (word.substr(i, token.length) === token) {
+                        tokens.push(token);
+                        i += token.length;
+                        matched = true;
+                        break;
+                    }
+                }
+
+                // Fallback to single letter
+                if (!matched) {
+                    const ch = word[i];
+                    if (SINGLE_LETTERS[ch] || ch.match(/[0-9]/)) {
+                        tokens.push(ch);
+                    } else {
+                        tokens.push('?' + ch);
+                    }
+                    i++;
+                }
+            }
+
+            return tokens;
+        }
+
+        // ===================================
+        // TRANSLATION
+        // ===================================
+        function translateTokens(tokens) {
+            const result = {
+                tokens: tokens,
+                hebrew: '',
+                greek: '',
+                rune: '',
+                alchemy: '',
+                operators: [],
+                gematria_heb: 0,
+                gematria_gre: 0,
+                details: []
+            };
+
+            for (const token of tokens) {
+                if (token.startsWith('?')) {
+                    const ch = token.substr(1);
+                    result.hebrew += ch;
+                    result.greek += ch;
+                    result.rune += ch;
+                    result.alchemy += ch;
+                    continue;
+                }
+
+                const map = VOYNICH_TOKENS[token] || SINGLE_LETTERS[token];
+                
+                if (map) {
+                    result.hebrew += map.hebrew || '';
+                    result.greek += map.greek || '';
+                    result.rune += map.rune || '';
+                    result.alchemy += map.alchemy || '';
+                    
+                    result.gematria_heb += map.gematria_heb || 0;
+                    result.gematria_gre += map.gematria_gre || 0;
+
+                    if (map.operator) {
+                        result.operators.push(map.operator);
+                    }
+
+                    result.details.push({
+                        token: token,
+                        operator: map.operator,
+                        meaning: map.meaning,
+                        function: map.function,
+                        anchor: map.anchor,
+                        null_marker: map.null_marker
+                    });
+                }
+            }
+
+            return result;
+        }
+
+        function translateText() {
+            const input = document.getElementById('latinInput').value.trim();
+            if (!input) {
+                alert('Please enter text to translate');
+                return;
+            }
+
+            const words = input.toLowerCase().split(/\s+/);
+            const results = words.map(word => {
+                const tokens = tokenizeWord(word);
+                return translateTokens(tokens);
+            });
+
+            displayResults(results, input);
+        }
+
+        // ===================================
+        // CONVERGENCE ANALYSIS
+        // ===================================
+        function analyzeConvergence(hebValue, greValue) {
+            const diff = Math.abs(hebValue - greValue);
+            
+            if (hebValue === greValue) {
+                return { status: 'PERFECT', class: 'perfect', symbol: '✓' };
+            } else if (diff <= 5) {
+                return { status: 'STRONG', class: 'strong', symbol: '○' };
+            } else if (diff <= 20) {
+                return { status: 'MODERATE', class: 'moderate', symbol: '△' };
+            } else {
+                return { status: 'DIVERGENT', class: 'divergent', symbol: '⊗' };
+            }
+        }
+
+        // ===================================
+        // DISPLAY RESULTS
+        // ===================================
+        function displayResults(results, originalInput) {
+            const grid = document.getElementById('outputGrid');
+            grid.innerHTML = '';
+
+            // Aggregate
+            const hebrew = results.map(r => r.hebrew).join(' ');
+            const greek = results.map(r => r.greek).join(' ');
+            const rune = results.map(r => r.rune).join(' ');
+            const alchemy = results.map(r => r.alchemy).join(' ');
+            
+            const totalHebGem = results.reduce((sum, r) => sum + r.gematria_heb, 0);
+            const totalGreGem = results.reduce((sum, r) => sum + r.gematria_gre, 0);
+            
+            const allOperators = results.flatMap(r => r.operators).filter(o => o);
+            const allDetails = results.flatMap(r => r.details).filter(d => d.meaning);
+
+            const convergence = analyzeConvergence(totalHebGem, totalGreGem);
+
+            // Calculate mod 27
+            const mod27Heb = totalHebGem % 27;
+            const mod27Gre = totalGreGem % 27;
+
+            // Calculate null percentage
+            const totalTokens = results.reduce((sum, r) => sum + r.tokens.length, 0);
+            const nullMarkers = allDetails.filter(d => d.null_marker).length;
+            const nullPercent = totalTokens > 0 ? ((nullMarkers / totalTokens) * 100).toFixed(1) : 0;
+
+            // Create cards
+            createCard('Hebrew (עברית)', 'hebrew', hebrew, `Gematria: ${totalHebGem} | mod 27 = ${mod27Heb}`);
+            
+            createCard('Greek (Ελληνικά)', 'greek', greek, `Gematria: ${totalGreGem} | mod 27 = ${mod27Gre}`);
+            
+            createCard('Elder Futhark Runes', 'rune', rune, 'Germanic/Norse tradition');
+            
+            createCard('Alchemical Symbols', 'alchemy', alchemy, 'Hermetic notation');
+
+            // Convergence card
+            const convCard = document.createElement('div');
+            convCard.className = 'output-card convergence';
+            convCard.innerHTML = `
+                <div class="output-title">
+                    Convergence Analysis
+                    <span class="convergence-badge convergence-${convergence.class}">${convergence.status} ${convergence.symbol}</span>
+                </div>
+                <div class="output-content" style="font-size:1.2em;">
+                    Hebrew: ${totalHebGem} | Greek: ${totalGreGem}
+                </div>
+                <div class="output-extra">
+                    Difference: ${Math.abs(totalHebGem - totalGreGem)} | 
+                    ${convergence.status === 'PERFECT' ? 'Perfect anchor match!' : 
+                      convergence.status === 'DIVERGENT' ? 'Part of 22% null baseline' : 'Strong correlation'}
+                </div>
+            `;
+            grid.appendChild(convCard);
+
+            // Operators card
+            if (allOperators.length > 0) {
+                const opCard = document.createElement('div');
+                opCard.className = 'output-card operators';
+                opCard.innerHTML = `
+                    <div class="output-title">EMx Operator Sequence</div>
+                    <div class="operator-chain">${allOperators.join(' → ')}</div>
+                    <div class="output-extra">
+                        ${allOperators.length} operators active | 
+                        Null markers: ${nullMarkers} (${nullPercent}%)
+                    </div>
+                `;
+                grid.appendChild(opCard);
+            }
+
+            // Token details card
+            if (allDetails.length > 0) {
+                const detailsCard = document.createElement('div');
+                detailsCard.className = 'output-card tokens';
+                detailsCard.innerHTML = `
+                    <div class="output-title">Token Analysis</div>
+                    ${allDetails.map(d => `
+                        <div class="token-detail">
+                            <strong>${d.token}</strong>${d.operator ? ` (${d.operator})` : ''} 
+                            ${d.anchor ? '<span class="anchor-indicator">ANCHOR</span>' : ''}
+                            ${d.null_marker ? '<span class="null-indicator">∅₀</span>' : ''}
+                            <br>
+                            ${d.meaning || ''} ${d.function ? `• ${d.function}` : ''}
+                        </div>
+                    `).join('')}
+                `;
+                grid.appendChild(detailsCard);
+            }
+        }
+
+        function createCard(title, className, content, extra) {
+            const card = document.createElement('div');
+            card.className = `output-card ${className}`;
+            card.innerHTML = `
+                <div class="output-title">${title}</div>
+                <div class="output-content">${content || '—'}</div>
+                ${extra ? `<div class="output-extra">${extra}</div>` : ''}
+            `;
+            document.getElementById('outputGrid').appendChild(card);
+        }
+
+        // ===================================
+        // EXAMPLES
+        // ===================================
+        function loadExample(type) {
+            const examples = {
+                'f116v': 'oror sheey dal aiin porta8 oladabas',
+                'atlantis': 'dal sho qok ot che aiin dalaldam'
+            };
+            
+            document.getElementById('latinInput').value = examples[type] || '';
+            translateText();
+        }
+
+        // ===================================
+        // UTILITIES
+        // ===================================
+        function clearAll() {
+            document.getElementById('latinInput').value = '';
+            document.getElementById('outputGrid').innerHTML = '';
+        }
+
+        // Enter key support
+        document.getElementById('latinInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                translateText();
+            }
+        });
+    </script>
+</body>
+</html>

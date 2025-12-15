@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voynich → EMx Decoder</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #0a0e1a;
+            font-family: 'Courier New', monospace;
+            color: #e0e0e0;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #06b6d4;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+        .panel {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .panel-title {
+            color: #06b6d4;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            color: #e0e0e0;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+        button {
+            background: #1e40af;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 10px 5px;
+            font-family: inherit;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        .output {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            padding: 15px;
+            min-height: 200px;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        .token {
+            display: inline-block;
+            margin: 3px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .op-O1 { background: #991b1b; border: 1px solid #dc2626; }
+        .op-O2 { background: #92400e; border: 1px solid #f59e0b; }
+        .op-O4 { background: #065f46; border: 1px solid #10b981; }
+        .op-O6 { background: #1e40af; border: 1px solid #3b82f6; }
+        .op-O7 { background: #581c87; border: 1px solid #a855f7; }
+        .op-O10 { background: #0e7490; border: 1px solid #06b6d4; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #334155;
+        }
+        .stat-label {
+            color: #94a3b8;
+        }
+        .stat-value {
+            color: #06b6d4;
+            font-weight: bold;
+        }
+        .code-block {
+            background: #000;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 3px solid #06b6d4;
+            overflow-x: auto;
+        }
+        .mapping-row {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin: 5px 0;
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        .mapping-voynich {
+            flex: 1;
+            color: #fbbf24;
+        }
+        .mapping-arrow {
+            margin: 0 15px;
+            color: #94a3b8;
+        }
+        .mapping-emx {
+            flex: 1;
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🜀 Voynich Manuscript → EMx Code Generator</h1>
+        <div class="subtitle">Real-time decoding of Voynichese into EMx operators and state transitions</div>
+        
+        <div class="panel">
+            <div class="panel-title">Input: Voynich Text</div>
+            <textarea id="voynichInput" placeholder="Paste Voynich transcription here...&#10;&#10;Example: teeodaiin.shey.epairody.osaiin.yteeoey.shey.epaiin.o!aiin">teeodaiin.shey.epairody.osaiin.yteeoey.shey.epaiin.o!aiin
+daiir.okeody.qoeksh!g.sar.oeteody.oteey.keey.keo.keeodal
+qokeol.sal.okeey.sar.dalary</textarea>
+            <button onclick="decode()">🔄 Decode to EMx</button>
+            <button onclick="loadSample('f67r1')">📄 Sample: f67r1</button>
+            <button onclick="loadSample('f67v1')">📄 Sample: f67v1</button>
+            <button onclick="loadSample('f68r3')">📄 Sample: f68r3</button>
+        </div>
+        
+        <div class="grid">
+            <div class="panel">
+                <div class="panel-title">Token Analysis</div>
+                <div id="tokenOutput" class="output"></div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-title">Statistics</div>
+                <div id="statsOutput" class="output"></div>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <div class="panel-title">Generated EMx Python Code</div>
+            <div id="codeOutput" class="output"></div>
+        </div>
+        
+        <div class="panel">
+            <div class="panel-title">Operator Mapping Key</div>
+            <div id="mappingKey" class="output"></div>
+        </div>
+    </div>
+
+    <script>
+        const OPERATOR_MAP = {
+            'dal': 'O1', 'd': 'O1',
+            'ch': 'O2', 'kh': 'O2', 'c': 'O2',
+            'rot': 'O3',
+            'qok': 'O4', 'qo': 'O4',
+            'collapse': 'O5', 'pi': 'O5',
+            'ot': 'O6', 'ok': 'O6',
+            'sho': 'O7', 'so': 'O7', 'she': 'O7',
+            'index': 'O8', 'wind': 'O8',
+            'unique': 'O9', 'omega': 'O9',
+            'aiin': 'O10', 'ain': 'O10'
+        };
+        
+        const OPERATOR_NAMES = {
+            'O1': 'Δ Delta/Initialize',
+            'O2': '∇ Gradient/Flux',
+            'O3': 'rot Rotation/Curl',
+            'O4': '∮ Closure/Integrate',
+            'O5': 'Π Project/Collapse',
+            'O6': '𝓝 Normalize',
+            'O7': '𝓢 Symmetry/Exchange',
+            'O8': '𝓦 Topological Index',
+            'O9': '𝓘 No-Clone/Unique',
+            'O10': 'Σ Phase Accumulation'
+        };
+        
+        const SAMPLES = {
+            'f67r1': `soairal.shdy.chokeody.ykeedal.ol.oteodaiin.choikhedy.ot.chteokeeiin
+dair.al.cheol.dal.oekaiin.sol.daiin.eetees.sainn.ykeos
+otaldy.otoky.seeoa!r.yka!s.asa.sosaiir.oteey.dar.yto.daiir`,
+            'f67v1': `pchodai!s.otch.oeka!ody
+dcheeos.qokiiiody.eees.oloesdr
+yko!o.cheo.daiin.ypcheg.oty
+doaro.oalcheol.dchol.dal`,
+            'f68r3': `odchd.otchdy.cheoteeo.oshchey.chokol.cheody.chedy
+dchey.qokeey.dcheey.daiir.otchal
+doaro.oalcheol.dchol.dal.okos`
+        };
+        
+        function tokenize(text) {
+            text = text.toLowerCase();
+            text = text.replace(/[!?.=\-{}#\d]/g, ' ');
+            return text.split(/\s+/).filter(w => w.length > 0);
+        }
+        
+        function decodeToken(word) {
+            let operator = null;
+            let operatorKey = null;
+            
+            for (let [key, op] of Object.entries(OPERATOR_MAP)) {
+                if (word.includes(key)) {
+                    operator = op;
+                    operatorKey = key;
+                    break;
+                }
+            }
+            
+            const suffix = word.slice(-2);
+            const suffixType = 
+                ['dy', 'edy', 'ody'].includes(suffix) ? 'action' :
+                ['ar', 'or', 'ol'].includes(suffix) ? 'feedback' :
+                ['ain', 'aiin'].includes(word.slice(-4)) ? 'phase' :
+                ['am', 'om'].includes(suffix) ? 'terminate' : null;
+            
+            const gematria = estimateGematria(word);
+            
+            return {
+                word: word,
+                operator: operator,
+                operatorKey: operatorKey,
+                suffix: suffixType,
+                gematria: gematria,
+                w: gematria & 0xF,
+                h: (gematria >> 4) & 0x3,
+                magnitude: Math.floor(gematria / 64)
+            };
+        }
+        
+        function estimateGematria(word) {
+            const values = {
+                'a': 1, 'o': 6, 'e': 5, 'i': 10, 'y': 10,
+                'd': 4, 'l': 30, 'r': 200, 's': 60, 't': 9,
+                'c': 20, 'h': 8, 'k': 20, 'p': 80, 'q': 100
+            };
+            let sum = 0;
+            for (let c of word) {
+                sum += values[c] || 0;
+            }
+            return sum;
+        }
+        
+        function decode() {
+            const input = document.getElementById('voynichInput').value;
+            const tokens = tokenize(input);
+            const decoded = tokens.map(decodeToken);
+            
+            displayTokens(decoded);
+            displayStats(decoded);
+            generateCode(decoded);
+            displayMapping();
+        }
+        
+        function displayTokens(decoded) {
+            const output = document.getElementById('tokenOutput');
+            let html = '<div style="line-height: 2.5;">';
+            
+            for (let token of decoded) {
+                const className = token.operator ? `op-${token.operator}` : '';
+                const title = token.operator ? OPERATOR_NAMES[token.operator] : 'No operator';
+                html += `<span class="token ${className}" title="${title}">${token.word}</span>`;
+            }
+            
+            html += '</div>';
+            output.innerHTML = html;
+        }
+        
+        function displayStats(decoded) {
+            const output = document.getElementById('statsOutput');
+            
+            const totalTokens = decoded.length;
+            const withOperator = decoded.filter(t => t.operator).length;
+            const feedbackTokens = decoded.filter(t => t.suffix === 'feedback').length;
+            const phaseTokens = decoded.filter(t => t.suffix === 'phase').length;
+            
+            const opCounts = {};
+            decoded.forEach(t => {
+                if (t.operator) {
+                    opCounts[t.operator] = (opCounts[t.operator] || 0) + 1;
+                }
+            });
+            
+            let html = '';
+            html += `<div class="stat"><span class="stat-label">Total tokens:</span><span class="stat-value">${totalTokens}</span></div>`;
+            html += `<div class="stat"><span class="stat-label">With operators:</span><span class="stat-value">${withOperator} (${(withOperator/totalTokens*100).toFixed(1)}%)</span></div>`;
+            html += `<div class="stat"><span class="stat-label">Feedback tokens (ar/or/ol):</span><span class="stat-value">${feedbackTokens} (${(feedbackTokens/totalTokens*100).toFixed(1)}%)</span></div>`;
+            html += `<div class="stat"><span class="stat-label">Phase markers (aiin):</span><span class="stat-value">${phaseTokens} (${(phaseTokens/totalTokens*100).toFixed(1)}%)</span></div>`;
+            
+            html += '<br><strong style="color: #06b6d4;">Operator Frequency:</strong><br><br>';
+            
+            for (let [op, count] of Object.entries(opCounts).sort((a,b) => b[1] - a[1])) {
+                const pct = (count / totalTokens * 100).toFixed(1);
+                html += `<div class="stat"><span class="stat-label">${op} (${OPERATOR_NAMES[op]}):</span><span class="stat-value">${count} (${pct}%)</span></div>`;
+            }
+            
+            const nullEstimate = feedbackTokens / totalTokens;
+            const nullMatch = Math.abs(nullEstimate - 0.22) < 0.05;
+            html += '<br><strong style="color: #06b6d4;">Null Signature:</strong><br><br>';
+            html += `<div class="stat"><span class="stat-label">Estimated ∅:</span><span class="stat-value" style="color: ${nullMatch ? '#10b981' : '#fbbf24'}">${(nullEstimate*100).toFixed(1)}% ${nullMatch ? '✓' : '⚠'}</span></div>`;
+            html += `<div class="stat"><span class="stat-label">Target ∅₀:</span><span class="stat-value">22.0%</span></div>`;
+            
+            output.innerHTML = html;
+        }
+        
+        function generateCode(decoded) {
+            const output = document.getElementById('codeOutput');
+            
+            let code = `<div class="code-block">`;
+            code += `<span style="color: #94a3b8;"># Generated EMx code from Voynich text</span><br>`;
+            code += `<span style="color: #f59e0b;">import</span> numpy <span style="color: #f59e0b;">as</span> np<br>`;
+            code += `<span style="color: #f59e0b;">from</span> emx_core <span style="color: #f59e0b;">import</span> Operators, Phases<br><br>`;
+            
+            code += `<span style="color: #94a3b8;"># Initialize state</span><br>`;
+            code += `state = Phases.P1_init(<span style="color: #a855f7;">0</span>, t0_lattice)<br>`;
+            code += `phase = <span style="color: #a855f7;">0.0</span><br><br>`;
+            
+            const operators = decoded.filter(t => t.operator);
+            
+            for (let i = 0; i < operators.length; i++) {
+                const t = operators[i];
+                const nextHasPhase = (i < operators.length - 1 && operators[i+1].suffix === 'phase');
+                
+                code += `<span style="color: #94a3b8;"># Token: ${t.word} (gematria ≈ ${t.gematria})</span><br>`;
+                
+                if (t.operator === 'O1') {
+                    code += `state, delta = Phases.P2_delta(state, <span style="color: #a855f7;">${t.gematria}</span>, prev_value)<br>`;
+                } else if (t.operator === 'O2') {
+                    code += `state, grad = Phases.P4_flux(state)<br>`;
+                } else if (t.operator === 'O3') {
+                    code += `state = Phases.P3_rotation(state)<br>`;
+                } else if (t.operator === 'O4') {
+                    code += `<span style="color: #f59e0b;">if</span> Operators.O4_closure(history):<br>`;
+                    code += `    <span style="color: #10b981;">print</span>(<span style="color: #fbbf24;">"✓ Closure achieved"</span>)<br>`;
+                } else if (t.operator === 'O6') {
+                    code += `state = Phases.P6_normalize(state)<br>`;
+                } else if (t.operator === 'O7') {
+                    code += `state = Phases.P5_fold(state)<br>`;
+                } else if (t.operator === 'O10') {
+                    code += `state, phase = Phases.P7_integrate(state, phase, <span style="color: #a855f7;">${t.gematria}</span>)<br>`;
+                }
+                
+                if (nextHasPhase) {
+                    code += `<span style="color: #94a3b8;"># Phase checkpoint</span><br>`;
+                    code += `<span style="color: #10b981;">print</span>(<span style="color: #fbbf24;">f"Phase: {phase:.2f}"</span>)<br>`;
+                }
+                
+                code += `<br>`;
+            }
+            
+            code += `<span style="color: #94a3b8;"># Final state</span><br>`;
+            code += `<span style="color: #10b981;">print</span>(<span style="color: #fbbf24;">f"Final phase: {phase:.2f}"</span>)<br>`;
+            code += `<span style="color: #10b981;">print</span>(<span style="color: #fbbf24;">f"Final state: {state.to_array()}"</span>)<br>`;
+            
+            code += `</div>`;
+            
+            output.innerHTML = code;
+        }
+        
+        function displayMapping() {
+            const output = document.getElementById('mappingKey');
+            
+            let html = '<strong style="color: #06b6d4; font-size: 16px;">Root Morpheme → Operator Mappings:</strong><br><br>';
+            
+            const mappings = [
+                ['dal, d-', 'O₁ (Δ)', 'Temporal difference / Initialize'],
+                ['ch-, kh-, c-', 'O₂ (∇)', 'Gradient / Flux (40-50% of tokens!)'],
+                ['rot-', 'O₃', 'Rotation / Curl'],
+                ['qok-, qo-', 'O₄ (∮)', 'Closure / Loop integral'],
+                ['collapse-, pi-', 'O₅ (Π)', 'Projection / Measurement'],
+                ['ot-, ok-', 'O₆ (𝓝)', 'Normalize / Return to basin'],
+                ['sho-, so-, she-', 'O₇ (𝓢)', 'Symmetry / Exchange'],
+                ['index-, wind-', 'O₈ (𝓦)', 'Topological winding number'],
+                ['unique-, omega-', 'O₉ (𝓘)', 'No-clone / Uniqueness'],
+                ['aiin, ain', 'O₁₀ (Σ)', 'Phase accumulation (3-5%)']
+            ];
+            
+            for (let [voynich, emx, desc] of mappings) {
+                html += `<div class="mapping-row">`;
+                html += `<span class="mapping-voynich">${voynich}</span>`;
+                html += `<span class="mapping-arrow">→</span>`;
+                html += `<span class="mapping-emx">${emx}</span>`;
+                html += `<span style="color: #94a3b8; flex: 2; font-size: 11px; margin-left: 15px;">${desc}</span>`;
+                html += `</div>`;
+            }
+            
+            html += '<br><strong style="color: #06b6d4; font-size: 16px;">Suffix Meanings:</strong><br><br>';
+            
+            const suffixes = [
+                ['-dy, -edy, -ody', 'Action emphasis', 'Apply operator'],
+                ['-ar, -or, -ol', 'Feedback / Echo', '≈22% (∅₀ baseline!)'],
+                ['-ain, -aiin', 'Phase marker', 'Log accumulation'],
+                ['-am, -om', 'Termination', 'End of sequence'],
+                ['-al', 'Link / Chain', 'Connect to next']
+            ];
+            
+            for (let [suffix, meaning, note] of suffixes) {
+                html += `<div class="mapping-row">`;
+                html += `<span class="mapping-voynich">${suffix}</span>`;
+                html += `<span class="mapping-arrow">→</span>`;
+                html += `<span class="mapping-emx">${meaning}</span>`;
+                html += `<span style="color: #94a3b8; flex: 2; font-size: 11px; margin-left: 15px;">${note}</span>`;
+                html += `</div>`;
+            }
+            
+            output.innerHTML = html;
+        }
+        
+        function loadSample(name) {
+            document.getElementById('voynichInput').value = SAMPLES[name];
+            decode();
+        }
+        
+        // Auto-decode on load
+        window.onload = () => {
+            decode();
+        };
+    </script>
+</body>
+</html>
