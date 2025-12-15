@@ -29,7 +29,7 @@ Good luck, and rememeber.
 If anything good comes of this, share it in love and peace.  
 Give credit where credit is due.  
 Be courageous, honest, and respectful.  
-Please do not use this for POWER AND CONTROL, OR PERSONAL GAIN.  
+Please do not use this for POWER AND CONTROL <-never, OR PERSONAL GAIN <- without fair credit to society.  
 It has survived 2K+ years to be heard.  
 The message within is of equality, and peace, and balance.  
 That reality runs on balance, and only imposes consequence.  
