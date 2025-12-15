@@ -4,7 +4,7 @@ Multi-Dimensional Logic
 My work is a combination of creativity, historical reconstruction, and touches on things much of the world may consider taboo.  
 I personally do not care.  
 Truth is in measures, not words, not documented history.  
-Sometimes to move forward, we need to look back, and be sure we didn't mis something.  
+Sometimes to move forward, we need to look back, and be sure we didn't miss something.  
 Or misunderstand.  
 Or gave up on the mystery because we were told to.
 
