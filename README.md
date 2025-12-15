@@ -36,6 +36,7 @@ That reality runs on balance, and only imposes consequence.
 Bias, is our responsibility.
 
 IMPORTANT FACTS:
+
 Atlantis is not a city, it is a system designed of of universal concepts as percieved by anchient people (as far as I can tell)
 It relates to emergent geometry (See the Richat Structure, and Saturn's hexagon for examples)
 The reason Richat appears "Atlantis" like, is because it is probably formed by some kind of waveform that naturally occurs.
