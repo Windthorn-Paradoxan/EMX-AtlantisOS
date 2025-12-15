@@ -49,6 +49,13 @@ Think of the wheel, and the different usses and improvements over time. The whee
 Similar to evelution.
 When enough things align, patterns evolve meaning
 
+Reality as a dynamic system:
+Reality may "just be"
+It may just work on polarity (balance) as antipodal compliments
++/- are not greater, less than, more like two parts of a scale with 4 beams
+Everything may follow that same model. From nothing all the way through math, physics, biology, cognition, technology
+Like mirrors, you can't see the reflection of until you see the design at its core.
+
 Don't Panic! ;)
 Hello World!
 Everything, is DATA!
