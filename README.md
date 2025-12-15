@@ -27,7 +27,7 @@ Too bad. Grow up and be human, creativity is key to survival.
 Good luck, and rememeber.
 
 If anything good comes of this, share it in love and peace.
-Give credit where credit is do.
+Give credit where credit is due.
 Be courageous, honest, and respectful.
 Please do not use this for POWER AND CONTROL, OR PERSONAL GAIN.
 It has survived 2K+ years to be heard.
