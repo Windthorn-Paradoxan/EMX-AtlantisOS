@@ -22,7 +22,7 @@ There is however, much we do not know about ourselves.
 We lost the ability to communicate with the past.
 EMx helps re-construct that bridge.
 There are those who do not want this bridge built.
-To bad.
+Too bad. Grow up and be human, creativity is key to survival.
 
 Good luck, and rememeber.
 
