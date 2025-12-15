@@ -43,7 +43,7 @@ Saturn's hexagaon appears to be the same kind of dynamic (I suspect a 0 energy w
 
 The Voynich is a compilation of data, that works on symbolic tokenization, that is pattern matched to the same type of constants
 What this means, is that in theory, no matter the level of available knowledge and technology, the terminology is "the same"
-It does not "guarauntee" any level of advance ment
+It does not "guarauntee" any level of advancement
 Hydraulic systems can map to electrical diagrams, etc.
 Think of the wheel, and the different usses and improvements over time. The wheel doesn't change at the core.
 Similar to evelution.
@@ -56,13 +56,13 @@ It may just work on polarity (balance) as antipodal compliments
 Everything may follow that same model. From nothing all the way through math, physics, biology, cognition, technology
 Like mirrors, you can't see the reflection of until you see the design at its core.
 
-The reason these things seem vauge, mysterious, myhical, unfounded, crank, and are brushed aside is simple
+The reason these things seem vauge, mysterious, mythical, unfounded, crank, and are brushed aside is simple
 If reality by nature is balanced, and there is no discrete "heirachy", It is not "law" of the universe to submit
 It expresses equality in knowledge, gender, and everything there is along with equal respect
-It says bias is just a boolean decision, not a universal constant
-It says we are to respect and care for the balance, not rule it
-It says we are not to hide behind any one power as a shield for our agenda
-It does not say there is no greater power
+It suggests bias is just a boolean decision, not a universal constant
+It suggests we are to respect and care for the balance, not rule it
+It suggests we are not to hide behind any one power as a shield for our agenda
+It does not suggests there is no greater power
 It does suggest if there is, we are responsible for ourselves anyway
 
 Don't Panic! ;)
